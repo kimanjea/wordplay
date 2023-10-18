@@ -1779,28 +1779,28 @@
                 "Pero hay veces tu le quieres dar a la /audiencia/ el control sobre en donde estamos en el @Escenario. Para eso el @Colocacion.",
                 "Asi es como funciona: simplemente crea una @Colocacion y pasaselo a nuestro @Lugar:",
                 "\\Frase('hola' lugar:Colocacion())\\",
-                "Entonces, cada ves que la audencia use una tecla de flecha or haga click o tap en el escenario, la @Colocacion "
+                "Entonces, cada ves que la audencia use una tecla de flecha or haga click o tap en el escenario, la @Colocacion,va a hacer un nuevo @Lugar que se mueve en la dirección deseada.", "Trata de copear esto adentro de tu programa, y muevenos con el puntero o el teclado.", "Tu puedes customizar la @Colocacion, habilitando y desabilitando movimientons en ciertas dimensiones, cambiando que tan lejos un @Lugar se puede mover, y el @Lugar inicial con el que el stream comienza."
             ],
             "inputs": [
                 {
-                    "doc": "$?",
-                    "names": "$? start"
+                    "doc": "El lugar inicial para comenzar.",
+                    "names": "comienzo"
                 },
                 {
-                    "doc": "$?",
-                    "names": "$? distance"
+                    "doc": "distancia",
+                    "names": "Cuantos metros el lugar deberia de moverse cuando la audiencia pide un movimiento."
                 },
                 {
-                    "doc": "$?",
-                    "names": "$? horizontal"
+                    "doc": "Si verdadero, permite movimiento en el eje horizontal ",
+                    "names": "horizontal"
                 },
                 {
-                    "doc": "$?",
-                    "names": "$? vertical"
+                    "doc": "Si verdadero, permite movimiento en el eje vertical",
+                    "names": "vertical"
                 },
                 {
-                    "doc": "$?",
-                    "names": "$? depth"
+                    "doc": "Si verdadero, permite movimiento en el eje z, con las teclas (+) y (-).",
+                    "names": "profundidad"
                 }
             ]
         },
