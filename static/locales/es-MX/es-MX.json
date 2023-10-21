@@ -1805,16 +1805,16 @@
             ]
         },
         "Webpage": {
-            "doc": ["$?"],
-            "names": "$? webpage",
-            "url": { "doc": "$?", "names": "$? url" },
-            "query": { "doc": "$?", "names": "$? query" },
-            "frequency": { "doc": "$?", "names": "$? frequency" },
+            "doc": ["/Hola, @DeficionDeFuncion aqui. Vamos a hablar sobre como obtener paginas web de internet!/", "Cuando nosotros primero escuchamos sobre el internet, lo encontramos facinante. Un mundo entero de computadores conectados compartiendo documentos con lo demas, realmente asombroso!", "Entonces, hicimos una sequencia que lo conecta. Haci:", "\\PaginaWeb('https://wordplay.dev')\\", "Y aparentemente hay algo llamado <CSS@https://developer.mozilla.org/en-US/docs/Learn/CSS/First_steps/What_is_CSS>, que te deja consultar cosas en otras paginas web, esto incluye consulta de seleccion con CSS, esto solo nos dara el texto que coincide con la consulta. Por ejemplo, esto te devuelve los encabezados de nivel uno.", "\\PaginaWeb('https://wordplay.dev' 'h1')\\", "Hay un monton de cosas que pueden fallar con esto. Si pierdes coneccion a internet, o si el URL no se resuelve a nada, o si el URL no es publico, o el URL no es una pagina HTML... Todo esto puede causar un fallo."],
+            "names": "PaginaWeb",
+            "url": { "doc": "el URL de la pagina HTML para buscar", "names": "url" },
+            "query": { "doc": "La consulta de CSS para evaluar el HTML", "names": "consulta" },
+            "frequency": { "doc": "El numero de minutos que deberia de pasar antes de ir a buscar de nuevo", "names": "frequencia" },
             "error": {
-                "invalid": "$?",
-                "unvailable": "$?",
-                "notHTML": "$?",
-                "noConnection": "$?"
+                "invalid": "este URL no es valido",
+                "unvailable": "este URL no es accesible",
+                "notHTML": "la respuesta no es HTML",
+                "noConnection": "no hay coneccion a Wordplay"
             }
         }
     },
