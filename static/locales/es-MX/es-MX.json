@@ -941,23 +941,52 @@
     },
     "basis": {
         "Boolean": {
-            "doc": "$?",
-            "name": "bool",
+            "doc": [
+                "Nosotros somos \\T\\ y \\⊥\\. \\T\\ es verdadero. \\⊥\\ is falso. \\T\\ no es \\⊥\\; \\⊥\\ no es \\T\\. Asi funcionamos"
+            ],
+            "name": ["T⊥", "Booleano"],
             "function": {
                 "and": {
-                    "doc": "$?",
-                    "names": "y",
-                    "inputs": [{ "doc": "$?", "names": "value" }]
+                    "doc": [
+                        "Yo evaluo a \\T\\ *solo* cuando los dos valors son \\T\\.Útil para determinar si muchas cosas son verdadero. Solo hay cuatro resultados posibles",
+                        "\\T & T\\",
+                        "\\T & ⊥\\",
+                        "\\⊥ & T\\",
+                        "\\⊥ & ⊥\\"
+                    ],
+                    "names": ["y", "&"],
+                    "inputs": [
+                        {
+                            "doc": "El otro @Booleano a evaluar. Si el primer valor es \\⊥\\, no importa el resto de valores, la funcion siempre va a evaluar a \\⊥]\\.",
+                            "names": "valor"
+                        }
+                    ]
                 },
                 "or": {
-                    "doc": "$?",
-                    "names": "o",
-                    "inputs": [{ "doc": "$?", "names": "value" }]
+                    "doc": [
+                        "Yo evaluo a \\T\\ cuando *cualquier* valor es \\T\\. Útil para determinar si one de muchas cosas es verdadero. Solo hay cuatro resultados posibles",
+                        "\\T & T\\",
+                        "\\T & ⊥\\",
+                        "\\⊥ & T\\",
+                        "\\⊥ & ⊥\\"
+                    ],
+
+                    "names": ["o", "|"],
+                    "inputs": [
+                        {
+                            "doc": "El otro @Booleano a evaluar. Si el primer valor es \\⊥\\, la funcion solo evaluara a \\T\\ si esto es \\T\\.",
+                            "names": "valor"
+                        }
+                    ]
                 },
-                "not": { "doc": "$?", "names": "no", "inputs": [] },
+                "not": {
+                    "doc": "Yo devuelvo lo opuesto a mi: si \\T\\, devuelvo \\⊥\\, si \\⊥\\, devuelvo \\T\\",
+                    "names": ["no", "~"],
+                    "inputs": []
+                },
                 "equals": {
-                    "doc": "$?",
-                    "names": "igual",
+                    "doc": "\\T\\ si los dos son \\T\\ or los dos son \\⊥\\.",
+                    "names": ["=", "igual "],
                     "inputs": [{ "doc": "$?", "names": "value" }]
                 },
                 "notequal": {
@@ -969,11 +998,14 @@
             "conversion": { "text": "$?" }
         },
         "None": {
-            "doc": "$?",
-            "name": "none",
+            "doc": [
+                "/Hi, @DeficionDeFuncion aqui. @Nada no le gusta hablar mucho, so interpretare./",
+                "Yo soy @Nada. Invocame con \\ø\\. Yo soy util cuando quieres representar al ausencia de algo."
+            ],
+            "name": ["ø", "none"],
             "function": {
                 "equals": {
-                    "doc": "$?",
+                    "doc": "Es otro valor tambien nada? Mas vale, de otra manera, \\",
                     "names": ["=", "equals"],
                     "inputs": [{ "doc": "$?", "names": "value" }]
                 },
@@ -1779,7 +1811,9 @@
                 "Pero hay veces tu le quieres dar a la /audiencia/ el control sobre en donde estamos en el @Escenario. Para eso el @Colocacion.",
                 "Asi es como funciona: simplemente crea una @Colocacion y pasaselo a nuestro @Lugar:",
                 "\\Frase('hola' lugar:Colocacion())\\",
-                "Entonces, cada ves que la audencia use una tecla de flecha or haga click o tap en el escenario, la @Colocacion,va a hacer un nuevo @Lugar que se mueve en la dirección deseada.", "Trata de copear esto adentro de tu programa, y muevenos con el puntero o el teclado.", "Tu puedes customizar la @Colocacion, habilitando y desabilitando movimientons en ciertas dimensiones, cambiando que tan lejos un @Lugar se puede mover, y el @Lugar inicial con el que el stream comienza."
+                "Entonces, cada ves que la audencia use una tecla de flecha or haga click o tap en el escenario, la @Colocacion,va a hacer un nuevo @Lugar que se mueve en la dirección deseada.",
+                "Trata de copear esto adentro de tu programa, y muevenos con el puntero o el teclado.",
+                "Tu puedes customizar la @Colocacion, habilitando y desabilitando movimientons en ciertas dimensiones, cambiando que tan lejos un @Lugar se puede mover, y el @Lugar inicial con el que el stream comienza."
             ],
             "inputs": [
                 {
@@ -1805,11 +1839,28 @@
             ]
         },
         "Webpage": {
-            "doc": ["/Hola, @DeficionDeFuncion aqui. Vamos a hablar sobre como obtener paginas web de internet!/", "Cuando nosotros primero escuchamos sobre el internet, lo encontramos facinante. Un mundo entero de computadores conectados compartiendo documentos con lo demas, realmente asombroso!", "Entonces, hicimos una sequencia que lo conecta. Haci:", "\\PaginaWeb('https://wordplay.dev')\\", "Y aparentemente hay algo llamado <CSS@https://developer.mozilla.org/en-US/docs/Learn/CSS/First_steps/What_is_CSS>, que te deja consultar cosas en otras paginas web, esto incluye consulta de seleccion con CSS, esto solo nos dara el texto que coincide con la consulta. Por ejemplo, esto te devuelve los encabezados de nivel uno.", "\\PaginaWeb('https://wordplay.dev' 'h1')\\", "Hay un monton de cosas que pueden fallar con esto. Si pierdes coneccion a internet, o si el URL no se resuelve a nada, o si el URL no es publico, o el URL no es una pagina HTML... Todo esto puede causar un fallo."],
+            "doc": [
+                "/Hola, @DeficionDeFuncion aqui. Vamos a hablar sobre como obtener paginas web de internet!/",
+                "Cuando nosotros primero escuchamos sobre el internet, lo encontramos facinante. Un mundo entero de computadores conectados compartiendo documentos con lo demas, realmente asombroso!",
+                "Entonces, hicimos una sequencia que lo conecta. Haci:",
+                "\\PaginaWeb('https://wordplay.dev')\\",
+                "Y aparentemente hay algo llamado <CSS@https://developer.mozilla.org/en-US/docs/Learn/CSS/First_steps/What_is_CSS>, que te deja consultar cosas en otras paginas web, esto incluye consulta de seleccion con CSS, esto solo nos dara el texto que coincide con la consulta. Por ejemplo, esto te devuelve los encabezados de nivel uno.",
+                "\\PaginaWeb('https://wordplay.dev' 'h1')\\",
+                "Hay un monton de cosas que pueden fallar con esto. Si pierdes coneccion a internet, o si el URL no se resuelve a nada, o si el URL no es publico, o el URL no es una pagina HTML... Todo esto puede causar un fallo."
+            ],
             "names": "PaginaWeb",
-            "url": { "doc": "el URL de la pagina HTML para buscar", "names": "url" },
-            "query": { "doc": "La consulta de CSS para evaluar el HTML", "names": "consulta" },
-            "frequency": { "doc": "El numero de minutos que deberia de pasar antes de ir a buscar de nuevo", "names": "frequencia" },
+            "url": {
+                "doc": "el URL de la pagina HTML para buscar",
+                "names": "url"
+            },
+            "query": {
+                "doc": "La consulta de CSS para evaluar el HTML",
+                "names": "consulta"
+            },
+            "frequency": {
+                "doc": "El numero de minutos que deberia de pasar antes de ir a buscar de nuevo",
+                "names": "frequencia"
+            },
             "error": {
                 "invalid": "este URL no es valido",
                 "unvailable": "este URL no es accesible",
