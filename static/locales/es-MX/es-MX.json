@@ -1039,15 +1039,27 @@
                 "Solo recuerada de cerrarme si me abres, y usa el simbolo coincidente. Si no es asi, no sabre que has terminado con tus palabras.",
                 "\\'hola' /es-MX 'hello' /en\\",
                 "Tambine me puedes etiquetar con idiomas, y tambien me puedes pasar multiples traducciones. Yo evaluare a cualquier idioma que este actualmente seleccionado.",
-                ""
+                "Si tu quieres crearme con otro tipo de valores, puedes utilizar un simbolo",
+                "Por ejemplo:",
+                "\\\"Mira estas sumas \\1 + 2\\, \\2 + 3\\, \\3 + 4\\\"\\",
+                "Mira que elegante yo evaluo esas sumas, y la pongo adentro del @Texto",
+                "De cual quier manera, hay muchas funciones gloriosas que @DefinicionDeFuncion a hecho para mi, para poder hacer todo tipo de cosas con palabras!"
             ],
-            "name": "text",
+            "name": "Texto",
             "function": {
-                "length": { "doc": "$?", "names": "length", "inputs": [] },
+                "length": {
+                    "doc": [
+                        "Yo evaluo el numero de caracteres legibles en el texo; una letra es un caracter, un emotico es un caracter, etx. Por ejemplo:",
+                        "\\'hola'.longitud()\\",
+                        "\\'🐈📚'.longitud()"
+                    ],
+                    "names": ["📏", "longitud"],
+                    "inputs": []
+                },
                 "equals": {
-                    "doc": "$?",
+                    "doc": "\\T\\ so yo soy la misma sequencia de caracteres en el @Texo dado",
                     "names": ["=", "equals"],
-                    "inputs": [{ "doc": "$?", "names": "value" }]
+                    "inputs": [{ "doc": "El @Texo a", "names": "valor" }]
                 },
                 "notequals": {
                     "doc": "$?",
