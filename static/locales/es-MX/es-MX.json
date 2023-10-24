@@ -987,15 +987,27 @@
                 "equals": {
                     "doc": "\\T\\ si los dos son \\T\\ or los dos son \\⊥\\.",
                     "names": ["=", "igual "],
-                    "inputs": [{ "doc": "$?", "names": "value" }]
+                    "inputs": [
+                        {
+                            "doc": "El otro valor para evaluar",
+                            "names": "value"
+                        }
+                    ]
                 },
                 "notequal": {
-                    "doc": "$?",
+                    "doc": "\\T\\ si los dos son opuestos",
                     "names": "noIgual",
-                    "inputs": [{ "doc": "$?", "names": "value" }]
+                    "inputs": [
+                        {
+                            "doc": "El otro valor para evalar.",
+                            "names": "valor"
+                        }
+                    ]
                 }
             },
-            "conversion": { "text": "$?" }
+            "conversion": {
+                "text": "Convierte un @Booleano a el equivalente valor de @Texto \\'⊤'\\ and \\'⊥'\\"
+            }
         },
         "None": {
             "doc": [
@@ -1005,20 +1017,30 @@
             "name": ["ø", "none"],
             "function": {
                 "equals": {
-                    "doc": "Es otro valor tambien nada? Mas vale, de otra manera, \\",
-                    "names": ["=", "equals"],
-                    "inputs": [{ "doc": "$?", "names": "value" }]
+                    "doc": "Es otro valor tambien nada? Mas vale, de otra manera, \\⊥\\.",
+                    "names": ["=", "igual"],
+                    "inputs": [{ "doc": "El otro valor", "names": "valor" }]
                 },
                 "notequals": {
-                    "doc": "$?",
-                    "names": "≠",
-                    "inputs": [{ "doc": "$?", "names": "value" }]
+                    "doc": "Es el otro valor /no/ nada?",
+                    "names": ["≠", "noIgual"],
+                    "inputs": [{ "doc": "El otro valor", "names": "valor" }]
                 }
             },
-            "conversion": { "text": "$?" }
+            "conversion": {
+                "text": "Queres hacer \\ø\\ a '\\ø\\'? Esta es tu oportunidad."
+            }
         },
         "Text": {
-            "doc": "$?",
+            "doc": [
+                "Yo puedo ser cualquier texto que tu quieras, en cualquier idioma, y usando cualquiera de estos simbolos de abrir y cerra: \\\"\"\\, \\“”\\, \\„“\\, \\''\\, \\‘’\\, \\‹›\\, \\«»\\, \\「」\\, or \\『』\\.",
+                "Para ilustrar, considera una de estas bonitas frases.",
+                "\\“Solo hay dos maneras de vivir la vidad. Una es como si nada fuera un milagro. La otra es como si todo fuera un milagro.”\\",
+                "Solo recuerada de cerrarme si me abres, y usa el simbolo coincidente. Si no es asi, no sabre que has terminado con tus palabras.",
+                "\\'hola' /es-MX 'hello' /en\\",
+                "Tambine me puedes etiquetar con idiomas, y tambien me puedes pasar multiples traducciones. Yo evaluare a cualquier idioma que este actualmente seleccionado.",
+                ""
+            ],
             "name": "text",
             "function": {
                 "length": { "doc": "$?", "names": "length", "inputs": [] },
