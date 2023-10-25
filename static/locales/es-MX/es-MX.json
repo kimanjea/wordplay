@@ -1057,111 +1057,253 @@
                     "inputs": []
                 },
                 "equals": {
-                    "doc": "\\T\\ so yo soy la misma sequencia de caracteres en el @Texo dado",
+                    "doc": "\\T\\ so yo soy la misma sequencia de caracteres en el @Texto dado",
                     "names": ["=", "equals"],
-                    "inputs": [{ "doc": "El @Texo a", "names": "valor" }]
+                    "inputs": [{ "doc": "El @Texto a", "names": "valor" }]
                 },
                 "notequals": {
-                    "doc": "$?",
+                    "doc": "\\T\\ si /no/ soy la misma sequencia de caracteres en el @Texto dado",
                     "names": "≠",
-                    "inputs": [{ "doc": "$?", "names": "value" }]
+                    "inputs": [{ "doc": "El @Texto", "names": "valor" }]
                 },
                 "repeat": {
-                    "doc": "$?",
+                    "doc": [
+                        "Yo creo @Texto nuevo, repetido un cierto numero de veces",
+                        "\\'hey' · 5'\\",
+                        "Si me das un @Numero fracional, yo lo ignorare, \\'hey' · 5.5\\",
+                        "Si me das un @Numero negativo, Yo te doy un @Texto vacio.",
+                        "\\'hey' · -5\\"
+                    ],
                     "names": "repetir",
                     "inputs": [{ "doc": "$?", "names": "contar" }]
                 },
                 "segment": {
-                    "doc": "$?",
-                    "names": ["segmentar"],
-                    "inputs": [{ "doc": "$?", "names": "delimitador" }]
+                    "doc": [
+                        "Yo mismo de divido en una @Lista de @Texto, usando el @Texto dado como un separador, y removiendo el separador. Por ejemplo:",
+                        "\\'manzanas, naranjas, uvas' ÷ ','\\",
+                        "Si el separador esta vacio, yo me dividere en caracteres:",
+                        "\\'🖌️🏠🥸' ÷ ''\\"
+                    ],
+                    "names": ["÷", "segmento"],
+                    "inputs": [
+                        {
+                            "doc": "El @Texto para usar como separador",
+                            "names": "delimitador"
+                        }
+                    ]
                 },
                 "has": {
-                    "doc": "$?",
+                    "doc": [
+                        "\\T\\ si el @Texto dado aperence dentro de mi.",
+                        "\\'podiste encontras lo que estabas buscando?'.tiene('podiste')\\"
+                    ],
                     "names": ["tiene"],
-                    "inputs": [{ "doc": "$?", "names": "texto" }]
+                    "inputs": [
+                        { "doc": "El @Texto para buscarme", "names": "texto" }
+                    ]
                 },
                 "starts": {
-                    "doc": "$?",
-                    "names": ["$? starts"],
-                    "inputs": [{ "doc": "$?", "names": "texto" }]
+                    "doc": "\\T\\ si yo comienzo con el @Texto dado.",
+                    "names": ["comienza"],
+                    "inputs": [
+                        {
+                            "doc": "El @Texto para verificar que comienzo con el",
+                            "names": "texto"
+                        }
+                    ]
                 },
                 "ends": {
-                    "doc": "$?",
-                    "names": ["$? ends"],
-                    "inputs": [{ "doc": "$?", "names": "texto" }]
+                    "doc": "\\T\\ si el yo termino con el @Texto dado",
+                    "names": ["termina"],
+                    "inputs": [
+                        {
+                            "doc": "El @Texo para verificar si esta al final de mi",
+                            "names": "texto"
+                        }
+                    ]
                 },
                 "combine": {
-                    "doc": "$?",
-                    "names": "combinar",
-                    "inputs": [{ "doc": "$?", "names": "texto" }]
+                    "doc": [
+                        "Hay veces que es util combinar @Texto(s) en uno, Dame otro @Texto y creare un nuevo texto con nos junte",
+                        "\\'hola ' + 'verso'"
+                    ],
+                    "names": ["+", "combinar"],
+                    "inputs": [
+                        { "doc": "El texto para adjuntar", "names": "texto" }
+                    ]
                 }
             },
-            "conversion": { "list": "$?", "number": "$?" }
+            "conversion": {
+                "list": "Divide el @Texto en una isto con los caracteres individuales",
+                "number": "Convierte el @Texto en un @Numero, y si no es un numero, resultara en un valor no numeral"
+            }
         },
         "Number": {
-            "doc": "$?",
-            "name": "number",
+            "doc": [
+                "Yo creo un @Numero, con cualquier numero de unidades que tu te puedas imaginar",
+                "Aqui estan mis top 5:",
+                "\\0\\",
+                "\\1historia\\",
+                "\\πtartas\\",
+                "\\∞rocas\\",
+                "\\10000000abrazos\\",
+                "Eso es basicamenete una cantidad infinita de numeros.",
+                "Y una cantidad infinita de unidades",
+                "Y una cantidad infinita de pares numero/unidad…",
+                "Yo puedo ser enteros, numeros reales, negativo, positivo, fraccional, decimal, incluso no un numero",
+                "Y me puedes con muchos diferentes systemas de numeros, uncluyendo arabe \\123\\, Romano \\ⅩⅩⅩⅠⅩ\\, Japones \\二十\\, y mas:",
+                "\\1 + Ⅰ + 一\\",
+                "Tu tambien me puedes escribir en bases 2 a 16 poniendo un numero baso asi:",
+                "\\2;11111111\\",
+                "\\10;255\\",
+                "16;FF\\",
+                "Hay un numero especial llamado NaN, que es posible cuando escribes algo que no es un numero:",
+                "\\2;22\\",
+                "Noy hay un digito '2' en base de 2, entonces no es un numero valido. NaN va a aparecer si tratas de covertir algo que no es un numero a texto",
+                "\\'hola'→#\\"
+            ],
+            "name": "numero",
             "function": {
                 "add": {
-                    "doc": "$?",
-                    "names": "add",
-                    "inputs": [{ "doc": "$?", "names": "number" }]
+                    "doc": [
+                        "Yo sumo un @Numero con mi misma @Unidad, creando un nuevo @Numero de la misma @Unidad",
+                        "Por ejemplo:",
+                        "\\1 + 1\\",
+                        "\\3gatos + 5gatos\\",
+                        "Si las unidads no coinciden, yo parare a mostrar \\3gatos + 5gaots\\"
+                    ],
+                    "names": ["+", "add"],
+                    "inputs": [
+                        { "doc": "El @Numero a sumar", "names": "number" }
+                    ]
                 },
                 "subtract": {
-                    "doc": "$?",
-                    "names": "subtract",
-                    "inputs": [{ "doc": "$?", "names": "number" }]
+                    "doc": [
+                        "Yo resto el @Numero que me das de yo mismo, creando un nuevo @Numero de la mismo @Unidad:",
+                        "Por ejemplo:",
+                        "\\1 - 1\\",
+                        "\\3gatos - 5gatos\\",
+                        "Si las unidades no coinciden, parare a monstrar.",
+                        "\\3gatos - 5perros\\"
+                    ],
+                    "names": ["-", "subtract"],
+                    "inputs": [
+                        { "doc": "El @Numero a restar", "names": "numero" }
+                    ]
                 },
                 "multiply": {
-                    "doc": "$?",
-                    "names": "multiplicar",
-                    "inputs": [{ "doc": "$?", "names": "number" }]
+                    "doc": [
+                        "Yo me multiplico por el @Numero dado, creando un producto de mi @Unidad y la @Unidad del numero dado:",
+                        "\\5 · 5\\",
+                        "5m · 5m\\",
+                        "\\5m · 1/s\\"
+                    ],
+                    "names": ["·", "multiplicar"],
+                    "inputs": [
+                        { "doc": "El @Numero a multiplicar", "names": "numero" }
+                    ]
                 },
                 "divide": {
-                    "doc": "$?",
+                    "doc": [
+                        "Yo me divido por el @Numero dado, creando una cociente de mi @Unidad y la unidad del numero dado:",
+                        "\\5 ÷ 5\\",
+                        "\\5m ÷ 5m\\",
+                        "\\5m ÷ 5s\\"
+                    ],
                     "names": ["÷", "divide"],
-                    "inputs": [{ "doc": "$?", "names": "number" }]
+                    "inputs": [
+                        { "doc": "El @Numero a dividir por", "names": "numero" }
+                    ]
                 },
                 "remainder": {
-                    "doc": "$?",
-                    "names": "remainder",
-                    "inputs": [{ "doc": "$?", "names": "number" }]
+                    "doc": [
+                        "Yo me divido por le @Numero dado, pero devuelvo los restante:",
+                        "\\10 % 2\\",
+                        "\\10m % 2\\",
+                        "\\10m/s % 3\\"
+                    ],
+                    "names": ["%", "remainder"],
+                    "inputs": [
+                        {
+                            "doc": "Ell @Numero a dividir por",
+                            "names": "numero"
+                        }
+                    ]
                 },
                 "positive": {
-                    "doc": "$?",
-                    "names": ["positive"],
+                    "doc": [
+                        "Yo creo un @Numero nuevo que me hace positivo, si es negativo.",
+                        "\\-200.positivo()\\"
+                    ],
+                    "names": ["positivo"],
                     "inputs": []
                 },
                 "round": {
-                    "doc": "$?",
-                    "names": ["round"],
+                    "doc": [
+                        "Yo creo un @Numero nuevo que me rondea a el intero mas cercano",
+                        "\\9.4.rondear()\\",
+                        "\\9.5.rondear()\\",
+                        "\\9.6.rondear()\\"
+                    ],
+                    "names": ["rondear"],
                     "inputs": []
                 },
                 "roundDown": {
-                    "doc": "$?",
-                    "names": ["$? down"],
+                    "doc": [
+                        "Yo creo un nuevo @Numero que rondea a entero mas pequeño que yo.",
+                        "\\10.5.rondearBajo()\\",
+                        "\\10.1.rondearBajo()\\",
+                        "\\10.01.rondearBajo()\\"
+                    ],
+                    "names": ["rondearBajo"],
                     "inputs": []
                 },
                 "roundUp": {
-                    "doc": "$?",
-                    "names": ["$? up"],
+                    "doc": [
+                        "Yo creo un nuevo @Numero que rondea a el entero mas grande que yo",
+                        "\\10.5.rondearArriba()\\",
+                        "\\10.9.rondearArriba()\\",
+                        "\\10.99.rondearArriba()\\"
+                    ],
+                    "names": ["rondearArriba"],
                     "inputs": []
                 },
                 "power": {
-                    "doc": "$?",
-                    "names": ["^", "power"],
-                    "inputs": [{ "doc": "$?", "names": "number" }]
+                    "doc": [
+                        "Yo me elevo a el poder del @Numero dado. Exponentes fracionales son acceptados",
+                        "\\2 ^ 8\\",
+                        "\\10 ^ -2\\",
+                        "\\5 ^ -.5\\"
+                    ],
+                    "names": ["^", "elevado"],
+                    "inputs": [
+                        {
+                            "doc": "El exponente a elevarme a",
+                            "names": "numero"
+                        }
+                    ]
                 },
                 "root": {
-                    "doc": "$?",
+                    "doc": [
+                        "Yo creo la raiz de yo mismo usando la raiz dada.",
+                        "\\4 √ 2\\",
+                        "\\1000 √ 3\\"
+                    ],
                     "names": ["√", "root"],
-                    "inputs": [{ "doc": "$?", "names": "number" }]
+                    "inputs": [
+                        { "doc": "el root a computar", "names": "numero" }
+                    ]
                 },
                 "lessThan": {
-                    "doc": "$?",
-                    "names": ["<", "lessthan"],
-                    "inputs": [{ "doc": "$?", "names": "number" }]
+                    "doc": [
+                        "\\T\\ si yo soy menor a @Numero dado:",
+                        "\\1 < 2\\",
+                        "\\2 < 1\\"
+                    ],
+                    "names": ["<", "menorQue"],
+                    "inputs": [
+                        { "doc": "El @Numero a comparar", "names": "numero" }
+                    ]
                 },
                 "lessOrEqual": {
                     "doc": "$?",
