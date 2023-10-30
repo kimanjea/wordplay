@@ -48,6 +48,7 @@ import type Node from './Node';
 import ExpressionPlaceholder from './ExpressionPlaceholder';
 import Refer from '../edit/Refer';
 import UnknownType from './UnknownType';
+import type Locales from '../locale/Locales';
 
 export default class Bind extends Expression {
     readonly docs?: Docs;
@@ -91,13 +92,14 @@ export default class Bind extends Expression {
         docs: Docs | undefined,
         names: Names,
         type?: Type,
-        value?: Expression
+        value?: Expression,
+        variable = false
     ) {
         return new Bind(
             docs,
             undefined,
             names instanceof Names ? names : Names.make(names),
-            undefined,
+            variable ? new Token(ETC_SYMBOL, Sym.Etc) : undefined,
             type === undefined ? undefined : new TypeToken(),
             type,
             value === undefined ? undefined : new BindToken(),
@@ -191,12 +193,13 @@ export default class Bind extends Expression {
                 indent: true,
                 // The bind field should be whatever type is expected.
                 getType: (context: Context) => this.getExpectedType(context),
-                label: (locale: Locale, child: Node, context: Context) =>
-                    (child === this.value
-                        ? this.getCorrespondingBindDefinition(
-                              context
-                          )?.names.getPreferredNameString(locale)
-                        : undefined) ?? '_',
+                label: (locales: Locales, child: Node, context: Context) => {
+                    if (child === this.value) {
+                        const bind =
+                            this.getCorrespondingBindDefinition(context);
+                        return bind ? locales.getName(bind.names) : '_';
+                    } else return '_';
+                },
             },
         ];
     }
@@ -278,7 +281,7 @@ export default class Bind extends Expression {
         return true;
     }
 
-    evaluateTypeSet(
+    evaluateTypeGuards(
         bind: Bind,
         original: TypeSet,
         current: TypeSet,
@@ -286,7 +289,7 @@ export default class Bind extends Expression {
     ): TypeSet {
         return this.value === undefined
             ? current
-            : this.value.evaluateTypeSet(bind, original, current, context);
+            : this.value.evaluateTypeGuards(bind, original, current, context);
     }
 
     hasName(name: string) {
@@ -570,7 +573,7 @@ export default class Bind extends Expression {
         );
     }
 
-    compile(context: Context): Step[] {
+    compile(evaluator: Evaluator, context: Context): Step[] {
         // A bind evaluates its value expression, then pushes it on the stack.
         return this.value === undefined
             ? [
@@ -598,7 +601,7 @@ export default class Bind extends Expression {
                       }
                       return undefined;
                   }),
-                  ...this.value.compile(context),
+                  ...this.value.compile(evaluator, context),
                   new Finish(this),
               ];
     }
@@ -625,40 +628,51 @@ export default class Bind extends Expression {
         return value;
     }
 
-    getNodeLocale(translation: Locale) {
-        return translation.node.Bind;
+    /** True if a name and the type matches */
+    isEquivalentTo(definition: Definition) {
+        return (
+            definition instanceof Bind &&
+            this.type &&
+            definition.type &&
+            this.type.isEqualTo(definition.type) &&
+            this.sharesName(definition)
+        );
     }
 
-    getStartExplanations(translation: Locale, context: Context) {
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.Bind);
+    }
+
+    getStartExplanations(locales: Locales, context: Context) {
         return concretize(
-            translation,
-            translation.node.Bind.start,
+            locales,
+            locales.get((l) => l.node.Bind.start),
             this.value === undefined
                 ? undefined
-                : new NodeRef(this.value, translation, context)
+                : new NodeRef(this.value, locales, context)
         );
     }
 
     getFinishExplanations(
-        locale: Locale,
+        locales: Locales,
         context: Context,
         evaluator: Evaluator
     ) {
         return concretize(
-            locale,
-            locale.node.Bind.finish,
-            this.getValueIfDefined(locale, context, evaluator),
+            locales,
+            locales.get((l) => l.node.Bind.finish),
+            this.getValueIfDefined(locales, context, evaluator),
             new NodeRef(
                 this.names,
-                locale,
+                locales,
                 context,
-                this.names.getPreferredNameString(locale)
+                locales.getName(this.names)
             )
         );
     }
 
-    getDescriptionInputs(locale: Locale) {
-        return [this.names.getPreferredName(locale)?.getName()];
+    getDescriptionInputs(locales: Locales) {
+        return [locales.getName(this.names)];
     }
 
     getGlyphs() {

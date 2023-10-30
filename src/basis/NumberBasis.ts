@@ -14,7 +14,11 @@ import NumberValue from '@values/NumberValue';
 import TextValue from '@values/TextValue';
 import TypeException from '@values/TypeException';
 import type Value from '@values/Value';
-import { createBasisConversion, createBasisFunction } from './Basis';
+import {
+    createBasisConversion,
+    createBasisFunction,
+    createEqualsFunction,
+} from './Basis';
 import InternalExpression from './InternalExpression';
 import type Evaluation from '@runtime/Evaluation';
 import ListValue from '@values/ListValue';
@@ -23,8 +27,10 @@ import { getNameLocales } from '@locale/getNameLocales';
 import type Expression from '../nodes/Expression';
 import type Locale from '../locale/Locale';
 import type { FunctionText, NameAndDoc } from '../locale/Locale';
+import ListType from '../nodes/ListType';
+import type Locales from '../locale/Locales';
 
-export default function bootstrapNumber(locales: Locale[]) {
+export default function bootstrapNumber(locales: Locales) {
     const subtractNames = getNameLocales(
         locales,
         (locale) => locale.basis.Number.function.subtract.inputs[0].names
@@ -121,6 +127,71 @@ export default function bootstrapNumber(locales: Locale[]) {
         );
     }
 
+    function createVariableOp(
+        nameAndDoc: (locale: Locale) => NameAndDoc,
+        input: (locale: Locale) => NameAndDoc,
+        evaluator: (
+            creator: Expression,
+            values: NumberValue[],
+            unit: Unit
+        ) => NumberValue
+    ) {
+        return FunctionDefinition.make(
+            getDocLocales(locales, (locale) => nameAndDoc(locale).doc),
+            getNameLocales(locales, (locale) => nameAndDoc(locale).names),
+            undefined,
+            [
+                Bind.make(
+                    getDocLocales(locales, (locale) => input(locale).doc),
+                    getNameLocales(locales, (locale) => input(locale).names),
+                    NumberType.make((unit) => unit),
+                    undefined,
+                    true
+                ),
+            ],
+            new InternalExpression(
+                NumberType.make((unit) => unit),
+                [],
+                (requestor: Expression, evaluation: Evaluation): Value => {
+                    const left: Value | Evaluation | undefined =
+                        evaluation.getClosure();
+                    const right = evaluation.getInput(0);
+
+                    // It should be impossible for the left to be a Number, but the type system doesn't know it.
+                    if (!(left instanceof NumberValue))
+                        return evaluation.getValueOrTypeException(
+                            evaluation.getDefinition(),
+                            NumberType.make(),
+                            left
+                        );
+
+                    const numbers = [left];
+
+                    if (right) {
+                        if (!(right instanceof ListValue))
+                            return evaluation.getValueOrTypeException(
+                                evaluation.getDefinition(),
+                                ListType.make(NumberType.make()),
+                                right
+                            );
+                        for (const num of right.values) {
+                            if (!(num instanceof NumberValue))
+                                return evaluation.getValueOrTypeException(
+                                    evaluation.getDefinition(),
+                                    NumberType.make(),
+                                    num
+                                );
+                            numbers.push(num);
+                        }
+                    }
+
+                    return evaluator(requestor, numbers, left.unit);
+                }
+            ),
+            NumberType.make((unit) => unit)
+        );
+    }
+
     return StructureDefinition.make(
         getDocLocales(locales, (locale) => locale.basis.Number.doc),
         getNameLocales(locales, (locale) => locale.basis.Number.name),
@@ -197,7 +268,7 @@ export default function bootstrapNumber(locales: Locale[]) {
                 createBinaryOp(
                     (locale) => locale.basis.Number.function.multiply,
                     // The operand's type can be any unitless measurement
-                    NumberType.wildcard(),
+                    NumberType.make(),
                     // The output's type is is the unit's product
                     NumberType.make((left, right) =>
                         right ? left.product(right) : left
@@ -207,7 +278,7 @@ export default function bootstrapNumber(locales: Locale[]) {
                 ),
                 createBinaryOp(
                     (locale) => locale.basis.Number.function.divide,
-                    NumberType.wildcard(),
+                    NumberType.make(),
                     NumberType.make((left, right) =>
                         right ? left.quotient(right) : left
                     ),
@@ -216,7 +287,7 @@ export default function bootstrapNumber(locales: Locale[]) {
                 ),
                 createBinaryOp(
                     (locale) => locale.basis.Number.function.remainder,
-                    NumberType.wildcard(),
+                    NumberType.make(),
                     NumberType.make((left) => left),
                     (requestor, left, right) =>
                         left.remainder(requestor, right),
@@ -224,27 +295,27 @@ export default function bootstrapNumber(locales: Locale[]) {
                 ),
                 createUnaryOp(
                     (locale) => locale.basis.Number.function.roundDown,
-                    NumberType.wildcard(),
+                    NumberType.make(),
                     (requestor, left) => left.roundDown(requestor)
                 ),
                 createUnaryOp(
                     (locale) => locale.basis.Number.function.roundUp,
-                    NumberType.wildcard(),
+                    NumberType.make(),
                     (requestor, left) => left.roundUp(requestor)
                 ),
                 createUnaryOp(
                     (locale) => locale.basis.Number.function.positive,
-                    NumberType.wildcard(),
+                    NumberType.make(),
                     (requestor, left) => left.absolute(requestor)
                 ),
                 createUnaryOp(
                     (locale) => locale.basis.Number.function.round,
-                    NumberType.wildcard(),
+                    NumberType.make(),
                     (requestor, left) => left.round(requestor)
                 ),
                 createBinaryOp(
                     (locale) => locale.basis.Number.function.power,
-                    NumberType.wildcard(),
+                    NumberType.make(),
                     NumberType.make((left, right, constant) => {
                         right;
                         return constant === undefined
@@ -256,7 +327,7 @@ export default function bootstrapNumber(locales: Locale[]) {
                 ),
                 createBinaryOp(
                     (locale) => locale.basis.Number.function.root,
-                    NumberType.wildcard(),
+                    NumberType.make(),
                     NumberType.make((left, right, constant) => {
                         right;
                         return constant === undefined
@@ -301,21 +372,16 @@ export default function bootstrapNumber(locales: Locale[]) {
                                 left.isEqualTo(right)
                         )
                 ),
-                createBinaryOp(
+                createEqualsFunction(
+                    locales,
                     (locale) => locale.basis.Number.function.equal,
-                    NumberType.make((unit) => unit),
-                    BooleanType.make(),
-                    (requestor, left, right) =>
-                        new BoolValue(requestor, left.isEqualTo(right))
+                    true
                 ),
-                createBinaryOp(
+                createEqualsFunction(
+                    locales,
                     (locale) => locale.basis.Number.function.notequal,
-                    NumberType.make((unit) => unit),
-                    BooleanType.make(),
-                    (requestor, left, right) =>
-                        new BoolValue(requestor, !left.isEqualTo(right))
+                    false
                 ),
-
                 // Trigonometry
                 createUnaryOp(
                     (locale) => locale.basis.Number.function.cos,
@@ -327,13 +393,34 @@ export default function bootstrapNumber(locales: Locale[]) {
                     NumberType.make((unit) => unit),
                     (requestor, left) => left.sin(requestor)
                 ),
+                // min/max
+                createVariableOp(
+                    (l) => l.basis.Number.function.min,
+                    (l) => l.basis.Number.function.min.inputs[0],
+                    (requestor, numbers, unit) => {
+                        const min = Math.min(
+                            ...numbers.map((val) => val.toNumber())
+                        );
+                        return new NumberValue(requestor, min, unit);
+                    }
+                ),
+                createVariableOp(
+                    (l) => l.basis.Number.function.max,
+                    (l) => l.basis.Number.function.max.inputs[0],
+                    (requestor, numbers, unit) => {
+                        const max = Math.max(
+                            ...numbers.map((val) => val.toNumber())
+                        );
+                        return new NumberValue(requestor, max, unit);
+                    }
+                ),
 
                 createBasisConversion(
                     getDocLocales(
                         locales,
                         (locale) => locale.basis.Number.conversion.text
                     ),
-                    '#?',
+                    '#',
                     "''",
                     (requestor: Expression, val: NumberValue) =>
                         new TextValue(requestor, val.toString())
@@ -981,12 +1068,12 @@ export default function bootstrapNumber(locales: Locale[]) {
                     '#m',
                     '#ft',
                     (requestor: Expression, val: NumberValue) =>
-                        val.multiply(
+                        val.divide(
                             requestor,
                             new NumberValue(
                                 requestor,
                                 0.3048,
-                                Unit.reuse(['ft'], ['km'])
+                                Unit.reuse(['m'], ['ft'])
                             )
                         )
                 ),
@@ -998,12 +1085,12 @@ export default function bootstrapNumber(locales: Locale[]) {
                     '#ft',
                     '#m',
                     (requestor: Expression, val: NumberValue) =>
-                        val.divide(
+                        val.multiply(
                             requestor,
                             new NumberValue(
                                 requestor,
                                 0.3048,
-                                Unit.reuse(['ft'], ['km'])
+                                Unit.reuse(['m'], ['ft'])
                             )
                         )
                 ),

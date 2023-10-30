@@ -1,7 +1,7 @@
 import toStructure from '../basis/toStructure';
 import type Value from '@values/Value';
 import type Color from './Color';
-import type TypeOutput from './TypeOutput';
+import type Output from './Output';
 import type RenderContext from './RenderContext';
 import Place from './Place';
 import { getBind } from '@locale/getBind';
@@ -10,11 +10,11 @@ import Arrangement from './Arrangement';
 import Group from './Group';
 import Phrase from './Phrase';
 import concretize from '../locale/concretize';
-import type Locale from '../locale/Locale';
-import { getOutputInput } from './Output';
+import { getOutputInput } from './Valued';
 import StructureValue from '../values/StructureValue';
+import type Locales from '../locale/Locales';
 
-export function createRowType(locales: Locale[]) {
+export function createRowType(locales: Locales) {
     return toStructure(`
     ${getBind(locales, (locale) => locale.output.Row, '•')} Arrangement(
         ${getBind(locales, (locale) => locale.output.Row.alignment)}•-1|0|1: 0
@@ -35,7 +35,7 @@ export class Row extends Arrangement {
         this.padding = padding.toNumber();
     }
 
-    getLayout(children: (TypeOutput | null)[], context: RenderContext) {
+    getLayout(children: (Output | null)[], context: RenderContext) {
         // Layout the children.
         const layouts = children.map((child) =>
             child === null ? null : child.getLayout(context)
@@ -60,7 +60,7 @@ export class Row extends Arrangement {
             top = 0,
             right = 0,
             bottom = 0;
-        const positions: [TypeOutput, Place][] = [];
+        const positions: [Output, Place][] = [];
         // Layout each child from start to end.
         for (const child of layouts) {
             if (child) {
@@ -111,10 +111,10 @@ export class Row extends Arrangement {
         return undefined;
     }
 
-    getDescription(output: TypeOutput[], locales: Locale[]) {
+    getDescription(output: Output[], locales: Locales) {
         return concretize(
-            locales[0],
-            locales[0].output.Row.description,
+            locales,
+            locales.get((l) => l.output.Row.description),
             output.length,
             output.filter((o) => o instanceof Phrase).length,
             output.filter((o) => o instanceof Group).length

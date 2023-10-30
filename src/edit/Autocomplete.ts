@@ -71,6 +71,8 @@ import Insert from '../nodes/Insert';
 import Select from '../nodes/Select';
 import Delete from '../nodes/Delete';
 import Update from '../nodes/Update';
+import Changed from '../nodes/Changed';
+import type Locales from '../locale/Locales';
 
 /** A logging flag, helpful for analyzing the control flow of autocomplete when debugging. */
 const LOG = false;
@@ -79,7 +81,11 @@ function note(message: string, level: number) {
 }
 
 /** Given a project and a caret, generate a set of transforms that can be applied at the location. */
-export function getEditsAt(project: Project, caret: Caret): Revision[] {
+export function getEditsAt(
+    project: Project,
+    caret: Caret,
+    locales: Locales
+): Revision[] {
     const source = caret.source;
     const context = project.getContext(source);
 
@@ -124,7 +130,8 @@ export function getEditsAt(project: Project, caret: Caret): Revision[] {
                     caret.position,
                     adjacent,
                     isEmptyLine,
-                    context
+                    context,
+                    locales
                 ),
             ];
         }
@@ -140,7 +147,8 @@ export function getEditsAt(project: Project, caret: Caret): Revision[] {
                     caret.position,
                     adjacent,
                     isEmptyLine,
-                    context
+                    context,
+                    locales
                 ),
             ];
         }
@@ -308,7 +316,8 @@ function getRelativeFieldEdits(
     adjacent: boolean,
     /** True if the line the caret is on is empty */
     empty: boolean,
-    context: Context
+    context: Context,
+    locales: Locales
 ): Revision[] {
     let edits: Revision[] = [];
 
@@ -363,7 +372,7 @@ function getRelativeFieldEdits(
                                         anchorNode,
                                         replacement instanceof Node
                                             ? replacement
-                                            : replacement.getNode([])
+                                            : replacement.getNode(locales)
                                     ))
                         )
                         // Convert the matching nodes to replacements.
@@ -398,8 +407,10 @@ function getRelativeFieldEdits(
         const fieldValue = parent.getField(relativeField.name);
         const fieldIsEmpty =
             fieldValue === undefined ||
+            fieldValue instanceof ExpressionPlaceholder ||
             (fieldValue instanceof UnparsableExpression &&
-                fieldValue.isEmpty());
+                fieldValue.isEmpty()) ||
+            (fieldValue instanceof Unit && fieldValue.isUnitless());
 
         // If the field is a list, and it's not a block, or we're on an empty line in a block, get possible insertions for all allowable node kinds.
         if (
@@ -569,6 +580,7 @@ const PossibleNodes = [
     // Streams
     Initial,
     Previous,
+    Changed,
     Reaction,
     // Docs,
     Doc,

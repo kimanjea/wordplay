@@ -20,7 +20,6 @@ import Names from './Names';
 import type Evaluator from '@runtime/Evaluator';
 import type Value from '@values/Value';
 import { node, type Grammar, type Replacement } from './Node';
-import type Locale from '@locale/Locale';
 import StartConversion from '@runtime/StartConversion';
 import NodeRef from '@locale/NodeRef';
 import Glyphs from '../lore/Glyphs';
@@ -35,6 +34,7 @@ import type Node from './Node';
 import Purpose from '../concepts/Purpose';
 import NameType from './NameType';
 import { getConcreteConversionTypeVariable } from './Generics';
+import type Locales from '../locale/Locales';
 
 export default class Convert extends Expression {
     readonly expression: Expression;
@@ -186,7 +186,7 @@ export default class Convert extends Expression {
         return [this.expression];
     }
 
-    compile(context: Context): Step[] {
+    compile(evaluator: Evaluator, context: Context): Step[] {
         const fromType = this.expression.getType(context);
         // If the type of value is already the type of the requested conversion, then just leave the value on the stack and do nothing.
         // Otherwise, identify the series of conversions that will achieve the right output type.
@@ -197,7 +197,7 @@ export default class Convert extends Expression {
         // Evaluate the expression to convert, then push the conversion function on the stack.
         return [
             new Start(this),
-            ...this.expression.compile(context),
+            ...this.expression.compile(evaluator, context),
             ...(conversions === undefined ||
             (conversions.length === 0 &&
                 !this.type.accepts(this.expression.getType(context), context))
@@ -245,14 +245,19 @@ export default class Convert extends Expression {
         return evaluator.popValue(this);
     }
 
-    evaluateTypeSet(
+    evaluateTypeGuards(
         bind: Bind,
         original: TypeSet,
         current: TypeSet,
         context: Context
     ) {
         if (this.expression instanceof Expression)
-            this.expression.evaluateTypeSet(bind, original, current, context);
+            this.expression.evaluateTypeGuards(
+                bind,
+                original,
+                current,
+                context
+            );
         return current;
     }
 
@@ -263,27 +268,27 @@ export default class Convert extends Expression {
         return this.convert;
     }
 
-    getNodeLocale(translation: Locale) {
-        return translation.node.Convert;
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.Convert);
     }
 
-    getStartExplanations(locale: Locale, context: Context) {
+    getStartExplanations(locales: Locales, context: Context) {
         return concretize(
-            locale,
-            locale.node.Convert.start,
-            new NodeRef(this.expression, locale, context)
+            locales,
+            locales.get((l) => l.node.Convert.start),
+            new NodeRef(this.expression, locales, context)
         );
     }
 
     getFinishExplanations(
-        locale: Locale,
+        locales: Locales,
         context: Context,
         evaluator: Evaluator
     ) {
         return concretize(
-            locale,
-            locale.node.Convert.finish,
-            this.getValueIfDefined(locale, context, evaluator)
+            locales,
+            locales.get((l) => l.node.Convert.finish),
+            this.getValueIfDefined(locales, context, evaluator)
         );
     }
 

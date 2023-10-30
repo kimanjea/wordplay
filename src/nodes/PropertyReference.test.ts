@@ -4,8 +4,8 @@ import { test, expect } from 'vitest';
 import Source from './Source';
 import Project from '../models/Project';
 import Bind from './Bind';
-import { DefaultLocale } from '../db/Database';
 import evaluateCode from '../runtime/evaluate';
+import DefaultLocale from '../locale/DefaultLocale';
 
 test('Test scoping', () => {
     const code = `
@@ -17,7 +17,7 @@ test('Test scoping', () => {
         `;
 
     const source = new Source('test', code);
-    const project = new Project(null, 'test', source, [], DefaultLocale);
+    const project = Project.make(null, 'test', source, [], DefaultLocale);
     const context = project.getContext(source);
 
     const prop = source

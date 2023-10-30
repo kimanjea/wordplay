@@ -2,9 +2,13 @@ import BooleanType from '@nodes/BooleanType';
 import NumberType from '@nodes/NumberType';
 import TextType from '@nodes/TextType';
 import type Type from '@nodes/Type';
-import BoolValue from '@values/BoolValue';
+import type BoolValue from '@values/BoolValue';
 import type Value from '@values/Value';
-import { createBasisConversion, createBasisFunction } from './Basis';
+import {
+    createBasisConversion,
+    createBasisFunction,
+    createEqualsFunction,
+} from './Basis';
 import TextValue from '@values/TextValue';
 import StructureDefinition from '@nodes/StructureDefinition';
 import NumberValue from '@values/NumberValue';
@@ -16,8 +20,9 @@ import type Expression from '@nodes/Expression';
 import type Locale from '../locale/Locale';
 import type { FunctionText, NameAndDoc } from '../locale/Locale';
 import ListType from '../nodes/ListType';
+import type Locales from '../locale/Locales';
 
-export default function bootstrapText(locales: Locale[]) {
+export default function bootstrapText(locales: Locales) {
     function createBinaryTextFunction<OutputType extends Value>(
         functionText: (locale: Locale) => FunctionText<NameAndDoc[]>,
         fun: (
@@ -94,17 +99,15 @@ export default function bootstrapText(locales: Locale[]) {
                         );
                     }
                 ),
-                createBinaryTextFunction(
+                createEqualsFunction(
+                    locales,
                     (locale) => locale.basis.Text.function.equals,
-                    (requestor, text, input) =>
-                        new BoolValue(requestor, text.isEqualTo(input)),
-                    BooleanType.make()
+                    true
                 ),
-                createBinaryTextFunction(
+                createEqualsFunction(
+                    locales,
                     (locale) => locale.basis.Text.function.notequals,
-                    (requestor, text, input) =>
-                        new BoolValue(requestor, !text.isEqualTo(input)),
-                    BooleanType.make()
+                    false
                 ),
                 createBinaryTextFunction(
                     (locale) => locale.basis.Text.function.segment,

@@ -1,12 +1,16 @@
 import type { BasisTypeName } from '../basis/BasisConstants';
-import type Locale from '@locale/Locale';
 import type Context from './Context';
 import type Node from './Node';
 import Type from './Type';
 import { UNKNOWN_SYMBOL } from '../parser/Symbols';
 import Glyphs from '../lore/Glyphs';
-import type Markup from './Markup';
+import Markup from './Markup';
 import type { Grammar } from './Node';
+import type Concretizer from './Concretizer';
+import Paragraph, { type Segment } from './Paragraph';
+import Token from './Token';
+import Sym from './Sym';
+import type Locales from '../locale/Locales';
 
 export default abstract class UnknownType<
     ExpressionType extends Node
@@ -54,11 +58,51 @@ export default abstract class UnknownType<
         ];
     }
 
-    getNodeLocale(translation: Locale) {
-        return translation.node.UnknownType;
+    getDescription(
+        concretizer: Concretizer,
+        locales: Locales,
+        context: Context
+    ): Markup {
+        const reasons = this.getReasons().map((reason) =>
+            reason.getReason(concretizer, locales, context)
+        );
+        let spaces = undefined;
+        let segments: Segment[] = [
+            // Get the unknown type description
+            ...super.getDescription(concretizer, locales, context).paragraphs[0]
+                .segments,
+        ];
+        // Get all the reasons for the unknown types.
+        for (const reason of reasons) {
+            segments = [
+                ...segments,
+                new Token(
+                    locales.get((l) => l.node.UnknownType.connector),
+                    Sym.Words
+                ),
+                ...reason.paragraphs[0].segments,
+            ];
+            spaces =
+                spaces === undefined
+                    ? reason.spaces
+                    : reason.spaces
+                    ? spaces.withSpaces(reason.spaces)
+                    : spaces;
+        }
+
+        // Make a bunch of markup for each reason.
+        return new Markup([new Paragraph(segments)], spaces);
     }
 
-    abstract getReason(translation: Locale, context: Context): Markup;
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.UnknownType);
+    }
+
+    abstract getReason(
+        concretizer: Concretizer,
+        locales: Locales,
+        context: Context
+    ): Markup;
 
     getGlyphs() {
         return Glyphs.Unknown;

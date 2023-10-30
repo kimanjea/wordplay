@@ -3,14 +3,17 @@
     import OutputView from '@components/output/OutputView.svelte';
     import Evaluator from '@runtime/Evaluator';
     import type Value from '@values/Value';
-    import { DB } from '../../db/Database';
+    import { DB, locales } from '../../db/Database';
     import { onMount } from 'svelte';
     import { fade } from 'svelte/transition';
     import getProjectLink from './getProjectLink';
+    import { isAudience, isFlagged } from '../../models/Moderation';
+    import { getUser } from '../project/Contexts';
 
     export let project: Project;
     export let action: (() => void) | undefined = undefined;
     export let delay: number;
+    export let name = true;
 
     // Clone the project and get its initial value, then stop the project's evaluator.
     let evaluator: Evaluator;
@@ -20,7 +23,7 @@
     }
 
     function updatePreview(project: Project): [Evaluator, Value | undefined] {
-        const evaluator = new Evaluator(project, DB, false);
+        const evaluator = new Evaluator(project, DB, $locales, false);
         const value = evaluator.getInitialValue();
         evaluator.stop();
         return [evaluator, value];
@@ -29,9 +32,14 @@
     // Don't show the output view immediately.
     let visible = false;
     onMount(() => setTimeout(() => (visible = true), delay));
+
+    const user = getUser();
+
+    /** See if this is a public project being viewed by someone who isn't a creator or collaborator */
+    $: audience = isAudience($user, project);
 </script>
 
-<div class="project">
+<div class="project" class:named={name}>
     <a
         class="preview"
         href={getProjectLink(project, true)}
@@ -43,7 +51,12 @@
                 : undefined}
     >
         {#if visible}
-            <div class="output" in:fade role="presentation">
+            <div
+                class="output"
+                in:fade
+                role="presentation"
+                class:blurred={audience && isFlagged(project.getFlags())}
+            >
                 <OutputView
                     {project}
                     {evaluator}
@@ -56,21 +69,27 @@
             </div>
         {/if}
     </a>
-    <div class="name"
-        >{#if project.name.length === 0}<em class="untitled">&mdash;</em>{:else}
-            {project.name}{/if}<slot /></div
-    >
+    {#if name}
+        <div class="name"
+            >{#if project.getName().length === 0}<em class="untitled"
+                    >&mdash;</em
+                >{:else}
+                {project.getName()}{/if}<slot /></div
+        >{/if}
 </div>
 
 <style>
     .project {
         border: var(--wordplay-border-color);
         border-radius: var(--wordplay-border-radius);
-        width: 12em;
         display: flex;
         flex-direction: row;
         align-items: center;
         gap: var(--wordplay-spacing);
+    }
+
+    .project.named {
+        width: 12em;
     }
 
     .output {
@@ -90,6 +109,7 @@
     .preview {
         transition: transform ease-out;
         transition-duration: calc(var(--animation-factor) * 200ms);
+        background: var(--wordplay-inactive-color);
     }
 
     .project .preview:hover,
@@ -104,5 +124,9 @@
         overflow: hidden;
         border: var(--wordplay-border-color) solid var(--wordplay-border-width);
         border-radius: var(--wordplay-border-radius);
+    }
+
+    .blurred {
+        filter: blur(10px);
     }
 </style>

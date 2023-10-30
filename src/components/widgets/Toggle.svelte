@@ -2,12 +2,15 @@
 
 <script lang="ts">
     import type { ToggleText } from '../../locale/UITexts';
+    import { toShortcut, type Command } from '../editor/util/Commands';
+    import CommandHint from './CommandHint.svelte';
 
     export let tips: ToggleText;
     export let on: boolean;
     export let toggle: () => void;
     export let active = true;
     export let uiid: string | undefined = undefined;
+    export let command: Command | undefined = undefined;
 
     async function doToggle(event: Event) {
         if (active) {
@@ -15,6 +18,10 @@
             event?.stopPropagation();
         }
     }
+
+    $: title = `${on ? tips.on : tips.off}${
+        command ? ' (' + toShortcut(command) + ')' : ''
+    }`;
 </script>
 
 <!-- Note that we don't make the button inactive using "disabled" because that makes
@@ -23,7 +30,8 @@
     type="button"
     data-uiid={uiid}
     class:on
-    title={on ? tips.on : tips.off}
+    {title}
+    aria-label={title}
     aria-disabled={!active}
     aria-pressed={on}
     on:dblclick|stopPropagation
@@ -39,6 +47,7 @@
             ? doToggle(event)
             : undefined}
 >
+    {#if command}<CommandHint {command} />{/if}
     <slot />
 </button>
 
@@ -54,23 +63,31 @@
         border-radius: var(--wordplay-border-radius);
         background: var(--wordplay-background);
         color: var(--wordplay-foreground);
+        stroke: var(--wordplay-background);
+        fill: var(--wordplay-background);
         padding: calc(var(--wordplay-spacing) / 2);
         cursor: pointer;
         width: fit-content;
         white-space: nowrap;
         transition: transform calc(var(--animation-factor) * 200ms);
-        line-height: 1em;
+        line-height: 1;
+
+        /** Allows for command hint layout */
+        position: relative;
+        overflow: visible;
     }
 
     button.on {
         background-color: var(--wordplay-alternating-color);
+        color: var(--wordplay-foreground);
+        stroke: var(--wordplay-background);
+        fill: var(--wordplay-background);
         box-shadow: inset 0px 1px var(--wordplay-chrome);
         transform: scale(0.9);
     }
 
     button:hover {
         transform: scale(1.1);
-        background-color: var(--wordplay-alternating-color);
     }
 
     [aria-disabled='true'] {

@@ -11,3 +11,7 @@ firebase-debug.log
 firestore-debug.log
 .firebase
 .VSCodecounter
+*-service-key.json
+/test-results/
+/playwright-report/
+/playwright/.cache/

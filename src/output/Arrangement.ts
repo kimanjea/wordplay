@@ -2,26 +2,26 @@ import toStructure from '../basis/toStructure';
 import { TYPE_SYMBOL } from '@parser/Symbols';
 import type Value from '@values/Value';
 import { getBind } from '@locale/getBind';
-import Output from './Output';
+import Valued from './Valued';
 import type RenderContext from './RenderContext';
 import type Place from './Place';
-import type TypeOutput from './TypeOutput';
-import type Locale from '../locale/Locale';
+import type Output from './Output';
+import type Locales from '../locale/Locales';
 
-export function createArrangementType(locales: Locale[]) {
+export function createArrangementType(locales: Locales) {
     return toStructure(`
     ${getBind(locales, (locale) => locale.output.Arrangement, TYPE_SYMBOL)}()
 `);
 }
 
-export default abstract class Arrangement extends Output {
+export default abstract class Arrangement extends Valued {
     constructor(value: Value) {
         super(value);
     }
 
     /** Compute positions for all subgroups in the group. */
     abstract getLayout(
-        output: (TypeOutput | null)[],
+        output: (Output | null)[],
         context: RenderContext
     ): {
         left: number;
@@ -30,11 +30,11 @@ export default abstract class Arrangement extends Output {
         bottom: number;
         width: number;
         height: number;
-        places: [TypeOutput, Place][];
+        places: [Output, Place][];
     };
 
     abstract getDescription(
-        output: (TypeOutput | null)[],
-        locales: Locale[]
+        output: (Output | null)[],
+        locales: Locales
     ): string;
 }

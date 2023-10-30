@@ -10,16 +10,13 @@
 
 <style>
     .writing {
-        padding-inline-start: 20%;
+        margin-inline-start: auto;
+        margin-inline-end: auto;
         width: 80%;
+        max-width: 40em;
         text-align: start;
         margin-block-start: 4em;
         margin-block-end: 4em;
-    }
-
-    .writing :global(p) {
-        max-width: 30em;
-        margin-inline-start: var(--wordplay-spacing);
     }
 
     :global(p:not(:last-of-type)) {

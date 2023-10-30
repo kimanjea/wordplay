@@ -19,6 +19,8 @@ import {
     TABLE_OPEN_SYMBOL,
     TABLE_CLOSE_SYMBOL,
     EDIT_SYMBOL,
+    BORROW_SYMBOL,
+    SHARE_SYMBOL,
 } from '@parser/Symbols';
 
 import Source from '@nodes/Source';
@@ -29,8 +31,10 @@ import ExpressionPlaceholder from '@nodes/ExpressionPlaceholder';
 import Names from '@nodes/Names';
 import type { Database } from '@db/Database';
 import type Locale from '@locale/Locale';
-import { TileKind } from '../../project/Tile';
 import Sym from '../../../nodes/Sym';
+import type Project from '../../../models/Project';
+import interpret from './interpret';
+import { TileKind } from '../../project/Tile';
 
 export type Command = {
     /** The iconographic text symbol to use */
@@ -58,28 +62,35 @@ export type Command = {
     /** A function that should indicate whether the command is active */
     active?: (context: CommandContext, key: string) => boolean;
     /** Generates an edit or other editor command */
-    execute: (
-        context: CommandContext,
-        key: string
-    ) => // Process this edit
-    | Edit
-        // Wait and process this edit
-        | Promise<Edit | undefined>
-        // Handled
-        | boolean
-        // Not handled
-        | undefined
-        | void;
+    execute: (context: CommandContext, key: string) => CommandResult;
 };
 
+/** Different responses that commands can produce. */
+type CommandResult =
+    // An edit to a source file
+    | Edit
+    // An edit to a whole project
+    | ProjectRevision
+    // An eventual edit to a source file or project
+    | Promise<Edit | ProjectRevision | undefined>
+    // Handled, but no side effect
+    | true
+    // Not handled
+    | false;
+
 export type CommandContext = {
+    /** The caret for the focused editor */
     caret: Caret | undefined;
+    /** Whether an editor is handling this event */
+    editor: boolean;
+    /** The project we're editing */
+    project: Project;
     evaluator: Evaluator;
     database: Database;
     dragging: boolean;
     toggleMenu?: () => void;
     toggleBlocks?: () => void;
-    fullscreen?: (on: boolean) => void;
+    setFullscreen?: (on: boolean) => void;
     focusOrCycleTile?: (content?: TileKind) => void;
     resetInputs?: () => void;
     help?: () => void;
@@ -87,6 +98,8 @@ export type CommandContext = {
 
 export type Edit = Caret | Revision;
 export type Revision = [Source, Caret];
+export type ProjectRevision = [Project, Caret];
+
 export enum Visibility {
     Visible = 'visible',
     Touch = 'touch',
@@ -100,13 +113,18 @@ export enum Category {
     Help = 'help',
 }
 
-export function toShortcut(command: Command) {
+export function toShortcut(
+    command: Command,
+    hideControl = false,
+    hideShift = false,
+    hideAlt = false
+) {
     const mac =
         typeof navigator !== 'undefined' &&
         navigator.userAgent.indexOf('Mac') !== -1;
-    return `${command.control ? (mac ? '⌘ ' : 'Ctrl + ') : ''}${
-        command.alt ? (mac ? '⎇ ' : 'Alt + ') : ''
-    }${command.shift ? (mac ? '⇧ ' : 'Shift + ') : ''}${
+    return `${command.control && !hideControl ? (mac ? '⌘ ' : 'Ctrl + ') : ''}${
+        command.alt && !hideAlt ? (mac ? '⎇ ' : 'Alt + ') : ''
+    }${command.shift && !hideShift ? (mac ? '⇧ ' : 'Shift + ') : ''}${
         command.keySymbol ?? command.key ?? '-'
     }`;
 }
@@ -114,19 +132,16 @@ export function toShortcut(command: Command) {
 export function handleKeyCommand(
     event: KeyboardEvent,
     context: CommandContext
-): [
-    Command | undefined,
-    Edit | Promise<Edit | undefined> | boolean | undefined | void
-] {
+): [Command | undefined, CommandResult, boolean] {
     // Map meta key to control on Mac OS/iOS.
     const control = event.metaKey || event.ctrlKey;
 
+    let matchedShortcut = false;
+
     // Loop through the commands and see if there's a match to this event.
     for (const command of Commands) {
-        // Does this command match the event?
+        // Does this command's shortcut pattern match the event?
         if (
-            (command.active === undefined ||
-                command.active(context, event.key)) &&
             (command.control === undefined || command.control === control) &&
             (command.shift === undefined || command.shift === event.shiftKey) &&
             (command.alt === undefined || command.alt === event.altKey) &&
@@ -134,12 +149,24 @@ export function handleKeyCommand(
                 command.key === event.code ||
                 command.key === event.key)
         ) {
-            // If so, execute it.
-            const result = command.execute(context, event.key);
-            if (result !== false) return [command, result];
+            // Update matched shortcut to true, since we matched one.
+            // The only one that doesn't count is the insert symbol catch all.
+            if (command !== InsertSymbol) matchedShortcut = true;
+
+            // Is the command active? If so, execute it.
+            if (
+                command.active === undefined ||
+                command.active(context, event.key)
+            ) {
+                // If so, execute it.
+                const result = command.execute(context, event.key);
+                if (result !== false) return [command, result, true];
+            }
         }
     }
-    return [undefined, false];
+    // Didn't execute? Return false if we didn't match anything and let the shortcut travel to the browser.
+    // If we did match something, return undefined, so we consume the shortcut and don't default to a browser shortcut.
+    return [undefined, false, matchedShortcut];
 }
 
 export const ShowKeyboardHelp: Command = {
@@ -152,7 +179,12 @@ export const ShowKeyboardHelp: Command = {
     control: true,
     key: 'Slash',
     keySymbol: '?',
-    execute: (context) => (context.help ? context.help() : false),
+    execute: ({ help }) => {
+        if (help) {
+            help();
+            return true;
+        } else return false;
+    },
 };
 
 export const IncrementLiteral: Command = {
@@ -194,7 +226,10 @@ export const StepBack: Command = {
     key: 'ArrowLeft',
     keySymbol: '←',
     active: (context) => !context.evaluator.isAtBeginning(),
-    execute: (context) => context.evaluator.stepBackWithinProgram(),
+    execute: (context) => {
+        context.evaluator.stepBackWithinProgram();
+        return true;
+    },
 };
 
 export const StepForward: Command = {
@@ -243,37 +278,44 @@ export const StepForwardInput: Command = {
 };
 
 export const StepBackNode: Command = {
-    symbol: '⏴',
+    symbol: '•←',
     description: (l) => l.ui.timeline.button.backNode,
     visible: Visibility.Visible,
     category: Category.Evaluate,
-    shift: false,
-    alt: false,
+    shift: true,
+    alt: true,
     control: true,
     key: 'ArrowLeft',
     keySymbol: '←',
-    active: ({ caret }) => caret?.isNode() ?? false,
-    execute: (context) =>
-        context.caret?.position instanceof Node
-            ? context.evaluator.stepBackToNode(context.caret.position)
-            : undefined,
+    active: ({ caret }) => caret !== undefined,
+    execute: ({ caret, evaluator }) => {
+        const target = caret?.getExpressionAt();
+        if (target) {
+            evaluator.stepBackToNode(target);
+            return true;
+        }
+        return false;
+    },
 };
 
 export const StepForwardNode: Command = {
-    symbol: '⏵',
+    symbol: '⇢•',
     description: (l) => l.ui.timeline.button.forwardNode,
     visible: Visibility.Visible,
     category: Category.Evaluate,
     key: 'ArrowRight',
     keySymbol: '→',
-    shift: false,
-    alt: false,
+    shift: true,
+    alt: true,
     control: true,
-    active: (context) => context.caret?.isNode() ?? false,
-    execute: (context) =>
-        context.caret?.position instanceof Node
-            ? context.evaluator.stepToNode(context.caret.position)
-            : undefined,
+    active: ({ caret }) => caret !== undefined,
+    execute: ({ caret, evaluator }) => {
+        const target = caret?.getExpressionAt();
+        if (target) {
+            evaluator.stepToNode(target);
+            return true;
+        } else return false;
+    },
 };
 
 export const Restart: Command = {
@@ -291,7 +333,7 @@ export const Restart: Command = {
         if (resetInputs === undefined) return false;
         // Reset the project's inputs.
         resetInputs();
-        return undefined;
+        return true;
     },
 };
 
@@ -300,27 +342,31 @@ export const StepToStart: Command = {
     description: (l) => l.ui.timeline.button.start,
     visible: Visibility.Visible,
     category: Category.Evaluate,
-    shift: true,
-    alt: true,
+    shift: false,
+    alt: false,
     control: true,
-    key: 'ArrowLeft',
-    keySymbol: '←',
+    key: 'Home',
     active: (context) => !context.evaluator.isAtBeginning(),
-    execute: (context) => context.evaluator.stepTo(0),
+    execute: (context) => {
+        context.evaluator.stepTo(0);
+        return true;
+    },
 };
 
 export const StepToPresent: Command = {
     symbol: '⇥',
-    description: (l) => l.ui.timeline.button.forwardInput,
+    description: (l) => l.ui.timeline.button.present,
     visible: Visibility.Visible,
     category: Category.Evaluate,
-    shift: true,
-    alt: true,
+    shift: false,
+    alt: false,
     control: true,
-    key: 'ArrowRight',
-    keySymbol: '⇢',
+    key: 'End',
     active: (context) => context.evaluator.isInPast(),
-    execute: (context) => context.evaluator.stepToEnd(),
+    execute: (context) => {
+        context.evaluator.stepToEnd();
+        return true;
+    },
 };
 
 export const StepOut: Command = {
@@ -337,11 +383,14 @@ export const StepOut: Command = {
         context.evaluator.isPlaying() &&
         context.evaluator.getCurrentStep() !== undefined &&
         context.evaluator.getCurrentEvaluation() !== undefined,
-    execute: (context) => context.evaluator.stepOut(),
+    execute: (context) => {
+        context.evaluator.stepOut();
+        return true;
+    },
 };
 
 export const Play: Command = {
-    symbol: '▶️',
+    symbol: '▶',
     description: (l) => l.ui.timeline.button.play,
     visible: Visibility.Visible,
     category: Category.Evaluate,
@@ -350,7 +399,10 @@ export const Play: Command = {
     control: true,
     key: 'Enter',
     active: (context) => !context.evaluator.isPlaying(),
-    execute: (context) => context.evaluator.play(),
+    execute: (context) => {
+        context.evaluator.play();
+        return true;
+    },
 };
 
 export const Pause: Command = {
@@ -363,7 +415,10 @@ export const Pause: Command = {
     control: true,
     key: 'Enter',
     active: (context) => context.evaluator.isPlaying(),
-    execute: (context) => context.evaluator.pause(),
+    execute: (context) => {
+        context.evaluator.pause();
+        return true;
+    },
 };
 
 export const ShowMenu: Command = {
@@ -376,8 +431,12 @@ export const ShowMenu: Command = {
     control: true,
     key: 'ArrowDown',
     keySymbol: '↓',
-    execute: (context) =>
-        context.toggleMenu ? context.toggleMenu() : undefined,
+    execute: ({ toggleMenu }) => {
+        if (toggleMenu) {
+            toggleMenu();
+            return true;
+        } else return false;
+    },
 };
 
 export const EnterFullscreen: Command = {
@@ -389,8 +448,12 @@ export const EnterFullscreen: Command = {
     alt: true,
     control: true,
     key: 'Enter',
-    execute: (context) =>
-        context.fullscreen ? context.fullscreen(true) : false,
+    execute: ({ setFullscreen }) => {
+        if (setFullscreen) {
+            setFullscreen(true);
+            return true;
+        } else return false;
+    },
 };
 
 export const ExitFullscreen: Command = {
@@ -402,8 +465,13 @@ export const ExitFullscreen: Command = {
     alt: false,
     control: false,
     key: 'Escape',
-    execute: ({ fullscreen, dragging }) =>
-        dragging ? false : fullscreen ? fullscreen(false) : false,
+    execute: ({ setFullscreen, dragging }) => {
+        if (dragging || setFullscreen === undefined) return false;
+        else {
+            setFullscreen(false);
+            return true;
+        }
+    },
 };
 
 export const FocusOutput: Command = {
@@ -415,10 +483,12 @@ export const FocusOutput: Command = {
     alt: true,
     control: true,
     key: 'Digit1',
-    execute: (context) =>
-        context.focusOrCycleTile
-            ? context.focusOrCycleTile(TileKind.Output)
-            : false,
+    execute: ({ focusOrCycleTile }) => {
+        if (focusOrCycleTile) {
+            focusOrCycleTile(TileKind.Output);
+            return true;
+        } else return false;
+    },
 };
 
 export const FocusSource: Command = {
@@ -430,10 +500,13 @@ export const FocusSource: Command = {
     alt: true,
     control: true,
     key: 'Digit2',
-    execute: (context) =>
-        context.focusOrCycleTile
-            ? context.focusOrCycleTile(TileKind.Source)
-            : false,
+    execute: ({ focusOrCycleTile }) => {
+        if (focusOrCycleTile) {
+            focusOrCycleTile(TileKind.Source);
+            return true;
+        }
+        return false;
+    },
 };
 
 export const FocusDocs: Command = {
@@ -445,10 +518,13 @@ export const FocusDocs: Command = {
     alt: true,
     control: true,
     key: 'Digit3',
-    execute: (context) =>
-        context.focusOrCycleTile
-            ? context.focusOrCycleTile(TileKind.Documentation)
-            : false,
+    execute: ({ focusOrCycleTile }) => {
+        if (focusOrCycleTile) {
+            focusOrCycleTile(TileKind.Documentation);
+            return true;
+        }
+        return false;
+    },
 };
 
 export const FocusPalette: Command = {
@@ -460,10 +536,13 @@ export const FocusPalette: Command = {
     alt: true,
     control: true,
     key: 'Digit4',
-    execute: (context) =>
-        context.focusOrCycleTile
-            ? context.focusOrCycleTile(TileKind.Palette)
-            : false,
+    execute: ({ focusOrCycleTile }) => {
+        if (focusOrCycleTile) {
+            focusOrCycleTile(TileKind.Palette);
+            return true;
+        }
+        return false;
+    },
 };
 
 export const FocusCycle: Command = {
@@ -475,8 +554,48 @@ export const FocusCycle: Command = {
     alt: true,
     control: true,
     key: 'Digit0',
-    execute: (context) =>
-        context.focusOrCycleTile ? context.focusOrCycleTile() : false,
+    execute: ({ focusOrCycleTile }) => {
+        if (focusOrCycleTile) {
+            focusOrCycleTile();
+            return true;
+        }
+        return false;
+    },
+};
+
+export const ToggleBlocks: Command = {
+    symbol: '⧠',
+    description: (l) => l.ui.source.toggle.blocks.on,
+    visible: Visibility.Invisible,
+    category: Category.Modify,
+    shift: true,
+    alt: true,
+    control: true,
+    key: 'Enter',
+    execute: ({ toggleBlocks }) => {
+        if (toggleBlocks) {
+            toggleBlocks();
+            return true;
+        }
+        return false;
+    },
+};
+
+/** The command to rule them all... inserts things */
+export const InsertSymbol: Command = {
+    symbol: 'a',
+    description: (l) => l.ui.source.cursor.type,
+    visible: Visibility.Invisible,
+    category: Category.Modify,
+    control: false,
+    shift: undefined,
+    alt: false,
+    typing: true,
+    execute: ({ caret, project, editor }, key) => {
+        if (editor && caret && key.length === 1)
+            return caret.insert(key, project) ?? false;
+        else return false;
+    },
 };
 
 const Commands: Command[] = [
@@ -502,7 +621,7 @@ const Commands: Command[] = [
         shift: false,
         key: 'ArrowDown',
         keySymbol: '↓',
-        execute: ({ caret }) => caret?.moveVertical(1),
+        execute: ({ caret }) => caret?.moveVertical(1) ?? false,
     },
     {
         symbol: '←',
@@ -630,8 +749,8 @@ const Commands: Command[] = [
         control: true,
         key: 'KeyA',
         keySymbol: 'A',
-        execute: ({ caret }) =>
-            caret?.withPosition(caret.getProgram()) ?? false,
+        execute: ({ editor, caret }) =>
+            editor && caret ? caret.withPosition(caret.getProgram()) : false,
     },
     {
         symbol: TRUE_SYMBOL,
@@ -831,10 +950,55 @@ const Commands: Command[] = [
                 for (let i = tokensPrior.length - 1; i >= 0; i--) {
                     if (tokensPrior[i].isSymbol(Sym.TableClose)) break;
                     else if (tokensPrior[i].isSymbol(Sym.TableOpen))
-                        return caret.insert(TABLE_CLOSE_SYMBOL);
+                        return caret.insert(TABLE_CLOSE_SYMBOL) ?? true;
                 }
 
             return caret.insert(TABLE_OPEN_SYMBOL) ?? false;
+        },
+    },
+    {
+        symbol: TABLE_CLOSE_SYMBOL,
+        description: (l) => l.ui.source.cursor.insertTable,
+        visible: Visibility.Visible,
+        category: Category.Insert,
+        alt: true,
+        shift: true,
+        control: false,
+        key: 'KeyT',
+        keySymbol: 't',
+        execute: ({ caret }) => {
+            if (caret === undefined) return false;
+            return caret.insert(TABLE_CLOSE_SYMBOL) ?? false;
+        },
+    },
+    {
+        symbol: BORROW_SYMBOL,
+        description: (l) => l.ui.source.cursor.insertBorrow,
+        visible: Visibility.Visible,
+        category: Category.Insert,
+        alt: true,
+        shift: false,
+        control: true,
+        key: 'ArrowDown',
+        keySymbol: '↓',
+        execute: ({ caret }) => {
+            if (caret === undefined) return false;
+            return caret.insert(BORROW_SYMBOL) ?? false;
+        },
+    },
+    {
+        symbol: SHARE_SYMBOL,
+        description: (l) => l.ui.source.cursor.insertShare,
+        visible: Visibility.Visible,
+        category: Category.Insert,
+        alt: true,
+        shift: false,
+        control: true,
+        key: 'ArrowUp',
+        keySymbol: '↑',
+        execute: ({ caret }) => {
+            if (caret === undefined) return false;
+            return caret.insert(SHARE_SYMBOL) ?? false;
         },
     },
 
@@ -867,10 +1031,12 @@ const Commands: Command[] = [
         key: 'KeyZ',
         keySymbol: 'Z',
         active: ({ database, evaluator }) =>
-            database.Projects.getHistory(evaluator.project.id)?.isUndoable() ===
-            true,
+            database.Projects.getHistory(
+                evaluator.project.getID()
+            )?.isUndoable() === true,
         execute: ({ database, evaluator }) =>
-            database.Projects.undoRedo(evaluator.project.id, -1) !== undefined,
+            database.Projects.undoRedo(evaluator.project.getID(), -1) !==
+            undefined,
     },
     {
         symbol: '⟳',
@@ -883,22 +1049,14 @@ const Commands: Command[] = [
         key: 'KeyZ',
         keySymbol: 'Z',
         active: ({ evaluator, database }) =>
-            database.Projects.getHistory(evaluator.project.id)?.isRedoable() ===
-            true,
+            database.Projects.getHistory(
+                evaluator.project.getID()
+            )?.isRedoable() === true,
         execute: ({ database, evaluator }) =>
-            database.Projects.undoRedo(evaluator.project.id, 1) !== undefined,
+            database.Projects.undoRedo(evaluator.project.getID(), 1) !==
+            undefined,
     },
-    {
-        symbol: '▭',
-        description: (l) => l.ui.source.toggle.blocks.on,
-        visible: Visibility.Invisible,
-        category: Category.Modify,
-        shift: true,
-        alt: true,
-        control: true,
-        key: 'Enter',
-        execute: ({ toggleBlocks }) => (toggleBlocks ? toggleBlocks() : false),
-    },
+    ToggleBlocks,
     {
         symbol: '↲',
         description: (l) => l.ui.source.cursor.insertLine,
@@ -914,7 +1072,7 @@ const Commands: Command[] = [
                 ? false
                 : caret.isNode()
                 ? caret.enter()
-                : caret.insert('\n'),
+                : caret.insert('\n') ?? true,
     },
     {
         symbol: '⌫',
@@ -927,10 +1085,11 @@ const Commands: Command[] = [
         control: false,
         alt: false,
         typing: true,
-        execute: ({ caret }) => caret?.backspace() ?? false,
+        execute: ({ caret, project, editor }) =>
+            editor && caret ? caret.backspace(project) ?? true : false,
     },
     {
-        symbol: '✂️',
+        symbol: '✄',
         description: (l) => l.ui.source.cursor.cut,
         visible: Visibility.Visible,
         category: Category.Modify,
@@ -941,8 +1100,13 @@ const Commands: Command[] = [
         keySymbol: 'X',
         execute: (context) => {
             if (!(context.caret?.position instanceof Node)) return false;
-            copyNode(context.caret.position, context.caret.source.spaces);
-            return context.caret.backspace();
+            copyNode(
+                context.caret.position,
+                context.caret.source.spaces.withPreferredSpace(
+                    context.caret.source
+                )
+            );
+            return context.caret.backspace(context.project) ?? true;
         },
     },
     {
@@ -957,9 +1121,13 @@ const Commands: Command[] = [
         keySymbol: 'C',
         execute: (context) => {
             if (!(context.caret?.position instanceof Node)) return false;
-            return copyNode(
-                context.caret.position,
-                context.caret.source.spaces
+            return (
+                copyNode(
+                    context.caret.position,
+                    context.caret.source.spaces.withPreferredSpace(
+                        context.caret.source
+                    )
+                ) ?? false
             );
         },
     },
@@ -984,7 +1152,7 @@ const Commands: Command[] = [
                     if (type === 'text/plain') {
                         const blob = await item.getType(type);
                         const text = await blob.text();
-                        return caret.insert(text);
+                        return caret.insert(interpret(text));
                     }
                 }
             }
@@ -992,7 +1160,7 @@ const Commands: Command[] = [
         },
     },
     {
-        symbol: '( _ )',
+        symbol: '( )',
         description: (l) => l.ui.source.cursor.parenthesize,
         visible: Visibility.Visible,
         category: Category.Modify,
@@ -1001,41 +1169,57 @@ const Commands: Command[] = [
         alt: undefined,
         key: '(',
         active: ({ caret }) => caret?.isNode() ?? false,
-        execute: ({ caret }) => caret?.wrap('('),
+        execute: ({ caret }) => caret?.wrap('(') ?? false,
     },
     {
-        symbol: '[ _ ]',
+        symbol: '[ ]',
         description: (l) => l.ui.source.cursor.enumerate,
         visible: Visibility.Visible,
-        category: Category.Modify,
-        control: undefined,
-        shift: undefined,
-        alt: undefined,
-        key: '[',
-        active: ({ caret }) => caret?.isNode() ?? false,
-        execute: ({ caret }) => caret?.wrap('['),
-    },
-    IncrementLiteral,
-    DecrementLiteral,
-    /** The command to rule them all... inserts things */
-    {
-        symbol: 'a',
-        description: (l) => l.ui.source.cursor.type,
-        visible: Visibility.Invisible,
         category: Category.Modify,
         control: false,
         shift: undefined,
         alt: false,
-        typing: true,
-        execute: ({ caret }, key) =>
-            caret && key.length === 1 ? caret.insert(key) : false,
+        key: '[',
+        active: ({ caret }) => caret?.isNode() ?? false,
+        execute: ({ caret }) => caret?.wrap('[') ?? false,
     },
+    IncrementLiteral,
+    DecrementLiteral,
     ShowKeyboardHelp,
     FocusOutput,
     FocusSource,
     FocusDocs,
     FocusPalette,
     FocusCycle,
+
+    {
+        symbol: '🧹',
+        description: (l) => l.ui.source.cursor.tidy,
+        visible: Visibility.Visible,
+        category: Category.Modify,
+        control: true,
+        shift: false,
+        alt: false,
+        key: 's',
+        execute: ({ caret }) => {
+            if (caret) {
+                const length = caret.source.code.getLength();
+                const position = caret.getTextPosition(true) ?? 0;
+                const tidySource = caret.source.withPreferredSpace();
+                return [
+                    tidySource,
+                    caret
+                        .withSource(tidySource)
+                        .withPosition(
+                            position + (tidySource.code.getLength() - length)
+                        ),
+                ];
+            } else return false;
+        },
+    },
+
+    // The catch all
+    InsertSymbol,
 ];
 
 const TouchSupported =

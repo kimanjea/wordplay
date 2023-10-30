@@ -30,7 +30,7 @@ import Reference from './Reference';
 import NotAnInterface from '@conflicts/NotAnInterface';
 import { optional, type Grammar, type Replacement, node, list } from './Node';
 import type Locale from '@locale/Locale';
-import type NameType from './NameType';
+import NameType from './NameType';
 import InternalException from '@values/InternalException';
 import Glyphs from '../lore/Glyphs';
 import Purpose from '../concepts/Purpose';
@@ -40,6 +40,7 @@ import concretize from '../locale/concretize';
 import Evaluate from './Evaluate';
 import ExpressionPlaceholder from './ExpressionPlaceholder';
 import DefinitionExpression from './DefinitionExpression';
+import type Locales from '../locale/Locales';
 
 export default class StructureDefinition extends DefinitionExpression {
     readonly docs: Docs | undefined;
@@ -195,12 +196,12 @@ export default class StructureDefinition extends DefinitionExpression {
         return true;
     }
 
-    getEvaluateTemplate(nameOrLocales: Locale[] | string) {
+    getEvaluateTemplate(nameOrLocales: Locales | string) {
         return Evaluate.make(
             Reference.make(
                 typeof nameOrLocales === 'string'
                     ? nameOrLocales
-                    : this.names.getPreferredNameString(nameOrLocales),
+                    : nameOrLocales.getName(this.names),
                 this
             ),
             this.inputs
@@ -235,9 +236,19 @@ export default class StructureDefinition extends DefinitionExpression {
             this.getImplementedFunctions().length === 0
         );
     }
+
+    getTypeReference(): NameType {
+        return new NameType(this.getNames()[0], undefined, this);
+    }
+
+    getReference(locales: Locales): Reference {
+        return Reference.make(locales.getName(this.names), this);
+    }
+
     getAbstractFunctions(): FunctionDefinition[] {
         return this.getFunctions(false);
     }
+
     getImplementedFunctions(): FunctionDefinition[] {
         return this.getFunctions(true);
     }
@@ -441,14 +452,19 @@ export default class StructureDefinition extends DefinitionExpression {
             );
     }
 
-    evaluateTypeSet(
+    evaluateTypeGuards(
         bind: Bind,
         original: TypeSet,
         current: TypeSet,
         context: Context
     ) {
         if (this.expression instanceof Expression)
-            this.expression.evaluateTypeSet(bind, original, current, context);
+            this.expression.evaluateTypeGuards(
+                bind,
+                original,
+                current,
+                context
+            );
         return current;
     }
 
@@ -460,16 +476,24 @@ export default class StructureDefinition extends DefinitionExpression {
         return this.names;
     }
 
-    getNodeLocale(locale: Locale) {
-        return locale.node.StructureDefinition;
+    /** Only equal if the same structure definition. */
+    isEquivalentTo(definition: Definition) {
+        return definition === this;
     }
 
-    getStartExplanations(locale: Locale) {
-        return concretize(locale, locale.node.StructureDefinition.start);
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.StructureDefinition);
     }
 
-    getDescriptionInputs(locale: Locale) {
-        return [this.names.getPreferredNameString([locale])];
+    getStartExplanations(locales: Locales) {
+        return concretize(
+            locales,
+            locales.get((l) => l.node.StructureDefinition.start)
+        );
+    }
+
+    getDescriptionInputs(locales: Locales) {
+        return [locales.getName(this.names)];
     }
 
     getGlyphs() {

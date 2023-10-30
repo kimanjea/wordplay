@@ -1,19 +1,16 @@
 <script lang="ts">
-    import Button from '../widgets/Button.svelte';
     import LanguageChooser from './LocaleChooser.svelte';
-    import { getProject, getUser } from '../project/Contexts';
+    import { getUser } from '../project/Contexts';
     import {
         animationFactor,
-        locale,
+        locales,
         arrangement,
         camera,
         mic,
         Settings,
-        Projects,
         writingLayout,
         dark,
     } from '../../db/Database';
-    import { page } from '$app/stores';
     import Arrangement from '../../db/Arrangement';
     import Options from '../widgets/Options.svelte';
     import { onMount } from 'svelte';
@@ -21,31 +18,11 @@
     import Status from '../app/Status.svelte';
     import Mode from '../widgets/Mode.svelte';
     import Dialog from '../widgets/Dialog.svelte';
-    import { goto } from '$app/navigation';
-    import Warning from '../widgets/Warning.svelte';
-
-    let show = false;
+    import CreatorView from '../app/CreatorView.svelte';
+    import Beta from '../../routes/Beta.svelte';
+    import { Creator } from '../../db/CreatorDatabase';
 
     let user = getUser();
-    let project = getProject();
-
-    function getBackPath() {
-        if ($page.route.id?.startsWith('/project/')) {
-            const projectID = $page.params.projectid;
-            if (Projects.readonlyProjects.has(projectID)) return '/galleries';
-            return '/projects';
-        } else return '/';
-    }
-
-    function handleKey(event: KeyboardEvent) {
-        if (
-            (event.ctrlKey || event.metaKey) &&
-            event.key === 'Escape' &&
-            $page.route.id !== null
-        ) {
-            goto(getBackPath());
-        }
-    }
 
     onMount(async () => {
         if (
@@ -74,24 +51,43 @@
     $: micDevice = $mic ? mics.find((m) => m.deviceId === $mic) : undefined;
 </script>
 
-<svelte:window on:keydown={handleKey} />
-
 <div class="settings">
-    {#if $project}
-        <Status />
-    {/if}
-    <Warning>
-        <Link to="/login">
-            <span class="user"
-                >{$user ? $user.email : $locale.ui.page.login.anonymous}</span
-            >
-        </Link>
-    </Warning>
+    <div class="beta">
+        <Dialog
+            button={{ tip: 'Show dialog to what beta means', label: 'beta' }}
+            width="50vw"
+            description={{
+                header: 'Beta?',
+                explanation: '',
+            }}><Beta /></Dialog
+        >
+    </div>
+    <Link external to="https://discord.gg/Jh2Qq9husy"
+        >{$locales.get((l) => l.term.help)}/{$locales.get(
+            (l) => l.term.feedback
+        )}</Link
+    >
+    <Status />
+    <Link to="/login">
+        <CreatorView
+            anonymize={false}
+            creator={$user ? Creator.from($user) : null}
+        />
+    </Link>
     <LanguageChooser />
-    <Dialog bind:show width="50vw" description={$locale.ui.dialog.settings}>
+    <Dialog
+        width="50vw"
+        button={{
+            tip: $locales.get((l) => l.ui.dialog.settings.button.show),
+            label: '⚙',
+        }}
+        description={$locales.get((l) => l.ui.dialog.settings)}
+    >
         <p
             ><Mode
-                descriptions={$locale.ui.dialog.settings.mode.layout}
+                descriptions={$locales.get(
+                    (l) => l.ui.dialog.settings.mode.layout
+                )}
                 choice={$arrangement === Arrangement.Responsive
                     ? 0
                     : $arrangement === Arrangement.Horizontal
@@ -114,7 +110,9 @@
         >
         <p
             ><Mode
-                descriptions={$locale.ui.dialog.settings.mode.animate}
+                descriptions={$locales.get(
+                    (l) => l.ui.dialog.settings.mode.animate
+                )}
                 choice={$animationFactor}
                 select={(choice) => Settings.setAnimationFactor(choice)}
                 modes={['🧘🏽‍♀️', '🏃‍♀️', '½', '⅓', '¼']}
@@ -122,7 +120,9 @@
         >
         <p
             ><Mode
-                descriptions={$locale.ui.dialog.settings.mode.writing}
+                descriptions={$locales.get(
+                    (l) => l.ui.dialog.settings.mode.writing
+                )}
                 choice={$writingLayout === 'horizontal-tb'
                     ? 0
                     : $writingLayout === 'vertical-rl'
@@ -147,8 +147,13 @@
                         value={cameraDevice?.label}
                         id="camera-setting"
                         options={[
-                            undefined,
-                            ...cameras.map((device) => device.label),
+                            { value: undefined, label: '—' },
+                            ...cameras.map((device) => {
+                                return {
+                                    value: device.label,
+                                    label: device.label,
+                                };
+                            }),
                         ]}
                         change={(choice) =>
                             Settings.setCamera(
@@ -167,8 +172,13 @@
                         value={micDevice?.label}
                         id="mic-setting"
                         options={[
-                            undefined,
-                            ...mics.map((device) => device.label),
+                            { value: undefined, label: '—' },
+                            ...mics.map((device) => {
+                                return {
+                                    value: device.label,
+                                    label: device.label,
+                                };
+                            }),
                         ]}
                         change={(choice) =>
                             Settings.setMic(
@@ -182,7 +192,9 @@
         {/if}
         <p
             ><Mode
-                descriptions={$locale.ui.dialog.settings.mode.dark}
+                descriptions={$locales.get(
+                    (l) => l.ui.dialog.settings.mode.dark
+                )}
                 choice={$dark === false ? 0 : $dark === true ? 1 : 2}
                 select={(choice) =>
                     Settings.setDark(
@@ -192,11 +204,6 @@
             />
         </p>
     </Dialog>
-    <Button
-        tip={$locale.ui.dialog.settings.button.show}
-        action={() => (show = !show)}>⚙</Button
-    >
-    {#if $page.route.id !== '/'}<Link to={getBackPath()}>❌</Link>{/if}
 </div>
 
 <style>
@@ -205,14 +212,18 @@
         flex-direction: row;
         align-items: center;
         gap: var(--wordplay-spacing);
-        margin-left: auto;
+        margin-inline-start: auto;
     }
 
     label {
         white-space: nowrap;
     }
 
-    .user {
-        color: var(--wordplay-background);
+    .beta {
+        border: solid var(--wordplay-focus-width) var(--wordplay-error);
+        border-right: solid var(--wordplay-focus-width) var(--wordplay-error);
+        padding-left: calc(var(--wordplay-spacing) / 3);
+        padding-right: calc(var(--wordplay-spacing) / 3);
+        border-radius: var(--wordplay-border-radius);
     }
 </style>

@@ -1,7 +1,7 @@
 import Decimal from 'decimal.js';
 import toStructure from '../basis/toStructure';
 import type Value from '@values/Value';
-import Output, { getOutputInputs } from './Output';
+import Valued, { getOutputInputs } from './Valued';
 import { toDecimal } from './Stage';
 import ColorJS from 'colorjs.io';
 import { TYPE_SYMBOL } from '@parser/Symbols';
@@ -10,11 +10,11 @@ import Evaluate from '../nodes/Evaluate';
 import NumberLiteral from '../nodes/NumberLiteral';
 import Reference from '../nodes/Reference';
 import Unit from '../nodes/Unit';
-import type Locale from '../locale/Locale';
 import type Project from '../models/Project';
 import StructureValue from '../values/StructureValue';
+import type Locales from '../locale/Locales';
 
-export function createColorType(locales: Locale[]) {
+export function createColorType(locales: Locales) {
     return toStructure(`
     ${getBind(locales, (locale) => locale.output.Color, TYPE_SYMBOL)}(
         ${getBind(locales, (locale) => locale.output.Color.lightness)}•%
@@ -24,7 +24,7 @@ export function createColorType(locales: Locale[]) {
 `);
 }
 
-export default class Color extends Output {
+export default class Color extends Valued {
     readonly lightness: Decimal;
     readonly chroma: Decimal;
     readonly hue: Decimal;
@@ -44,6 +44,10 @@ export default class Color extends Output {
             this.chroma,
             new Decimal(360).sub(this.hue)
         );
+    }
+
+    hash() {
+        return `${this.lightness}${this.chroma}${this.hue}`;
     }
 
     toCSS() {
@@ -72,17 +76,14 @@ export default class Color extends Output {
 
 export function createColorLiteral(
     project: Project,
-    locales: Locale[],
+    locales: Locales,
     lightness: number,
     chroma: number,
     hue: number
 ) {
     const ColorType = project.shares.output.Color;
     return Evaluate.make(
-        Reference.make(
-            ColorType.names.getPreferredNameString(locales),
-            ColorType
-        ),
+        Reference.make(locales.getName(ColorType.names), ColorType),
         [
             NumberLiteral.make(lightness),
             NumberLiteral.make(chroma),

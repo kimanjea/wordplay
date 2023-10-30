@@ -6,14 +6,14 @@
     export let description: string;
     export let validator: undefined | ((text: string) => boolean) = undefined;
     export let changed: undefined | ((text: string) => void) = undefined;
-    export let done: undefined | (() => void) = undefined;
+    export let done: undefined | ((text: string) => void) = undefined;
     export let fill = false;
     export let view: HTMLInputElement | undefined = undefined;
     export let border = true;
     export let right = false;
     export let defaultFocus = false;
     export let editable = true;
-    export let email = false;
+    export let kind: 'email' | 'password' | undefined = undefined;
 
     let width = 0;
 
@@ -23,7 +23,8 @@
     }
 
     onMount(() => {
-        if (email && view) view.type = 'email';
+        if (kind === 'email' && view) view.type = 'email';
+        else if (kind === 'password' && view) view.type = 'password';
     });
 </script>
 
@@ -44,10 +45,14 @@
         bind:this={view}
         on:input={handleInput}
         on:keydown|stopPropagation
-        on:blur={done}
+        on:blur={() => (done ? done(text) : undefined)}
     />
     <span class="measurer" bind:clientWidth={width}
-        >{text.length === 0 ? placeholder : text}</span
+        >{text.length === 0
+            ? placeholder
+            : kind === 'password'
+            ? '•'.repeat(text.length)
+            : text}</span
     >
 </div>
 
@@ -57,16 +62,22 @@
         position: relative;
     }
 
+    [disabled] {
+        color: var(--wordplay-inactive-color);
+    }
+
     input {
         width: auto;
         height: 100%;
         background: none;
         font-size: inherit;
         font-family: inherit;
+        font-weight: inherit;
         color: inherit;
         border: none;
         outline: none;
         min-width: 4em;
+        cursor: text;
     }
 
     .measurer {

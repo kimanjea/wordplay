@@ -1,54 +1,67 @@
 <script lang="ts">
     import { onMount, tick } from 'svelte';
-    import { locale } from '../../db/Database';
+    import { locales } from '../../db/Database';
     import Button from './Button.svelte';
     import type { DialogText } from '../../locale/UITexts';
     import Header from '../app/Header.svelte';
+    import MarkupHtmlView from '../concepts/MarkupHTMLView.svelte';
 
-    export let dialog: HTMLDialogElement | undefined = undefined;
-    export let show: boolean;
+    export let show = false;
     export let description: DialogText;
     export let width: string | undefined = undefined;
+    export let closeable = true;
+    export let button: { tip: string; label: string } | undefined = undefined;
+
+    let view: HTMLDialogElement | undefined = undefined;
 
     $: {
-        if (dialog) {
+        if (view) {
             if (show) {
-                dialog.showModal();
-                tick().then(() => dialog?.focus());
+                view.showModal();
+                tick().then(() => view?.focus());
             } else {
-                dialog.close();
+                view.close();
             }
         }
     }
 
     function outclick(event: PointerEvent) {
-        if (dialog && event.target === dialog) show = false;
+        if (view && event.target === view) show = false;
     }
 
     onMount(() => {
-        document.addEventListener('pointerdown', outclick);
-        return () => document.removeEventListener('pointerdown', outclick);
+        if (closeable) {
+            document.addEventListener('pointerdown', outclick);
+            return () => document.removeEventListener('pointerdown', outclick);
+        }
     });
 </script>
 
+{#if button}
+    <Button tip={button.tip} action={() => (show = true)}>{button.label}</Button
+    >
+{/if}
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <dialog
-    bind:this={dialog}
+    bind:this={view}
     style:width
     tabindex="-1"
-    on:keydown={(event) =>
-        event.key === 'Escape' ? (show = false) : undefined}
+    on:keydown={closeable
+        ? (event) => (event.key === 'Escape' ? (show = false) : undefined)
+        : undefined}
 >
     <div class="content">
         <Header>{description.header}</Header>
-        <p>{description.explanation}</p>
+        <MarkupHtmlView markup={description.explanation} />
         <slot />
-        <div class="close">
-            <Button
-                tip={$locale.ui.widget.dialog.close}
-                action={() => (show = false)}>❌</Button
-            >
-        </div>
+        {#if closeable}
+            <div class="close">
+                <Button
+                    tip={$locales.get((l) => l.ui.widget.dialog.close)}
+                    action={() => (show = false)}>❌</Button
+                >
+            </div>
+        {/if}
     </div>
 </dialog>
 

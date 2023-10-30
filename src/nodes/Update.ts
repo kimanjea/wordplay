@@ -17,7 +17,6 @@ import type Definition from './Definition';
 import type TypeSet from './TypeSet';
 import type Evaluator from '@runtime/Evaluator';
 import { node, type Grammar, type Replacement } from './Node';
-import type Locale from '@locale/Locale';
 import NodeRef from '@locale/NodeRef';
 import Glyphs from '../lore/Glyphs';
 import IncompatibleInput from '../conflicts/IncompatibleInput';
@@ -39,6 +38,7 @@ import Token from './Token';
 import { TABLE_CLOSE_SYMBOL, UPDATE_SYMBOL } from '../parser/Symbols';
 import Sym from './Sym';
 import ExpressionPlaceholder from './ExpressionPlaceholder';
+import type Locales from '../locale/Locales';
 
 type UpdateState = { table: TableValue; index: number; rows: StructureValue[] };
 
@@ -74,18 +74,18 @@ export default class Update extends Expression {
             {
                 name: 'table',
                 kind: node(Expression),
-                label: (translation: Locale) => translation.term.table,
+                label: (locales: Locales) => locales.get((l) => l.term.table),
             },
             {
                 name: 'row',
                 kind: node(Row),
-                label: (translation: Locale) => translation.term.row,
+                label: (locales: Locales) => locales.get((l) => l.term.row),
                 space: true,
             },
             {
                 name: 'query',
                 kind: node(Expression),
-                label: (translation: Locale) => translation.term.query,
+                label: (locales: Locales) => locales.get((l) => l.term.query),
                 space: true,
             },
         ];
@@ -214,7 +214,7 @@ export default class Update extends Expression {
         return [this.table, ...this.row.cells.map((cell) => cell), this.query];
     }
 
-    compile(context: Context): Step[] {
+    compile(evaluator: Evaluator, context: Context): Step[] {
         // Find the type of table and get a structure type for it's row.
         const type = this.table.getType(context);
         const structureType =
@@ -229,7 +229,7 @@ export default class Update extends Expression {
         const updates = binds
             .map((bind) =>
                 bind instanceof Bind && bind.value
-                    ? bind.value.compile(context)
+                    ? bind.value.compile(evaluator, context)
                     : []
             )
             .flat();
@@ -244,7 +244,7 @@ export default class Update extends Expression {
                 structureType,
                 [
                     // 1) evaluate the query
-                    ...this.query.compile(context),
+                    ...this.query.compile(evaluator, context),
                     // 2) evaluate the bind expression
                     ...updates,
                 ],
@@ -306,7 +306,7 @@ export default class Update extends Expression {
         // Evaluate the table expression then this.
         return [
             new Start(this),
-            ...this.table.compile(context),
+            ...this.table.compile(evaluator, context),
             ...getIteration<UpdateState, this>(
                 this,
                 // Track the table, index, and the revised rows.
@@ -356,18 +356,18 @@ export default class Update extends Expression {
         return new TableValue(this, table.type, rows);
     }
 
-    evaluateTypeSet(
+    evaluateTypeGuards(
         bind: Bind,
         original: TypeSet,
         current: TypeSet,
         context: Context
     ) {
         if (this.table instanceof Expression)
-            this.table.evaluateTypeSet(bind, original, current, context);
+            this.table.evaluateTypeGuards(bind, original, current, context);
         if (this.row instanceof Expression)
-            this.row.evaluateTypeSet(bind, original, current, context);
+            this.row.evaluateTypeGuards(bind, original, current, context);
         if (this.query instanceof Expression)
-            this.query.evaluateTypeSet(bind, original, current, context);
+            this.query.evaluateTypeGuards(bind, original, current, context);
         return current;
     }
 
@@ -378,27 +378,27 @@ export default class Update extends Expression {
         return this.row.close ?? this.row.open;
     }
 
-    getNodeLocale(translation: Locale) {
-        return translation.node.Update;
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.Update);
     }
 
-    getStartExplanations(locale: Locale, context: Context) {
+    getStartExplanations(locales: Locales, context: Context) {
         return concretize(
-            locale,
-            locale.node.Update.start,
-            new NodeRef(this.table, locale, context)
+            locales,
+            locales.get((l) => l.node.Update.start),
+            new NodeRef(this.table, locales, context)
         );
     }
 
     getFinishExplanations(
-        locale: Locale,
+        locales: Locales,
         context: Context,
         evaluator: Evaluator
     ) {
         return concretize(
-            locale,
-            locale.node.Update.finish,
-            this.getValueIfDefined(locale, context, evaluator)
+            locales,
+            locales.get((l) => l.node.Update.finish),
+            this.getValueIfDefined(locales, context, evaluator)
         );
     }
 

@@ -9,7 +9,7 @@
         getHidden,
     } from '../project/Contexts';
     import TokenCategories from './TokenCategories';
-    import { locale, locales } from '../../db/Database';
+    import { locales } from '../../db/Database';
 
     export let node: Token;
 
@@ -25,7 +25,7 @@
     // See if this is a placeholder that should be rendered differently.
     $: placeholder =
         $project && $root && context
-            ? node.getPlaceholder($root, context, $locale)
+            ? node.getPlaceholder($root, context, $locales)
             : undefined;
 
     // True if the caret is "on" this token.
@@ -47,7 +47,7 @@
             ? node.getText()
             : node.localized(
                   $caret === undefined || !$caret.isIn(node, true),
-                  $locales,
+                  $locales.getLocales(),
                   $root,
                   context
               );
@@ -106,6 +106,10 @@
         cursor: text;
     }
 
+    :global(.dragging) .token-view.editable {
+        cursor: grabbing;
+    }
+
     .token-category-delimiter {
         color: var(--color-dark-grey);
     }
@@ -152,5 +156,7 @@
     .placeholder {
         font-family: var(--wordplay-app-font);
         font-style: italic;
+        font-size: var(--wordplay-font-size);
+        text-decoration: underline;
     }
 </style>

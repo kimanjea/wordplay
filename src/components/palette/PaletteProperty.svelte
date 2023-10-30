@@ -21,9 +21,11 @@
     import PlaceEditor from './PlaceEditor.svelte';
     import ConceptLinkUI from '../concepts/ConceptLinkUI.svelte';
     import { getConceptIndex } from '../project/Contexts';
-    import { DB, locale, locales } from '../../db/Database';
+    import { DB, locales } from '../../db/Database';
     import { tick } from 'svelte';
     import { DOCUMENTATION_SYMBOL, EDIT_SYMBOL } from '../../parser/Symbols';
+    import MotionEditor from './MotionEditor.svelte';
+    import PlacementEditor from './PlacementEditor.svelte';
 
     export let project: Project;
     export let property: OutputProperty;
@@ -55,46 +57,36 @@
                 /></small
             >{/if}
         <label for={property.getName()}
-            >{bindConcept?.getName($locale, false) ?? '—'}</label
+            >{bindConcept?.getName($locales, false) ?? '—'}</label
         ></h3
     >
     {#if editable}
         <Button
             tip={valuesAreSet
-                ? $locale.ui.palette.button.revert
-                : $locale.ui.palette.button.set}
+                ? $locales.get((l) => l.ui.palette.button.revert)
+                : $locales.get((l) => l.ui.palette.button.set)}
             bind:view={toggleView}
             action={() => toggleValues(!valuesAreSet)}
             >{valuesAreSet ? '⨉' : EDIT_SYMBOL}</Button
         >{/if}
     <div class="control">
         {#if values.areMixed()}
-            <Note
-                >{$locales
-                    .map((locale) => locale.ui.palette.labels.mixed)
-                    .join('/')}</Note
-            >
+            <Note>{$locales.get((l) => l.ui.palette.labels.mixed)}</Note>
         {:else if !values.areSet()}
             {@const expression = values.getExpression()}
             <!-- If the values arent set, show as inherited if inherited, and otherwise show the default -->
             <Note
-                >{#if property.inherited}{$locales
-                        .map((locale) => locale.ui.palette.labels.inherited)
-                        .join(
-                            '/'
-                        )}{:else if values.areDefault() && expression !== undefined}<NodeView
+                >{#if property.inherited}{$locales.get(
+                        (l) => l.ui.palette.labels.inherited
+                    )}{:else if values.areDefault() && expression !== undefined}<NodeView
                         node={expression}
                     />
-                    {$locales
-                        .map((locale) => locale.ui.palette.labels.default)
-                        .join('/')}{:else}&mdash;{/if}</Note
+                    {$locales.get(
+                        (l) => l.ui.palette.labels.default
+                    )}{:else}&mdash;{/if}</Note
             >
         {:else if !values.areEditable(project)}
-            <Note
-                >{$locales.map(
-                    (locale) => locale.ui.palette.labels.computed
-                )}</Note
-            >
+            <Note>{$locales.get((l) => l.ui.palette.labels.computed)}</Note>
         {:else if property.type instanceof OutputPropertyRange}
             <BindSlider {property} {values} range={property.type} {editable} />
         {:else if property.type instanceof OutputPropertyOptions}
@@ -120,14 +112,14 @@
             {#if expression instanceof Evaluate && expression.is(project.shares.output.Pose, project.getNodeContext(expression))}
                 <PoseEditor
                     {project}
-                    outputs={values.getOutputExpressions(project)}
+                    outputs={values.getOutputExpressions(project, $locales)}
                     sequence={false}
                     {editable}
                 />
             {:else if expression instanceof Evaluate && expression.is(project.shares.output.Sequence, project.getNodeContext(expression))}
                 <SequenceEditor
                     {project}
-                    outputs={values.getOutputExpressions(project)}
+                    outputs={values.getOutputExpressions(project, $locales)}
                     {editable}
                 />
             {/if}
@@ -136,11 +128,25 @@
         {:else if property.type === 'content'}
             <ContentEditor {project} list={values.getList()} {editable} />
         {:else if property.type === 'place'}
-            <PlaceEditor
-                {project}
-                place={values.getPlace(project)}
-                {editable}
-            />
+            {@const place = values.getEvaluationOf(
+                project,
+                project.shares.output.Place
+            )}
+            {@const motion = values.getEvaluationOf(
+                project,
+                project.shares.input.Motion
+            )}
+            {@const placement = values.getEvaluationOf(
+                project,
+                project.shares.input.Placement
+            )}
+            {#if place}
+                <PlaceEditor {project} {place} {editable} convertable={true} />
+            {:else if motion}
+                <MotionEditor {project} {motion} {editable} />
+            {:else if placement}
+                <PlacementEditor {project} {placement} {editable} />
+            {/if}
         {/if}
     </div>
 </div>
@@ -153,6 +159,7 @@
         align-items: baseline;
         gap: var(--wordplay-spacing);
         row-gap: var(--wordplay-spacing);
+        user-select: none;
     }
 
     .name {

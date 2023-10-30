@@ -1,14 +1,17 @@
 import UnknownType from './UnknownType';
 import type Expression from './Expression';
-import type Locale from '@locale/Locale';
-import concretize from '../locale/concretize';
+import type Concretizer from './Concretizer';
+import type Locales from '../locale/Locales';
 
 export default class UnimplementedType extends UnknownType<Expression> {
     constructor(expression: Expression) {
         super(expression, undefined);
     }
 
-    getReason(locale: Locale) {
-        return concretize(locale, locale.node.NotImplementedType.name);
+    getReason(concretize: Concretizer, locales: Locales) {
+        return concretize(
+            locales,
+            locales.get((l) => l.node.NotImplementedType.name)
+        );
     }
 }

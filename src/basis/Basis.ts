@@ -32,10 +32,15 @@ import { getDocLocales } from '../locale/getDocLocales';
 import { getNameLocales } from '../locale/getNameLocales';
 import bootstrapStructure from './StructureBasis';
 import { toTokens } from '../parser/toTokens';
-import parseType from '../parser/paresType';
+import parseType from '../parser/parseType';
+import type Locales from '../locale/Locales';
+import AnyType from '../nodes/AnyType';
+import BooleanType from '../nodes/BooleanType';
+import ValueException from '../values/ValueException';
+import BoolValue from '../values/BoolValue';
 
 export class Basis {
-    readonly locales: Locale[];
+    readonly locales: Locales;
     readonly languages: LanguageCode[];
     readonly shares: ReturnType<typeof createDefaultShares>;
 
@@ -45,9 +50,9 @@ export class Basis {
      */
     static readonly Bases: Map<string, Basis> = new Map();
 
-    constructor(locales: Locale[]) {
+    constructor(locales: Locales) {
         this.locales = locales;
-        this.languages = locales.map((locale) => locale.language);
+        this.languages = locales.getLanguages();
 
         this.addStructure('none', bootstrapNone(locales));
         this.addStructure('boolean', bootstrapBool(locales));
@@ -62,9 +67,8 @@ export class Basis {
         this.shares = createDefaultShares(locales);
     }
 
-    static getLocalizedBasis(locales: Locale | Locale[]) {
-        locales = Array.isArray(locales) ? locales : [locales];
-        const languages = locales.map((locale) => locale.language);
+    static getLocalizedBasis(locales: Locales) {
+        const languages = locales.getLanguages();
         const key = languages.join(',');
         const basis = Basis.Bases.get(key) ?? new Basis(locales);
         Basis.Bases.set(key, basis);
@@ -160,7 +164,7 @@ export class Basis {
 }
 
 export function createBasisFunction(
-    locales: Locale[],
+    locales: Locales,
     text: (locale: Locale) => FunctionText<NameAndDoc[]>,
     typeVars: TypeVariables | undefined,
     types: (Type | [Type, Expression])[],
@@ -174,6 +178,30 @@ export function createBasisFunction(
         createInputs(locales, (l) => text(l).inputs, types),
         new InternalExpression(output, [], evaluator),
         output
+    );
+}
+
+export function createEqualsFunction(
+    locales: Locales,
+    text: (locale: Locale) => FunctionText<NameAndDoc[]>,
+    equal: boolean
+) {
+    return createBasisFunction(
+        locales,
+        text,
+        undefined,
+        [new AnyType()],
+        BooleanType.make(),
+        (requestor, evaluation) => {
+            const left: Value | Evaluation | undefined =
+                evaluation.getClosure();
+            const right = evaluation.getInput(0);
+            if (!(left instanceof Value))
+                return new ValueException(evaluation.getEvaluator(), requestor);
+            if (!(right instanceof Value))
+                return new ValueException(evaluation.getEvaluator(), requestor);
+            return new BoolValue(requestor, left.isEqualTo(right) === equal);
+        }
     );
 }
 

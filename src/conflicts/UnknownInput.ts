@@ -3,18 +3,19 @@ import Conflict from './Conflict';
 import type Bind from '@nodes/Bind';
 import type StructureDefinition from '@nodes/StructureDefinition';
 import type FunctionDefinition from '@nodes/FunctionDefinition';
-import type Locale from '@locale/Locale';
 import type StreamDefinition from '../nodes/StreamDefinition';
 import concretize from '../locale/concretize';
+import type BinaryEvaluate from '../nodes/BinaryEvaluate';
+import type Locales from '../locale/Locales';
 
 export default class UnknownInput extends Conflict {
     readonly func: FunctionDefinition | StructureDefinition | StreamDefinition;
-    readonly evaluate: Evaluate;
+    readonly evaluate: Evaluate | BinaryEvaluate;
     readonly given: Bind;
 
     constructor(
         func: FunctionDefinition | StructureDefinition | StreamDefinition,
-        evaluate: Evaluate,
+        evaluate: Evaluate | BinaryEvaluate,
         given: Bind
     ) {
         super(false);
@@ -28,19 +29,23 @@ export default class UnknownInput extends Conflict {
         return {
             primary: {
                 node: this.given.names,
-                explanation: (translation: Locale) =>
+                explanation: (locales: Locales) =>
                     concretize(
-                        translation,
-                        translation.node.Evaluate.conflict.UnknownInput.primary
+                        locales,
+                        locales.get(
+                            (l) => l.node.Evaluate.conflict.UnknownInput.primary
+                        )
                     ),
             },
             secondary: {
                 node: this.given.names,
-                explanation: (translation: Locale) =>
+                explanation: (locales: Locales) =>
                     concretize(
-                        translation,
-                        translation.node.Evaluate.conflict.UnknownInput
-                            .secondary
+                        locales,
+                        locales.get(
+                            (l) =>
+                                l.node.Evaluate.conflict.UnknownInput.secondary
+                        )
                     ),
             },
         };

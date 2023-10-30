@@ -13,20 +13,15 @@ import type Definition from './Definition';
 import Bind from './Bind';
 import ReferenceCycle from '@conflicts/ReferenceCycle';
 import Reaction from './Reaction';
-import Conditional from './Conditional';
 import UnionType from './UnionType';
 import type TypeSet from './TypeSet';
-import Is from './Is';
 import NameToken from './NameToken';
 import StartFinish from '@runtime/StartFinish';
 import UnknownNameType from './UnknownNameType';
 import { node, type Grammar, type Replacement, ListOf } from './Node';
-import type Locale from '@locale/Locale';
 import SimpleExpression from './SimpleExpression';
 import NameException from '@values/NameException';
 import NodeRef from '@locale/NodeRef';
-import Evaluate from './Evaluate';
-import StreamDefinitionType from './StreamDefinitionType';
 import Sym from './Sym';
 import concretize, { type TemplateInput } from '../locale/concretize';
 import Glyphs from '../lore/Glyphs';
@@ -37,6 +32,8 @@ import StructureDefinition from './StructureDefinition';
 import FunctionDefinition from './FunctionDefinition';
 import StreamDefinition from './StreamDefinition';
 import FunctionType from './FunctionType';
+import type Locales from '../locale/Locales';
+import getGuards from './getGuards';
 
 /**
  * A reference to some Definition. Can optionally take the definition which it refers,
@@ -168,7 +165,8 @@ export default class Reference extends SimpleExpression {
                 name: 'name',
                 kind: node(Sym.Name),
                 uncompletable: true,
-                label: (translation: Locale) => translation.node.Reference.name,
+                label: (locales: Locales) =>
+                    locales.get((l) => l.node.Reference.name),
                 // The valid definitions of the name are anything in scope, except for the current name.
                 getDefinitions: (context: Context) =>
                     this.getDefinitionsInScope(context).filter(
@@ -196,6 +194,10 @@ export default class Reference extends SimpleExpression {
         return this.name.getText();
     }
 
+    withName(name: string) {
+        return new Reference(new NameToken(name), this.definition);
+    }
+
     getCorrespondingDefinition(context: Context): Definition | undefined {
         return this.resolve(context);
     }
@@ -212,7 +214,7 @@ export default class Reference extends SimpleExpression {
                 new UnknownName(this, scope instanceof Type ? scope : undefined)
             );
         }
-        // Type variables aren't alowed in type variables.
+        // Can't refer to type variables with a reference, those can only be mentioned in type inputs.
         else if (bindOrTypeVar instanceof TypeVariable)
             conflicts.push(new UnexpectedTypeVariable(this));
 
@@ -225,13 +227,7 @@ export default class Reference extends SimpleExpression {
             const reaction = context
                 .getRoot(this)
                 ?.getAncestors(this)
-                ?.find(
-                    (n) =>
-                        n instanceof Reaction ||
-                        (n instanceof Evaluate &&
-                            n.fun.getType(context) instanceof
-                                StreamDefinitionType)
-                );
+                ?.find((n) => n instanceof Reaction);
             const validCircularReference =
                 reaction !== undefined &&
                 context
@@ -279,26 +275,23 @@ export default class Reference extends SimpleExpression {
         ) {
             // Find any conditionals with type checks that refer to the value bound to this name.
             // Reverse them so they are in furthest to nearest ancestor, so we narrow types in execution order.
-            const guards = context.source.root
-                .getAncestors(this)
-                ?.filter(
-                    (a): a is Conditional =>
-                        a instanceof Conditional &&
-                        a.condition.nodes(
-                            (n): n is Reference =>
-                                context.source.root.getParent(n) instanceof
-                                    Is &&
-                                n instanceof Reference &&
-                                definition === n.resolve(context)
-                        ).length > 0
-                )
-                .reverse();
+            const guards = getGuards(this, context, (node) => {
+                // Node is a reference
+                if (
+                    node instanceof Reference &&
+                    // And a reference to the same definition as this reference
+                    definition === node.resolve(context)
+                ) {
+                    const parent = context.source.root.getParent(node);
+                    return parent instanceof Expression && parent.guardsTypes();
+                } else return false;
+            });
 
             // Grab the furthest ancestor and evaluate possible types from there.
             const root = guards[0];
             if (root !== undefined) {
                 const possibleTypes = type.getTypeSet(context);
-                root.evaluateTypeSet(
+                root.evaluateTypeGuards(
                     definition,
                     possibleTypes,
                     possibleTypes,
@@ -310,7 +303,7 @@ export default class Reference extends SimpleExpression {
         return context.getReferenceType(this) ?? type;
     }
 
-    evaluateTypeSet(
+    evaluateTypeGuards(
         bind: Bind,
         _: TypeSet,
         current: TypeSet,
@@ -358,15 +351,15 @@ export default class Reference extends SimpleExpression {
         return this.name;
     }
 
-    getNodeLocale(translation: Locale) {
-        return translation.node.Reference;
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.Reference);
     }
 
-    getStartExplanations(locale: Locale, context: Context) {
+    getStartExplanations(locales: Locales, context: Context) {
         return concretize(
-            locale,
-            locale.node.Reference.start,
-            new NodeRef(this.name, locale, context)
+            locales,
+            locales.get((l) => l.node.Reference.start),
+            new NodeRef(this.name, locales, context)
         );
     }
 

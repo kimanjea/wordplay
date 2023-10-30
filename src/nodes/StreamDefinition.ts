@@ -38,6 +38,7 @@ import Evaluate from './Evaluate';
 import Reference from './Reference';
 import ExpressionPlaceholder from './ExpressionPlaceholder';
 import DefinitionExpression from './DefinitionExpression';
+import type Locales from '../locale/Locales';
 
 export default class StreamDefinition extends DefinitionExpression {
     readonly docs?: Docs;
@@ -147,6 +148,20 @@ export default class StreamDefinition extends DefinitionExpression {
         );
     }
 
+    withoutDocs() {
+        return new StreamDefinition(
+            undefined,
+            this.dots,
+            this.names,
+            this.open,
+            this.inputs.map((input) => input.withoutDocs()),
+            this.close,
+            this.expression,
+            this.dot,
+            this.output
+        );
+    }
+
     sharesName(fun: StreamDefinition) {
         return this.names.sharesName(fun.names);
     }
@@ -161,6 +176,10 @@ export default class StreamDefinition extends DefinitionExpression {
 
     getPreferredName(locales: Locale[]) {
         return this.names.getPreferredNameString(locales);
+    }
+
+    getReference(locales: Locales): Reference {
+        return Reference.make(locales.getName(this.names), this);
     }
 
     /**
@@ -223,16 +242,24 @@ export default class StreamDefinition extends DefinitionExpression {
         return value;
     }
 
-    evaluateTypeSet(_: Bind, __: TypeSet, current: TypeSet): TypeSet {
+    evaluateTypeGuards(_: Bind, __: TypeSet, current: TypeSet): TypeSet {
         return current;
     }
 
-    getNodeLocale(translation: Locale) {
-        return translation.node.StreamDefinition;
+    /** Only equal if the same stream definition. */
+    isEquivalentTo(definition: Definition) {
+        return definition === this;
     }
 
-    getStartExplanations(locale: Locale) {
-        return concretize(locale, locale.node.StreamDefinition.start);
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.StreamDefinition);
+    }
+
+    getStartExplanations(locales: Locales) {
+        return concretize(
+            locales,
+            locales.get((l) => l.node.StreamDefinition.start)
+        );
     }
 
     getGlyphs() {

@@ -15,10 +15,10 @@ import type { BasisTypeName } from '../basis/BasisConstants';
 import UnknownNameType from './UnknownNameType';
 import type Node from './Node';
 import { node, type Grammar, type Replacement, optional } from './Node';
-import type Locale from '@locale/Locale';
 import { UnknownName } from '@conflicts/UnknownName';
 import Emotion from '../lore/Emotion';
 import Sym from './Sym';
+import type Locales from '../locale/Locales';
 
 export default class NameType extends Type {
     readonly name: Token;
@@ -59,6 +59,10 @@ export default class NameType extends Type {
 
     getName() {
         return this.name.getText();
+    }
+
+    withName(name: string) {
+        return new NameType(new NameToken(name), this.types, this.definition);
     }
 
     getDefinitions(node: Node, context: Context) {
@@ -129,17 +133,33 @@ export default class NameType extends Type {
         );
     }
 
+    /**
+     * Override get scope to skip over all types, so we don't end up with funky infinite loops with
+     * other types that might try to resolve NameType. None of the types that might
+     * contain this can make definitions anyway.
+     */
+    getScope(context: Context): Node | undefined {
+        return context
+            .getRoot(this)
+            ?.getAncestors(this)
+            .find((node) => !(node instanceof Type));
+    }
+
     isTypeVariable(context: Context) {
         return this.resolve(context) instanceof TypeVariable;
     }
 
     getType(context: Context): Type {
-        // The name should be defined.
         const definition = this.resolve(context);
+        // Not defined? That's an unknown type.
         if (definition === undefined)
             return new UnknownNameType(this, this.name, undefined);
-        else if (definition instanceof TypeVariable)
-            return new VariableType(definition);
+        // Type variable? If it has a constraint, return that type. Otherwise return a variable type.
+        else if (definition instanceof TypeVariable) {
+            if (definition.type) return definition.type;
+            else return new VariableType(definition);
+        }
+        // Some other type? Get the definition's type.
         else return definition.getType(context);
     }
 
@@ -147,8 +167,8 @@ export default class NameType extends Type {
         return 'name';
     }
 
-    getNodeLocale(translation: Locale) {
-        return translation.node.NameType;
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.NameType);
     }
 
     getGlyphs() {

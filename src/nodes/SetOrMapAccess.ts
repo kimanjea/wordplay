@@ -22,7 +22,6 @@ import SetOpenToken from './SetOpenToken';
 import SetCloseToken from './SetCloseToken';
 import UnclosedDelimiter from '@conflicts/UnclosedDelimiter';
 import { node, type Grammar, type Replacement } from './Node';
-import type Locale from '@locale/Locale';
 import NodeRef from '@locale/NodeRef';
 import Glyphs from '../lore/Glyphs';
 import type { BasisTypeName } from '../basis/BasisConstants';
@@ -31,6 +30,8 @@ import IncompatibleInput from '../conflicts/IncompatibleInput';
 import { NotAType } from './NotAType';
 import concretize from '../locale/concretize';
 import Sym from './Sym';
+import type Locales from '../locale/Locales';
+import NoneType from './NoneType';
 
 export default class SetOrMapAccess extends Expression {
     readonly setOrMap: Expression;
@@ -68,7 +69,7 @@ export default class SetOrMapAccess extends Expression {
             {
                 name: 'setOrMap',
                 kind: node(Expression),
-                label: (translation: Locale) => translation.term.set,
+                label: (locales: Locales) => locales.get((l) => l.term.set),
                 // Must be a number
                 getType: () => UnionType.make(SetType.make(), MapType.make()),
             },
@@ -76,7 +77,7 @@ export default class SetOrMapAccess extends Expression {
             {
                 name: 'key',
                 kind: node(Expression),
-                label: (translation: Locale) => translation.term.key,
+                label: (locales: Locales) => locales.get((l) => l.term.key),
             },
             { name: 'close', kind: node(Sym.SetClose) },
         ];
@@ -92,7 +93,7 @@ export default class SetOrMapAccess extends Expression {
     }
 
     getPurpose(): Purpose {
-        return Purpose.Value;
+        return Purpose.Evaluate;
     }
 
     getAffiliatedType(): BasisTypeName | undefined {
@@ -136,7 +137,7 @@ export default class SetOrMapAccess extends Expression {
             setOrMapType instanceof MapType &&
             setOrMapType.value instanceof Type
         )
-            return setOrMapType.value;
+            return UnionType.make(setOrMapType.value, NoneType.make());
         else if (setOrMapType instanceof SetType) return BooleanType.make();
         else
             return new NotAType(
@@ -150,12 +151,12 @@ export default class SetOrMapAccess extends Expression {
         return [this.setOrMap, this.key];
     }
 
-    compile(context: Context): Step[] {
+    compile(evaluator: Evaluator, context: Context): Step[] {
         // Evaluate the set expression, then the key expression, then this.
         return [
             new Start(this),
-            ...this.setOrMap.compile(context),
-            ...this.key.compile(context),
+            ...this.setOrMap.compile(evaluator, context),
+            ...this.key.compile(evaluator, context),
             new Finish(this),
         ];
     }
@@ -176,16 +177,16 @@ export default class SetOrMapAccess extends Expression {
         else return setOrMap.has(this, key);
     }
 
-    evaluateTypeSet(
+    evaluateTypeGuards(
         bind: Bind,
         original: TypeSet,
         current: TypeSet,
         context: Context
     ) {
         if (this.setOrMap instanceof Expression)
-            this.setOrMap.evaluateTypeSet(bind, original, current, context);
+            this.setOrMap.evaluateTypeGuards(bind, original, current, context);
         if (this.key instanceof Expression)
-            this.key.evaluateTypeSet(bind, original, current, context);
+            this.key.evaluateTypeGuards(bind, original, current, context);
         return current;
     }
 
@@ -196,27 +197,27 @@ export default class SetOrMapAccess extends Expression {
         return this.close ?? this.key;
     }
 
-    getNodeLocale(translation: Locale) {
-        return translation.node.SetOrMapAccess;
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.SetOrMapAccess);
     }
 
-    getStartExplanations(locale: Locale, context: Context) {
+    getStartExplanations(locales: Locales, context: Context) {
         return concretize(
-            locale,
-            locale.node.SetOrMapAccess.start,
-            new NodeRef(this.setOrMap, locale, context)
+            locales,
+            locales.get((l) => l.node.SetOrMapAccess.start),
+            new NodeRef(this.setOrMap, locales, context)
         );
     }
 
     getFinishExplanations(
-        locale: Locale,
+        locales: Locales,
         context: Context,
         evaluator: Evaluator
     ) {
         return concretize(
-            locale,
-            locale.node.SetOrMapAccess.finish,
-            this.getValueIfDefined(locale, context, evaluator)
+            locales,
+            locales.get((l) => l.node.SetOrMapAccess.finish),
+            this.getValueIfDefined(locales, context, evaluator)
         );
     }
 

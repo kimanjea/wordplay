@@ -3,12 +3,13 @@ import UnionType from '@nodes/UnionType';
 import NoneType from '@nodes/NoneType';
 import NoneLiteral from '@nodes/NoneLiteral';
 import NumberValue from '@values/NumberValue';
-import type Locale from '../locale/Locale';
 import { createBasisFunction } from '../basis/Basis';
 import type Evaluation from '../runtime/Evaluation';
 import type Expression from '../nodes/Expression';
-import Unit from '../nodes/Unit';
 import NoneValue from '../values/NoneValue';
+import TypeVariables from '../nodes/TypeVariables';
+import TypeVariable from '../nodes/TypeVariable';
+import type Locales from '../locale/Locales';
 
 function getRandomInRange(
     random: number,
@@ -65,22 +66,31 @@ function toPrecisionRange(
     return pow ? Math.round(scaled * pow) / pow : scaled;
 }
 
-export function createRandomFunction(locales: Locale[]) {
+export function createRandomFunction(locales: Locales) {
+    /** The type variable can be any number type, but nothing else */
+    const NumberTypeVariable = TypeVariable.make(['Number'], NumberType.make());
+
     return createBasisFunction(
         locales,
         (locale) => locale.input.Random,
-        undefined,
+        TypeVariables.make([NumberTypeVariable]),
         [
             [
-                UnionType.make(NumberType.make(Unit.Wildcard), NoneType.make()),
+                UnionType.make(
+                    NumberTypeVariable.getReference(),
+                    NoneType.make()
+                ),
                 NoneLiteral.make(),
             ],
             [
-                UnionType.make(NumberType.make(Unit.Wildcard), NoneType.make()),
+                UnionType.make(
+                    NumberTypeVariable.getReference(),
+                    NoneType.make()
+                ),
                 NoneLiteral.make(),
             ],
         ],
-        NumberType.make(),
+        NumberTypeVariable.getReference(),
         (requestor: Expression, evaluation: Evaluation) => {
             const min = evaluation.getInput(0);
             const max = evaluation.getInput(1);

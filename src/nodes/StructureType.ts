@@ -12,6 +12,7 @@ import Glyphs from '../lore/Glyphs';
 import type { Grammar } from './Node';
 import BasisType from './BasisType';
 import type Spaces from '../parser/Spaces';
+import type Locales from '../locale/Locales';
 
 export const STRUCTURE_NATIVE_TYPE_NAME = 'structure';
 
@@ -44,6 +45,7 @@ export default class StructureType extends BasisType {
         return this.structure.expression;
     }
 
+    /** Structures have additional scope from its basis type, e.g., the = function and other inherited functionality. */
     getAdditionalBasisScope(context: Context): Node | undefined {
         return super.getScope(context);
     }
@@ -52,8 +54,15 @@ export default class StructureType extends BasisType {
         return this.structure.getDefinition(name);
     }
 
-    getDefinitions(node: Node): Definition[] {
-        return [...this.structure.getDefinitions(node)];
+    /** Override to include this structure's definitions, but also the base structure definitions (e.g., =, ≠) */
+    getDefinitions(node: Node, context: Context): Definition[] {
+        return [
+            ...this.structure.getDefinitions(node),
+            ...(this.getAdditionalBasisScope(context)?.getDefinitions(
+                node,
+                context
+            ) ?? []),
+        ];
     }
 
     /** Compatible if it's the same structure definition, or the given type is a refinement of the given structure.*/
@@ -120,15 +129,15 @@ export default class StructureType extends BasisType {
         return this.structure.getPreferredName(locale ? [locale] : []);
     }
 
-    getNodeLocale(translation: Locale) {
-        return translation.node.StructureType;
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.StructureType);
     }
 
     getGlyphs() {
         return Glyphs.Type;
     }
 
-    getDescriptionInputs(locale: Locale) {
-        return [this.structure.names.getPreferredNameString(locale)];
+    getDescriptionInputs(locales: Locales) {
+        return [locales.getName(this.structure.names)];
     }
 }

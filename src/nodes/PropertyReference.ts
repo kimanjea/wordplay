@@ -12,8 +12,6 @@ import StructureType from './StructureType';
 import Bind from './Bind';
 import UnionType from './UnionType';
 import type TypeSet from './TypeSet';
-import Conditional from './Conditional';
-import Is from './Is';
 import { PROPERTY_SYMBOL } from '@parser/Symbols';
 import Sym from './Sym';
 import TypeVariable from './TypeVariable';
@@ -25,7 +23,6 @@ import Reference from './Reference';
 import NameType from './NameType';
 import UnknownNameType from './UnknownNameType';
 import { node, type Grammar, type Replacement } from './Node';
-import type Locale from '@locale/Locale';
 import NodeRef from '@locale/NodeRef';
 import Glyphs from '../lore/Glyphs';
 import UnimplementedException from '../values/UnimplementedException';
@@ -36,6 +33,8 @@ import ExpressionPlaceholder from './ExpressionPlaceholder';
 import Refer from '../edit/Refer';
 import FunctionDefinition from './FunctionDefinition';
 import BasisType from './BasisType';
+import type Locales from '../locale/Locales';
+import getGuards from './getGuards';
 
 export default class PropertyReference extends Expression {
     readonly structure: Expression;
@@ -141,8 +140,8 @@ export default class PropertyReference extends Expression {
                 name: 'name',
                 kind: node(Reference),
                 // The label is
-                label: (translation: Locale) =>
-                    translation.node.PropertyReference.property,
+                label: (locales: Locales) =>
+                    locales.get((l) => l.node.PropertyReference.property),
                 // The valid definitions of the name are based on the referenced structure type, prefix filtered by whatever name is already provided.
                 getDefinitions: (context: Context) => {
                     let defs = this.getDefinitions(this, context);
@@ -254,31 +253,25 @@ export default class PropertyReference extends Expression {
             ) {
                 // Find any conditionals with type checks that refer to the value bound to this name.
                 // Reverse them so they are in furthest to nearest ancestor, so we narrow types in execution order.
-                const guards = context
-                    .getRoot(this)
-                    ?.getAncestors(this)
-                    ?.filter(
-                        (a): a is Conditional =>
-                            // Guards must be conditionals
-                            a instanceof Conditional &&
-                            // Guards must have references to this same property in a type check
-                            a.condition.nodes(
-                                (n): n is PropertyReference =>
-                                    this.name !== undefined &&
-                                    context.source.root.getParent(n) instanceof
-                                        Is &&
-                                    n instanceof PropertyReference &&
-                                    n.getSubjectType(context) instanceof
-                                        StructureType &&
-                                    def ===
-                                        (
-                                            n.getSubjectType(
-                                                context
-                                            ) as StructureType
-                                        ).getDefinition(this.name.getName())
-                            ).length > 0
-                    )
-                    .reverse();
+                const guards = getGuards(this, context, (n) => {
+                    // This reference has a name
+                    if (
+                        this.name !== undefined &&
+                        // The candidate node is also a PropertyReference
+                        n instanceof PropertyReference &&
+                        // It refers to the same definition as this reference's name.
+                        n.getSubjectType(context) instanceof StructureType &&
+                        def ===
+                            (
+                                n.getSubjectType(context) as StructureType
+                            ).getDefinition(this.name.getName())
+                    ) {
+                        const parent = context.source.root.getParent(n);
+                        return (
+                            parent instanceof Expression && parent.guardsTypes()
+                        );
+                    } else return false;
+                });
 
                 // Grab the furthest ancestor and evaluate possible types from there.
                 const root =
@@ -287,7 +280,7 @@ export default class PropertyReference extends Expression {
                         : undefined;
                 if (root !== undefined) {
                     const possibleTypes = type.getTypeSet(context);
-                    root.evaluateTypeSet(
+                    root.evaluateTypeGuards(
                         def,
                         possibleTypes,
                         possibleTypes,
@@ -306,10 +299,10 @@ export default class PropertyReference extends Expression {
         return [this.structure];
     }
 
-    compile(context: Context): Step[] {
+    compile(evaluator: Evaluator, context: Context): Step[] {
         return [
             new Start(this),
-            ...this.structure.compile(context),
+            ...this.structure.compile(evaluator, context),
             new Finish(this),
         ];
     }
@@ -330,14 +323,14 @@ export default class PropertyReference extends Expression {
         );
     }
 
-    evaluateTypeSet(
+    evaluateTypeGuards(
         bind: Bind,
         original: TypeSet,
         current: TypeSet,
         context: Context
     ) {
         // Filter the types of the structure.
-        const possibleTypes = this.structure.evaluateTypeSet(
+        const possibleTypes = this.structure.evaluateTypeGuards(
             bind,
             original,
             current,
@@ -358,26 +351,29 @@ export default class PropertyReference extends Expression {
         return this.name ?? this.dot;
     }
 
-    getNodeLocale(translation: Locale) {
-        return translation.node.PropertyReference;
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.PropertyReference);
     }
 
-    getStartExplanations(locale: Locale) {
-        return concretize(locale, locale.node.PropertyReference.start);
+    getStartExplanations(locales: Locales) {
+        return concretize(
+            locales,
+            locales.get((l) => l.node.PropertyReference.start)
+        );
     }
 
     getFinishExplanations(
-        locale: Locale,
+        locales: Locales,
         context: Context,
         evaluator: Evaluator
     ) {
         return concretize(
-            locale,
-            locale.node.PropertyReference.finish,
+            locales,
+            locales.get((l) => l.node.PropertyReference.finish),
             this.name
-                ? new NodeRef(this.name, locale, context, this.name?.getName())
+                ? new NodeRef(this.name, locales, context, this.name?.getName())
                 : undefined,
-            this.getValueIfDefined(locale, context, evaluator)
+            this.getValueIfDefined(locales, context, evaluator)
         );
     }
 
@@ -385,9 +381,9 @@ export default class PropertyReference extends Expression {
         return Glyphs.Reference;
     }
 
-    getDescriptionInputs(locale: Locale, context: Context) {
+    getDescriptionInputs(locales: Locales, context: Context) {
         return [
-            this.name ? new NodeRef(this.name, locale, context) : undefined,
+            this.name ? new NodeRef(this.name, locales, context) : undefined,
         ];
     }
 }

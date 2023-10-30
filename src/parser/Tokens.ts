@@ -13,6 +13,12 @@ export default class Tokens {
     /** The preceding space for each token */
     readonly #spaces;
 
+    /**
+     * A stack indicating whether reactions are currently allowed to be parsed.
+     * We keep it here to avoid having to pass it around parsing function signatures.
+     */
+    readonly reactive: boolean[] = [true];
+
     constructor(tokens: Token[], spaces: Spaces) {
         this.#unread = tokens.slice();
         this.#spaces = spaces;
@@ -176,10 +182,12 @@ export default class Tokens {
     /** Used to read the remainder of a line, and at least one token, unless there are no more tokens. */
     readLine() {
         const nodes: Node[] = [];
+
         if (!this.hasNext()) return nodes;
         // Read at least one token, then keep going until we reach a token with a line break.
         do {
-            nodes.push(this.read());
+            const next = this.read();
+            nodes.push(next);
         } while (
             this.hasNext() &&
             this.nextHasPrecedingLineBreak() === false &&
@@ -194,5 +202,20 @@ export default class Tokens {
             const unreadToken = this.#read.pop();
             if (unreadToken !== undefined) this.#unread.unshift(unreadToken);
         }
+    }
+
+    /** Mark that reads can parse reactions. */
+    pushReactionAllowed(reactive: boolean) {
+        return this.reactive.push(reactive);
+    }
+
+    /** Revert to previous reactions allowed state  */
+    popReactionAllowed() {
+        return this.reactive.pop();
+    }
+
+    /** See whether reactions are currently allowed. */
+    reactionsAllowed() {
+        return this.reactive.at(-1);
     }
 }

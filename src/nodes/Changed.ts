@@ -17,7 +17,6 @@ import { CHANGE_SYMBOL } from '@parser/Symbols';
 import Start from '@runtime/Start';
 import BoolValue from '@values/BoolValue';
 import { node, type Grammar, type Replacement } from './Node';
-import type Locale from '@locale/Locale';
 import SimpleExpression from './SimpleExpression';
 import NodeRef from '@locale/NodeRef';
 import BooleanType from './BooleanType';
@@ -26,6 +25,8 @@ import Purpose from '../concepts/Purpose';
 import type { BasisTypeName } from '../basis/BasisConstants';
 import IncompatibleInput from '../conflicts/IncompatibleInput';
 import concretize from '../locale/concretize';
+import ExpressionPlaceholder from './ExpressionPlaceholder';
+import type Locales from '../locale/Locales';
 
 export default class Changed extends SimpleExpression {
     readonly change: Token;
@@ -55,6 +56,10 @@ export default class Changed extends SimpleExpression {
                 getType: () => StreamType.make(new AnyType()),
             },
         ];
+    }
+
+    static getPossibleNodes() {
+        return [Changed.make(ExpressionPlaceholder.make())];
     }
 
     clone(replace?: Replacement) {
@@ -92,10 +97,10 @@ export default class Changed extends SimpleExpression {
         return [this.stream];
     }
 
-    compile(context: Context): Step[] {
+    compile(evaluator: Evaluator, context: Context): Step[] {
         return [
             new Start(this),
-            ...this.stream.compile(context),
+            ...this.stream.compile(evaluator, context),
             new Finish(this),
         ];
     }
@@ -120,14 +125,14 @@ export default class Changed extends SimpleExpression {
         return new BoolValue(this, evaluator.didStreamCauseReaction(stream));
     }
 
-    evaluateTypeSet(
+    evaluateTypeGuards(
         bind: Bind,
         original: TypeSet,
         current: TypeSet,
         context: Context
     ) {
         if (this.stream instanceof Expression)
-            this.stream.evaluateTypeSet(bind, original, current, context);
+            this.stream.evaluateTypeGuards(bind, original, current, context);
         return current;
     }
 
@@ -138,15 +143,15 @@ export default class Changed extends SimpleExpression {
         return this.change;
     }
 
-    getNodeLocale(translation: Locale) {
-        return translation.node.Changed;
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.Changed);
     }
 
-    getStartExplanations(locale: Locale, context: Context) {
+    getStartExplanations(locales: Locales, context: Context) {
         return concretize(
-            locale,
-            locale.node.Changed.start,
-            new NodeRef(this.stream, locale, context)
+            locales,
+            locales.get((l) => l.node.Changed.start),
+            new NodeRef(this.stream, locales, context)
         );
     }
 

@@ -1,4 +1,4 @@
-import type TypeOutput from './TypeOutput';
+import type Output from './Output';
 import { PX_PER_METER, sizeToPx, toOutputTransform } from './outputToCSS';
 import Place from './Place';
 import Pose from './Pose';
@@ -10,6 +10,7 @@ import Stage from './Stage';
 import type RenderContext from './RenderContext';
 import Phrase from './Phrase';
 import type Locale from '../locale/Locale';
+import type Locales from '../locale/Locales';
 
 enum State {
     Entering = 'entering',
@@ -32,7 +33,7 @@ export default class OutputAnimation {
     scene: Scene;
 
     /** The current phrase for this name */
-    output: TypeOutput;
+    output: Output;
 
     /** The current context for rendering */
     context: RenderContext;
@@ -51,7 +52,7 @@ export default class OutputAnimation {
 
     constructor(
         scene: Scene,
-        phrase: TypeOutput,
+        phrase: Output,
         context: RenderContext,
         entry: boolean
     ) {
@@ -80,7 +81,7 @@ export default class OutputAnimation {
     }
 
     /** Update the current animation with a new phrase by the same name. */
-    update(output: TypeOutput, context: RenderContext, entry: boolean) {
+    update(output: Output, context: RenderContext, entry: boolean) {
         // Before we update, see if the rest pose changed so we can tween it.
         const prior = this.output;
 
@@ -103,7 +104,7 @@ export default class OutputAnimation {
     }
 
     /** Change to the still state and start a transition to it. */
-    rest(prior?: TypeOutput) {
+    rest(prior?: Output) {
         this.state = State.Rest;
         const priorPose = prior?.getRestOrDefaultPose();
         const currentPose = this.output.getRestOrDefaultPose();
@@ -569,12 +570,12 @@ const StyleToCSSMapping = {
 // A cache of values to keys for each locale.
 const styleValueToKeyByLocale: Map<Locale, Map<string, string>> = new Map();
 
-function styleToCSSEasing(locales: Locale[], name: string | undefined) {
+function styleToCSSEasing(locales: Locales, name: string | undefined) {
     // No name given? Default to ease out.
     if (name === undefined) return 'ease-out';
 
     // Get the Easing dictionary from each locale, flatten into a list of key value pairs, and find the name with the matching value.
-    for (const locale of locales) {
+    for (const locale of locales.getLocales()) {
         const key = getStyleValueToKey(locale).get(name);
         if (key)
             return StyleToCSSMapping[key as keyof typeof StyleToCSSMapping];

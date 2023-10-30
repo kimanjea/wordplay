@@ -20,13 +20,10 @@
     import type Source from '@nodes/Source';
     import Node from '@nodes/Node';
     import Token from '../../nodes/Token';
-    import { getLanguageDirection } from '../../locale/LanguageCode';
     import {
         animationDuration,
-        animationFactor,
         blocks,
-        locale,
-        writingDirection,
+        locales,
         writingLayout,
     } from '../../db/Database';
     import type Caret from '../../edit/Caret';
@@ -46,22 +43,22 @@
     // The current token we're on.
     $: token = caret?.getToken();
 
-    $: leftToRight = getLanguageDirection($locale.language) === 'ltr';
+    $: leftToRight = $locales.getDirection() === 'ltr';
 
     // The index we should render
     let caretIndex: number | undefined = undefined;
 
     const evaluation = getEvaluation();
 
-    // Whenever blocks changes, compute position after animation.
+    // Whenever blocks, evaluation, or caret changes, compute position after animation delay.
     $: {
         $blocks;
         $evaluation;
-        setTimeout(() => (location = computeLocation()), $animationDuration);
-    }
-
-    $: if (ignored) {
-        setTimeout(() => (ignored = false), 200 * $animationFactor);
+        caret;
+        setTimeout(
+            () => (location = computeLocation()),
+            $animationDuration + 25
+        );
     }
 
     // Whenever the caret changes, update the index we should render and scroll to it.
@@ -70,7 +67,7 @@
         if (
             token !== undefined &&
             caret !== undefined &&
-            $writingDirection &&
+            $locales.getDirection() &&
             $writingLayout
         ) {
             // Get some of the token's metadata
@@ -511,12 +508,52 @@
                 const spaces = spaceOnLastLine.split(' ').length - 1;
                 const tabs = spaceOnLastLine.split('\t').length - 1;
 
-                const spaceTop = tokenTop;
+                let spaceTop = tokenTop;
+
+                // Figure out where to start. In text mode, it's the editor left.
+                // In blocks mode, it's the left of the closest parent that is in block layout.
+                let horizontalStart: number;
+                if ($blocks) {
+                    // We have to be careful about what "in" means in blocks mode.
+                    // If the token whose space we're in is a first leaf, we want to find the
+                    // highest block for which it is, and find the horizontal start of it's view.
+                    // Otherwise, we just want to find the containing block and find it's horizontal start.
+                    // If there isn't one, then we use the editor horizontal start.
+                    // For the token that is the first token of a block, we want the horizontal start
+                    // of the block that contains that first leaf, since it's space is outside the block.
+
+                    // Find the highest block layout node for which this is first leaf.
+                    let blockParents = [];
+                    let parent = tokenView.parentElement;
+                    while (parent !== null) {
+                        if (parent.classList.contains('block'))
+                            blockParents.push(parent);
+                        parent = parent.parentElement;
+                    }
+                    while (
+                        blockParents.length > 0 &&
+                        blockParents[0].querySelectorAll('.token-view')[0] ===
+                            tokenView
+                    )
+                        blockParents.shift();
+                    const containingBlockView =
+                        blockParents[0] ?? tokenView.closest('.block');
+
+                    const rect = containingBlockView?.getBoundingClientRect();
+                    horizontalStart =
+                        rect === undefined
+                            ? editorHorizontalStart
+                            : (leftToRight ? rect.left : rect.right) +
+                              viewportXOffset;
+
+                    // if (rect)
+                    //     spaceTop = rect.bottom + viewportYOffset - caretHeight;
+                } else horizontalStart = editorHorizontalStart;
 
                 if (horizontal) {
                     return {
                         left:
-                            editorHorizontalStart +
+                            horizontalStart +
                             (leftToRight ? 1 : -1) *
                                 (spaces * spaceWidth + tabs * tabWidth),
                         top: spaceTop,

@@ -21,7 +21,6 @@ import Start from '@runtime/Start';
 import UnionType from './UnionType';
 import NoneType from './NoneType';
 import { node, type Grammar, type Replacement, optional } from './Node';
-import type Locale from '@locale/Locale';
 import NodeRef from '@locale/NodeRef';
 import Glyphs from '../lore/Glyphs';
 import IncompatibleInput from '../conflicts/IncompatibleInput';
@@ -30,6 +29,7 @@ import ExpressionPlaceholder from './ExpressionPlaceholder';
 import Purpose from '../concepts/Purpose';
 import ListType from './ListType';
 import Unit from './Unit';
+import type Locales from '../locale/Locales';
 
 export default class Previous extends Expression {
     readonly previous: Token;
@@ -86,7 +86,7 @@ export default class Previous extends Expression {
             {
                 name: 'number',
                 kind: node(Expression),
-                label: (translation: Locale) => translation.term.index,
+                label: (locales: Locales) => locales.get((l) => l.term.index),
                 // Must be a number
                 getType: () => NumberType.make(),
                 space: true,
@@ -94,7 +94,7 @@ export default class Previous extends Expression {
             {
                 name: 'stream',
                 kind: node(Expression),
-                label: (translation: Locale) => translation.term.stream,
+                label: (locales: Locales) => locales.get((l) => l.term.stream),
                 // Must be a stream
                 getType: () => StreamType.make(new AnyType()),
                 space: true,
@@ -153,11 +153,11 @@ export default class Previous extends Expression {
         return [this.stream, this.number];
     }
 
-    compile(context: Context): Step[] {
+    compile(evaluator: Evaluator, context: Context): Step[] {
         return [
             new Start(this),
-            ...this.stream.compile(context),
-            ...this.number.compile(context),
+            ...this.stream.compile(evaluator, context),
+            ...this.number.compile(evaluator, context),
             new Finish(this),
         ];
     }
@@ -190,16 +190,16 @@ export default class Previous extends Expression {
             : stream.range(this, num);
     }
 
-    evaluateTypeSet(
+    evaluateTypeGuards(
         bind: Bind,
         original: TypeSet,
         current: TypeSet,
         context: Context
     ) {
         if (this.stream instanceof Expression)
-            this.stream.evaluateTypeSet(bind, original, current, context);
+            this.stream.evaluateTypeGuards(bind, original, current, context);
         if (this.number instanceof Expression)
-            this.number.evaluateTypeSet(bind, original, current, context);
+            this.number.evaluateTypeGuards(bind, original, current, context);
         return current;
     }
 
@@ -210,27 +210,27 @@ export default class Previous extends Expression {
         return this.previous;
     }
 
-    getNodeLocale(translation: Locale) {
-        return translation.node.Previous;
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.Previous);
     }
 
-    getStartExplanations(locale: Locale, context: Context) {
+    getStartExplanations(locales: Locales, context: Context) {
         return concretize(
-            locale,
-            locale.node.Previous.start,
-            new NodeRef(this.stream, locale, context)
+            locales,
+            locales.get((l) => l.node.Previous.start),
+            new NodeRef(this.stream, locales, context)
         );
     }
 
     getFinishExplanations(
-        locale: Locale,
+        locales: Locales,
         context: Context,
         evaluator: Evaluator
     ) {
         return concretize(
-            locale,
-            locale.node.Previous.finish,
-            this.getValueIfDefined(locale, context, evaluator)
+            locales,
+            locales.get((l) => l.node.Previous.finish),
+            this.getValueIfDefined(locales, context, evaluator)
         );
     }
 

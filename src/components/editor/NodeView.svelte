@@ -7,7 +7,6 @@
         getHidden,
         getInsertionPoint,
         getSpace,
-        getLocales,
     } from '../project/Contexts';
     import getNodeView from './util/nodeToView';
     import Expression, { ExpressionKind } from '@nodes/Expression';
@@ -16,20 +15,19 @@
     import Space from './Space.svelte';
     import Token from '../../nodes/Token';
     import concretize from '../../locale/concretize';
-    import { blocks } from '../../db/Database';
+    import { blocks, locales } from '../../db/Database';
 
     export let node: Node | undefined;
     export let small = false;
 
     const evaluation = getEvaluation();
-    const locales = getLocales();
 
     $: description =
-        node && $evaluation && locales && locales.length > 0
+        node && $evaluation
             ? node
                   .getDescription(
                       concretize,
-                      locales[0],
+                      $locales,
                       $evaluation.evaluator.project.getNodeContext(node)
                   )
                   .toText()
@@ -117,11 +115,13 @@
 
         /** This allows us to style things up the the tree. */
         text-decoration: inherit;
+        cursor: grab;
     }
 
     .block {
         display: inline-block;
         vertical-align: baseline;
+        background: var(--wordplay-background);
         padding: calc(var(--wordplay-spacing) / 3);
         border-start-start-radius: 0;
         border-start-end-radius: var(--wordplay-border-radius);
@@ -129,34 +129,23 @@
         border-end-start-radius: 0;
         padding: calc(var(--wordplay-spacing) / 2);
         box-shadow: var(--color-shadow) 1px 1px 4px;
-        cursor: default;
-    }
-
-    .evaluate {
-        background: var(--color-blue-transparent);
     }
 
     :global(.editor:not(.dragging))
         .evaluate:hover:not(:has(.node-view:hover)) {
+        background: var(--color-blue-transparent);
         outline: var(--wordplay-focus-width) solid var(--color-blue);
-    }
-
-    .definition {
-        background: var(--color-purple-transparent);
     }
 
     :global(.editor:not(.dragging))
         .definition:hover:not(:has(.node-view:hover)) {
+        background: var(--color-purple-transparent);
         outline: var(--wordplay-focus-width) solid var(--color-purple);
     }
 
     .blockselected {
         outline: var(--wordplay-focus-width) solid
             var(--wordplay-highlight-color);
-    }
-
-    .node-view.hovered {
-        cursor: pointer;
     }
 
     /* When beginning dragged in an editor, hide the node view contents to create a sense of spatial integrity. */
@@ -167,6 +156,7 @@
     .dragged,
     .dragged :global(.node-view) {
         border: none;
+        cursor: grabbing;
     }
 
     .dragged :global(.node-view) {

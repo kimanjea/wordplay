@@ -10,7 +10,7 @@
     import type Value from '../../values/Value';
     import CodeView from './CodeView.svelte';
     import { DB, locales } from '../../db/Database';
-    import Stage, { toStage } from '../../output/Stage';
+    import Stage, { NameGenerator, toStage } from '../../output/Stage';
     import OutputView from '../output/OutputView.svelte';
 
     export let example: Example;
@@ -19,12 +19,12 @@
     export let evaluated: boolean;
     export let inline: boolean;
 
-    $: project = new Project(
+    $: project = Project.make(
         null,
         'example',
         new Source('example', [example.program, spaces]),
         [],
-        $locales
+        $locales.getLocales()
     );
     let value: Value | undefined = undefined;
     let stage: Stage | undefined = undefined;
@@ -33,7 +33,7 @@
         if (evaluator) evaluator.ignore(update);
 
         if (evaluated) {
-            evaluator = new Evaluator(project, DB);
+            evaluator = new Evaluator(project, DB, $locales);
             evaluator.observe(update);
             evaluator.start();
         } else {
@@ -43,8 +43,10 @@
 
     function update() {
         if (evaluator) {
-            value = evaluator.getLatestSourceValue(project.main);
-            stage = value ? toStage(project, value) : undefined;
+            value = evaluator.getLatestSourceValue(project.getMain());
+            stage = value
+                ? toStage(evaluator, value, new NameGenerator())
+                : undefined;
         }
     }
 

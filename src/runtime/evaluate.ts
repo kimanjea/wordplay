@@ -1,5 +1,6 @@
-import { DefaultLocale, DB } from '../db/Database';
-import type Locale from '../locale/Locale';
+import { DB } from '../db/Database';
+import DefaultLocale from '../locale/DefaultLocale';
+import Locales from '../locale/Locales';
 import Project from '../models/Project';
 import Source from '../nodes/Source';
 import type Value from '../values/Value';
@@ -12,17 +13,24 @@ import Evaluator from './Evaluator';
 export default function evaluateCode(
     main: string,
     supplements?: string[],
-    locale?: Locale
+    locales?: Locales
 ): Value | undefined {
     const source = new Source('test', main);
-    const project = new Project(
+    const project = Project.make(
         null,
         'test',
         source,
         (supplements ?? []).map(
             (code, index) => new Source(`sup${index + 1}`, code)
         ),
-        locale ?? DefaultLocale
+        locales?.getLocales() ?? DefaultLocale
     );
-    return new Evaluator(project, DB).getInitialValue();
+    return new Evaluator(
+        project,
+        DB,
+        new Locales(
+            locales === undefined ? [DefaultLocale] : locales.getLocales(),
+            DefaultLocale
+        )
+    ).getInitialValue();
 }

@@ -14,6 +14,9 @@ import type Bind from '../nodes/Bind';
 import type { Database } from '../db/Database';
 import MarkupValue from '@values/MarkupValue';
 import type Locale from '../locale/Locale';
+import type StructureDefinition from '../nodes/StructureDefinition';
+import type StreamDefinition from '../nodes/StreamDefinition';
+import type Locales from '../locale/Locales';
 
 /**
  * Represents one or more equivalent inputs to an output expression.
@@ -84,14 +87,21 @@ export default class OutputPropertyValueSet {
         return expr;
     }
 
-    getOutputExpressions(project: Project): OutputExpression[] {
+    getOutputExpressions(
+        project: Project,
+        locales: Locales
+    ): OutputExpression[] {
         return this.values
             .filter(
                 (value) => value.given && value.expression instanceof Evaluate
             )
             .map(
                 (value) =>
-                    new OutputExpression(project, value.expression as Evaluate)
+                    new OutputExpression(
+                        project,
+                        value.expression as Evaluate,
+                        locales
+                    )
             );
     }
 
@@ -124,16 +134,15 @@ export default class OutputPropertyValueSet {
         return expr instanceof ListLiteral ? expr : undefined;
     }
 
-    getPlace(project: Project) {
+    getEvaluationOf(
+        project: Project,
+        definition: StructureDefinition | StreamDefinition
+    ) {
         const expr = this.getExpression();
         return expr instanceof Evaluate &&
-            expr.is(project.shares.output.Place, project.getNodeContext(expr))
+            expr.is(definition, project.getNodeContext(expr))
             ? expr
             : undefined;
-    }
-
-    getName() {
-        return this.property.name;
     }
 
     getExpressions(): Evaluate[] {
@@ -152,12 +161,12 @@ export default class OutputPropertyValueSet {
         return this.values.some((val) => val.given);
     }
 
-    getDocs(locales: Locale[]) {
+    getDocs(locales: Locales) {
         return this.values[0]?.bind.docs?.getPreferredLocale(locales);
     }
 
     /** Given a project, unsets this property on expressions on which it is set. */
-    unset(projects: Database, project: Project, locales: Locale[]) {
+    unset(projects: Database, project: Project, locales: Locales) {
         // Find all the values that are given, then map them to [ Evaluate, Evaluate ] pairs
         // that represent the original Evaluate and the replacement without the given value.
         // If the property is required, replace with a default value.
@@ -176,7 +185,7 @@ export default class OutputPropertyValueSet {
     }
 
     /** Given a project, set this property to a reasonable starting value */
-    set(db: Database, project: Project, locales: Locale[]) {
+    set(db: Database, project: Project, locales: Locales) {
         db.Projects.revise(
             project,
             project.getBindReplacements(

@@ -36,6 +36,9 @@ import Evaluate from '../nodes/Evaluate';
 import NumberGenerator from 'recoverable-random';
 import type { Database } from '../db/Database';
 import ReactionStream from '../values/ReactionStream';
+import type Scene from '../output/Scene';
+import Locales from '../locale/Locales';
+import DefaultLocale from '../locale/DefaultLocale';
 
 /** Anything that wants to listen to changes in the state of this evaluator */
 export type EvaluationObserver = () => void;
@@ -47,7 +50,7 @@ export type StreamChange = {
 };
 export type StreamCreator = Evaluate | Reaction;
 export type IndexedValue = { value: Value | undefined; stepNumber: StepNumber };
-export const MAX_CALL_STACK_DEPTH = 256;
+export const MAX_CALL_STACK_DEPTH = 512;
 export const MAX_STEP_COUNT = 262144;
 
 // Don't let source values take more than 256 MB of memory.
@@ -63,6 +66,9 @@ export enum Mode {
 export default class Evaluator {
     /** The project that this is evaluating. */
     readonly project: Project;
+
+    /** The preferred locales for evaluation. */
+    readonly locales: Locales;
 
     /** The database that contains settings for evaluation */
     readonly database: Database;
@@ -118,9 +124,15 @@ export default class Evaluator {
      * can have multiple streams associated with it.
      */
     #inputs: (null | {
+        /** The index of the source from which the stream originated */
+        source: number;
+        /** The path to the node in the source */
         path: Path;
+        /** The count of the stream created */
         number: number;
+        /** Exactly when the input occurred */
         stepIndex: number;
+        /** The raw data of the event */
         raw: unknown;
         silent: boolean;
     })[] = [];
@@ -179,6 +191,11 @@ export default class Evaluator {
      */
     previousTime: DOMHighResTimeStamp | undefined = undefined;
 
+    /**
+     * The time between the last evaluation
+     */
+    timeDelta: number | undefined = undefined;
+
     /** The relative time, accounting for pauses, accumulated from deltas */
     currentTime = 0;
     animating = false;
@@ -206,6 +223,9 @@ export default class Evaluator {
         streams: Set<StreamValue>;
     }[] = [];
 
+    /** The scene corresponding to what's rendered, which is needed in providing streams access to collisions */
+    scene: Scene | undefined = undefined;
+
     /**
      * Create a new evalutor, given some project.
      * @param project The project to evaluate.
@@ -215,11 +235,13 @@ export default class Evaluator {
     constructor(
         project: Project,
         database: Database,
+        locales: Locales,
         reactive = true,
         prior: Evaluator | undefined = undefined
     ) {
         this.project = project;
         this.database = database;
+        this.locales = locales;
 
         this.reactive = reactive;
 
@@ -258,7 +280,7 @@ export default class Evaluator {
         supplements?: string[]
     ): Value | undefined {
         const source = new Source('test', main);
-        const project = new Project(
+        const project = Project.make(
             null,
             'test',
             source,
@@ -267,7 +289,11 @@ export default class Evaluator {
             ),
             locale
         );
-        return new Evaluator(project, database).getInitialValue();
+        return new Evaluator(
+            project,
+            database,
+            new Locales([locale], DefaultLocale)
+        ).getInitialValue();
     }
 
     /** Mirror the given evaluator's stream history and state, but with the new source. */
@@ -294,7 +320,10 @@ export default class Evaluator {
                 // See if we can find the corresponding stream.
                 else {
                     // Resolve the node from the path.
-                    const evaluate = this.project.resolvePath(input.path);
+                    const evaluate = this.project.resolvePath(
+                        input.source,
+                        input.path
+                    );
 
                     // Couldn't find the node, or it's not an evaluate? Stop here.
                     if (evaluate === undefined) {
@@ -360,23 +389,34 @@ export default class Evaluator {
     // GETTERS
 
     getMain(): Source {
-        return this.project.main;
+        return this.project.getMain();
     }
+
     getMode(): Mode {
         return this.mode;
     }
+
     getBasis(): Basis {
         return this.project.basis;
     }
+
     getCurrentStep() {
         return this.evaluations[0]?.currentStep();
     }
+
     getNextStep() {
         return this.evaluations[0]?.nextStep();
     }
+
+    /** Get the currently selected locales from the database */
+    getLocales() {
+        return this.locales.getLocales();
+    }
+
     getCurrentEvaluation() {
         return this.evaluations.length === 0 ? undefined : this.evaluations[0];
     }
+
     getLastEvaluation() {
         return this.#lastEvaluation;
     }
@@ -388,7 +428,7 @@ export default class Evaluator {
     getCurrentContext() {
         return (
             this.getCurrentEvaluation()?.getContext() ??
-            new Context(this.project, this.project.main)
+            new Context(this.project, this.project.getMain())
         );
     }
 
@@ -410,12 +450,15 @@ export default class Evaluator {
     getStepCount() {
         return this.#stepCount;
     }
+
     getStepIndex() {
         return this.#stepIndex;
     }
+
     getEarliestStepIndexAvailable() {
         return this.reactions[0]?.stepIndex ?? 0;
     }
+
     getSteps(evaluation: DefinitionNode): Step[] {
         // No expression? No steps.
         let steps = this.steps.get(evaluation);
@@ -426,8 +469,8 @@ export default class Evaluator {
             else {
                 const context =
                     this.project.getNodeContext(expression) ??
-                    new Context(this.project, this.project.main);
-                steps = expression.compile(context);
+                    new Context(this.project, this.project.getMain());
+                steps = expression.compile(this, context);
             }
             this.steps.set(evaluation, steps);
         }
@@ -615,7 +658,7 @@ export default class Evaluator {
         this.setMode(Mode.Play);
         this.start();
         this.pause();
-        return this.getLatestSourceValue(this.project.main);
+        return this.getLatestSourceValue(this.project.getMain());
     }
 
     /** Evaluate until we're done */
@@ -738,7 +781,7 @@ export default class Evaluator {
                         this.stepTo(previousStepIndex);
                         this.stepWithinProgram();
                         this.broadcast();
-                        return;
+                        return true;
                     }
                 }
             }
@@ -749,6 +792,7 @@ export default class Evaluator {
         }
 
         this.broadcast();
+        return true;
     }
 
     /** Keep evaluating steps in this project until out of the current evaluation. */
@@ -814,19 +858,22 @@ export default class Evaluator {
             this.evaluations.length > MAX_CALL_STACK_DEPTH
                 ? new EvaluationLimitException(
                       this,
-                      this.project.main.expression,
+                      this.project.getMain().expression,
                       this.evaluations.map((e) => e.getDefinition())
                   )
                 : // If it seems like we're evaluating something very time consuming, halt.
                 this.#totalStepCount > MAX_STEP_COUNT
-                ? new StepLimitException(this, this.project.main.expression)
+                ? new StepLimitException(
+                      this,
+                      this.project.getMain().expression
+                  )
                 : // Otherwise, step the current evaluation and get it's value
                   evaluation.step(this);
 
         // If it's an exception on main, halt execution by returning the exception value.
         if (
             value instanceof ExceptionValue &&
-            this.evaluations[0].getSource() === this.project.main
+            this.evaluations[0].getSource() === this.project.getMain()
         )
             this.end(value);
         // If it's another kind of value, pop the evaluation off the stack and add the value to the
@@ -837,8 +884,8 @@ export default class Evaluator {
             // If there's another Evaluation on the stack, pass the value to it by pushing it onto it's stack.
             if (this.evaluations.length > 0) {
                 this.evaluations[0].pushValue(value);
-                // Remember the value that was evaluated.
-                this.rememberExpressionValue(evaluation.getCreator(), value);
+                // Remember that this creator created this value.
+                this.rememberExpressionValue(value.creator, value);
             }
             // Otherwise, save the value and clean up this final evaluation; nothing left to do!
             else this.end();
@@ -901,13 +948,15 @@ export default class Evaluator {
 
         // Step until reaching the target step index.
         while (this.#stepIndex < destinationStep) {
-            // If done, then something's broken, since it should always be possible to ... GET BACK TO THE FUTURE (lol)
-            if (this.isDone())
-                throw Error(
+            // If done, then something's broken in the program, since it should always be possible to ... GET BACK TO THE FUTURE (lol)
+            if (this.isDone()) {
+                console.error(
                     `Couldn't get back to the future; step ${destinationStep}/${
                         this.#stepCount
                     } unreachable. Fatal defect in Evaluator.`
                 );
+                return false;
+            }
 
             this.step();
         }
@@ -935,7 +984,7 @@ export default class Evaluator {
         this.broadcast();
     }
 
-    stepToInput() {
+    stepToInput(): boolean {
         // Find the input after the current index.
         const change = this.reactions.find(
             (change) => change.stepIndex > this.getStepIndex()
@@ -953,9 +1002,10 @@ export default class Evaluator {
 
         // Notify listeners that we reached the step.
         this.broadcast();
+        return true;
     }
 
-    stepBackToInput() {
+    stepBackToInput(): boolean {
         // Find the changed stream just before the current step index and step back to it.
         let latestChange;
         for (const change of this.reactions) {
@@ -966,12 +1016,12 @@ export default class Evaluator {
         if (latestChange) {
             this.stepTo(latestChange.stepIndex);
             this.broadcast();
-            return true;
         }
         // Otherwise, step to beginning.
         else {
             this.stepTo(0);
         }
+        return true;
     }
 
     stepTo(stepIndex: StepNumber) {
@@ -1125,27 +1175,34 @@ export default class Evaluator {
 
     tick(time: DOMHighResTimeStamp) {
         // First time? Just record it and bail.
-        let delta = 0;
         if (this.previousTime === undefined) {
             this.previousTime = time;
+            this.timeDelta = 0;
         } else {
             // Compute the delta and remember the previous time.
-            delta = time - this.previousTime;
+            this.timeDelta = time - this.previousTime;
             this.previousTime = time;
         }
 
         if (!this.isStepping()) {
             // Add the delta to the current time.
-            this.currentTime += delta;
+            this.currentTime += this.timeDelta;
+
+            // Tick physics one frame, so Motion streams get new places.
+            if (this.scene) this.scene.physics.tick(this.timeDelta);
 
             // If we're in play mode, tick all the temporal streams.
             if (this.temporalReactions.length > 0)
                 console.error(
-                    "Hmmm, something is modifying temporal streams outside of the Evaluator's control. Tsk tsk!"
+                    "Something is modifying temporal streams outside of the Evaluator's control. Tsk tsk!"
                 );
             // Tick each one, indirectly filling this.temporalReactions.
             for (const stream of this.temporalStreams)
-                stream.tick(this.currentTime, delta, this.timeMultiplier);
+                stream.tick(
+                    this.currentTime,
+                    this.timeDelta,
+                    this.timeMultiplier
+                );
 
             // Now reevaluate with all of the temporal stream updates.
             this.flush();
@@ -1190,7 +1247,11 @@ export default class Evaluator {
                         "Warning: Couldn't find the stream associated with an evaluate."
                     );
                 else {
+                    const source = this.project
+                        .getSources()
+                        .findIndex((source) => source.root === root);
                     this.#inputs.push({
+                        source,
                         path: root.getPath(evaluate),
                         number,
                         stepIndex: this.#stepIndex,

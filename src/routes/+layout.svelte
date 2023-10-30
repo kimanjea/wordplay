@@ -5,19 +5,12 @@
     import { LocalesSymbol, UserSymbol } from '../components/project/Contexts';
     import { writable } from 'svelte/store';
     import Fonts from '../basis/Fonts';
-    import {
-        locales,
-        locale,
-        DB,
-        animationFactor,
-        languages,
-        dark,
-    } from '../db/Database';
+    import { locales, DB, animationFactor, dark } from '../db/Database';
     import { browser } from '$app/environment';
     import { goto } from '$app/navigation';
-    import { PUBLIC_CONTEXT } from '$env/static/public';
     import { page } from '$app/stores';
     import { getLanguageDirection } from '../locale/LanguageCode';
+    import ALPHA from './alpha';
 
     /** Expose the translations as context, updating them as necessary */
     $: setContext(LocalesSymbol, $locales);
@@ -31,7 +24,7 @@
 
     // Keep the page's language and direction up to date.
     $: if (typeof document !== 'undefined') {
-        const language = $locale.language;
+        const language = $locales.getLocale().language;
         document.documentElement.setAttribute('lang', language);
         document.documentElement.setAttribute(
             'dir',
@@ -40,15 +33,13 @@
     }
 
     onMount(() => {
-        if (PUBLIC_CONTEXT === 'prod') goto('/');
-
         // Force default font to load
         Fonts.loadFace('Noto Sans');
 
         // Show only after fonts are loaded, to prevent font jiggle.
         document.fonts.ready.then(() => (loaded = true));
 
-        // Login the user
+        // Listen for logged in users.
         DB.login((newUser) => user.set(newUser));
 
         // Wait a second before showing loading
@@ -59,6 +50,9 @@
             DB.clean();
         };
     });
+
+    // Are we pre-beta in prod? Always go back to the beginning.
+    $: if (browser && $page && ALPHA) goto('/');
 
     function prefersDark() {
         return (
@@ -76,32 +70,30 @@
     }
 </script>
 
-{#if PUBLIC_CONTEXT !== 'prod' || $page.route.id === '/'}
-    <div
-        class:dark={$dark}
-        style:--animation-factor={$animationFactor}
-        style:--wordplay-app-font={Array.from(
-            new Set([
-                ...$locales.map((locale) => locale.ui.font.app),
-                'Noto Emoji',
-            ])
-        )
-            .map((font) => `"${font}"`)
-            .join(', ')}
-        style:--wordplay-code-font={Array.from(
-            new Set([
-                ...$locales.map((locale) => locale.ui.font.code),
-                'Noto Mono',
-                'Noto Emoji',
-            ])
-        )
-            .map((font) => `"${font}"`)
-            .join(', ')}
-        lang={$languages[0]}
-    >
-        <slot />
-        {#if !loaded && lag}
-            <Loading />
-        {/if}
-    </div>
-{/if}
+<div
+    class:dark={$dark}
+    style:--animation-factor={$animationFactor}
+    style:--wordplay-app-font={Array.from(
+        new Set([
+            ...$locales.getLocales().map((locale) => locale.ui.font.app),
+            'Noto Emoji',
+        ])
+    )
+        .map((font) => `"${font}"`)
+        .join(', ')}
+    style:--wordplay-code-font={Array.from(
+        new Set([
+            ...$locales.getLocales().map((locale) => locale.ui.font.code),
+            'Noto Mono',
+            'Noto Emoji',
+        ])
+    )
+        .map((font) => `"${font}"`)
+        .join(', ')}
+    lang={$locales.getLocale().language}
+>
+    <slot />
+    {#if !loaded && lag}
+        <Loading />
+    {/if}
+</div>

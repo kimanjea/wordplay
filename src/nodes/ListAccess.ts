@@ -3,7 +3,7 @@ import Expression from './Expression';
 import ListType from './ListType';
 import NumberType from './NumberType';
 import type Token from './Token';
-import Type from './Type';
+import type Type from './Type';
 import type Evaluator from '@runtime/Evaluator';
 import type Value from '@values/Value';
 import ListValue from '@values/ListValue';
@@ -18,9 +18,7 @@ import type Bind from './Bind';
 import UnclosedDelimiter from '@conflicts/UnclosedDelimiter';
 import ListOpenToken from './ListOpenToken';
 import ListCloseToken from './ListCloseToken';
-import NumberLiteral from './NumberLiteral';
 import { node, type Grammar, type Replacement } from './Node';
-import type Locale from '@locale/Locale';
 import { NotAType } from './NotAType';
 import NodeRef from '@locale/NodeRef';
 import Glyphs from '../lore/Glyphs';
@@ -31,6 +29,8 @@ import IncompatibleInput from '../conflicts/IncompatibleInput';
 import concretize from '../locale/concretize';
 import Sym from './Sym';
 import ExpressionPlaceholder from './ExpressionPlaceholder';
+import type Locales from '../locale/Locales';
+import AnyType from './AnyType';
 
 export default class ListAccess extends Expression {
     readonly list: Expression;
@@ -77,7 +77,7 @@ export default class ListAccess extends Expression {
             {
                 name: 'list',
                 kind: node(Expression),
-                label: (translation: Locale) => translation.term.list,
+                label: (locales: Locales) => locales.get((l) => l.term.list),
                 // Must be a list
                 getType: () => ListType.make(),
             },
@@ -85,7 +85,7 @@ export default class ListAccess extends Expression {
             {
                 name: 'index',
                 kind: node(Expression),
-                label: (translation: Locale) => translation.term.index,
+                label: (locales: Locales) => locales.get((l) => l.term.index),
                 // Must be a number
                 getType: () => NumberType.make(),
             },
@@ -103,7 +103,7 @@ export default class ListAccess extends Expression {
     }
 
     getPurpose(): Purpose {
-        return Purpose.Value;
+        return Purpose.Evaluate;
     }
 
     getAffiliatedType(): BasisTypeName | undefined {
@@ -138,16 +138,15 @@ export default class ListAccess extends Expression {
     }
 
     computeType(context: Context): Type {
+        // Non-number index?
+        const indexType = this.index.getType(context);
+        if (!(indexType instanceof NumberType))
+            return new NotAType(this, indexType, NumberType.make());
+
         // The type is the list's value type, or unknown otherwise.
         const listType = this.list.getType(context);
-        if (listType instanceof ListType && listType.type instanceof Type) {
-            if (
-                listType.length !== undefined &&
-                this.index instanceof NumberLiteral &&
-                this.index.getValue().num.greaterThanOrEqualTo(1) &&
-                this.index.getValue().num.lessThanOrEqualTo(listType.length)
-            )
-                return listType.type;
+        if (listType instanceof ListType) {
+            if (listType.type === undefined) return new AnyType();
             else return listType.type;
         } else return new NotAType(this, listType, ListType.make());
     }
@@ -156,11 +155,11 @@ export default class ListAccess extends Expression {
         return [this.list, this.index];
     }
 
-    compile(context: Context): Step[] {
+    compile(evaluator: Evaluator, context: Context): Step[] {
         return [
             new Start(this),
-            ...this.list.compile(context),
-            ...this.index.compile(context),
+            ...this.list.compile(evaluator, context),
+            ...this.index.compile(evaluator, context),
             new Finish(this),
         ];
     }
@@ -185,40 +184,40 @@ export default class ListAccess extends Expression {
         return list.get(index);
     }
 
-    evaluateTypeSet(
+    evaluateTypeGuards(
         bind: Bind,
         original: TypeSet,
         current: TypeSet,
         context: Context
     ) {
         if (this.list instanceof Expression)
-            this.list.evaluateTypeSet(bind, original, current, context);
+            this.list.evaluateTypeGuards(bind, original, current, context);
         if (this.index instanceof Expression)
-            this.index.evaluateTypeSet(bind, original, current, context);
+            this.index.evaluateTypeGuards(bind, original, current, context);
         return current;
     }
 
-    getNodeLocale(translation: Locale) {
-        return translation.node.ListAccess;
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.ListAccess);
     }
 
-    getStartExplanations(locale: Locale, context: Context) {
+    getStartExplanations(locales: Locales, context: Context) {
         return concretize(
-            locale,
-            locale.node.ListAccess.start,
-            new NodeRef(this.list, locale, context)
+            locales,
+            locales.get((l) => l.node.ListAccess.start),
+            new NodeRef(this.list, locales, context)
         );
     }
 
     getFinishExplanations(
-        locale: Locale,
+        locales: Locales,
         context: Context,
         evaluator: Evaluator
     ) {
         return concretize(
-            locale,
-            locale.node.ListAccess.finish,
-            this.getValueIfDefined(locale, context, evaluator)
+            locales,
+            locales.get((l) => l.node.ListAccess.finish),
+            this.getValueIfDefined(locales, context, evaluator)
         );
     }
 

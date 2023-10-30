@@ -10,11 +10,12 @@ import type TypeSet from './TypeSet';
 import NeverType from './NeverType';
 import type { BasisTypeName } from '../basis/BasisConstants';
 import { node, type Grammar, type Replacement } from './Node';
-import type Locale from '@locale/Locale';
 import NoneType from './NoneType';
 import Glyphs from '../lore/Glyphs';
 import NodeRef from '../locale/NodeRef';
 import TypePlaceholder from './TypePlaceholder';
+import type Definition from './Definition';
+import type Locales from '../locale/Locales';
 
 export default class UnionType extends Type {
     readonly left: Type;
@@ -68,6 +69,17 @@ export default class UnionType extends Type {
             this.replaceChild('or', this.or, replace),
             this.replaceChild('right', this.right, replace)
         ) as this;
+    }
+
+    enumerate(): Type[] {
+        return [
+            ...(this.left instanceof UnionType
+                ? this.left.enumerate()
+                : [this.left]),
+            ...(this.right instanceof UnionType
+                ? this.right.enumerate()
+                : [this.right]),
+        ];
     }
 
     acceptsAll(types: TypeSet, context: Context): boolean {
@@ -150,17 +162,36 @@ export default class UnionType extends Type {
         return [];
     }
 
-    /** Override the base class: basis type scopes are their basis structure definitions. */
-    getScope(context: Context): Node | undefined {
-        // Get the scope of the left and right and only return it if it's the same.
-        // Otherwise, there is no overlapping scope.
-        const leftScope = this.left.getScope(context);
-        const rightScope = this.right.getScope(context);
-        return leftScope === rightScope ? leftScope : undefined;
+    getDefinitionsInScope(context: Context): Definition[] {
+        return this.getDefinitions(this, context);
     }
 
-    getNodeLocale(translation: Locale) {
-        return translation.node.UnionType;
+    /**
+     * Override to search for definitions on both the left and right types, and
+     * find the intersection of both sets, to allow for a degree of polymorphism. */
+    getDefinitions(anchor: Node, context: Context): Definition[] {
+        // Find the list of definitions in scope of each possible type.
+        // We generalize because literal types don't affect available definitions.
+        const definitionSets = this.generalize(context)
+            .getPossibleTypes(context)
+            .map((type) => type.getDefinitions(anchor, context));
+
+        // Find the definitions that intersect across each type's definition list.
+        // Do this by filtering the first set by all definitions for which all other sets have an equivalent definition.
+        // This is what allows for polymorphism.
+        const first = definitionSets[0];
+        const rest = definitionSets.slice(1);
+        return rest.length == 0
+            ? first
+            : first.filter((def1) =>
+                  rest.every((definitions) =>
+                      definitions.some((def2) => def1.isEquivalentTo(def2))
+                  )
+              );
+    }
+
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.UnionType);
     }
 
     /**
@@ -202,10 +233,10 @@ export default class UnionType extends Type {
         return Glyphs.Union;
     }
 
-    getDescriptionInputs(locale: Locale, context: Context) {
+    getDescriptionInputs(locales: Locales, context: Context) {
         return [
-            new NodeRef(this.left, locale, context),
-            new NodeRef(this.right, locale, context),
+            new NodeRef(this.left, locales, context),
+            new NodeRef(this.right, locales, context),
         ];
     }
 

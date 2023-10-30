@@ -14,7 +14,6 @@ import UnionType from './UnionType';
 import type TypeSet from './TypeSet';
 import ExceptionValue from '@values/ExceptionValue';
 import { node, type Grammar, type Replacement } from './Node';
-import type Locale from '@locale/Locale';
 import BooleanType from './BooleanType';
 import ExpectedBooleanCondition from '../conflicts/ExpectedBooleanCondition';
 import Check from '@runtime/Check';
@@ -31,6 +30,7 @@ import Sym from './Sym';
 import ExpressionPlaceholder from './ExpressionPlaceholder';
 import type Node from './Node';
 import UnknownType from './UnknownType';
+import type Locales from '../locale/Locales';
 
 export default class Reaction extends Expression {
     readonly initial: Expression;
@@ -92,16 +92,16 @@ export default class Reaction extends Expression {
             {
                 name: 'initial',
                 kind: node(Expression),
-                label: (translation: Locale) =>
-                    translation.node.Reaction.initial,
+                label: (locales: Locales) =>
+                    locales.get((l) => l.node.Reaction.initial),
             },
             { name: 'dots', kind: node(Sym.Stream), space: true },
             {
                 name: 'condition',
                 kind: node(Expression),
                 space: true,
-                label: (translation: Locale) =>
-                    translation.node.Reaction.condition,
+                label: (locales: Locales) =>
+                    locales.get((l) => l.node.Reaction.condition),
                 getType: () => BooleanType.make(),
             },
             {
@@ -113,7 +113,8 @@ export default class Reaction extends Expression {
             {
                 name: 'next',
                 kind: node(Expression),
-                label: (translation: Locale) => translation.node.Reaction.next,
+                label: (locales: Locales) =>
+                    locales.get((l) => l.node.Reaction.next),
                 space: true,
                 indent: true,
             },
@@ -135,7 +136,7 @@ export default class Reaction extends Expression {
     }
 
     getPurpose() {
-        return Purpose.Decide;
+        return Purpose.Input;
     }
 
     getAffiliatedType(): BasisTypeName | undefined {
@@ -150,16 +151,11 @@ export default class Reaction extends Expression {
         if (!(conditionType instanceof BooleanType))
             conflicts.push(new ExpectedBooleanCondition(this, conditionType));
 
-        // The condition should reference a stream.
         if (
-            !this.condition
-                .nodes()
-                .some(
-                    (node) =>
-                        node instanceof Expression &&
-                        context.getStreamType(node.getType(context)) !==
-                            undefined
-                )
+            !Array.from(this.condition.getAllDependencies(context)).some(
+                (node) =>
+                    context.getStreamType(node.getType(context)) !== undefined
+            )
         )
             conflicts.push(new ExpectedStream(this));
 
@@ -185,10 +181,10 @@ export default class Reaction extends Expression {
         return [this.condition, this.initial, this.next];
     }
 
-    compile(context: Context): Step[] {
-        const initialSteps = this.initial.compile(context);
-        const conditionSteps = this.condition.compile(context);
-        const nextSteps = this.next.compile(context);
+    compile(evaluator: Evaluator, context: Context): Step[] {
+        const initialSteps = this.initial.compile(evaluator, context);
+        const conditionSteps = this.condition.compile(evaluator, context);
+        const nextSteps = this.next.compile(evaluator, context);
 
         return [
             // Start by binding the previous value, if there is one.
@@ -220,16 +216,6 @@ export default class Reaction extends Expression {
                         value
                     );
 
-                // Did any of the streams cause the current evaluation?
-                const dependencies = evaluator.reactionDependencies.pop();
-                const streams = dependencies ? dependencies.streams : undefined;
-                const changed =
-                    streams === undefined
-                        ? false
-                        : Array.from(streams).some((stream) =>
-                              evaluator.didStreamCauseReaction(stream)
-                          );
-
                 // See if there's a stream created for this.
                 const stream = evaluator.getStreamFor(this);
 
@@ -237,8 +223,7 @@ export default class Reaction extends Expression {
                 // so evaluate the next step.
                 if (stream) {
                     // if the condition was true and a dependency changed, jump to the next step.
-                    if (changed && value.bool)
-                        evaluator.jump(initialSteps.length + 1);
+                    if (value.bool) evaluator.jump(initialSteps.length + 1);
                     // If it was false, push the last reaction value and skip the rest.
                     else {
                         const latest = stream.latest();
@@ -295,16 +280,16 @@ export default class Reaction extends Expression {
         return streamValue;
     }
 
-    evaluateTypeSet(
+    evaluateTypeGuards(
         bind: Bind,
         original: TypeSet,
         current: TypeSet,
         context: Context
     ) {
         if (this.initial instanceof Expression)
-            this.initial.evaluateTypeSet(bind, original, current, context);
+            this.initial.evaluateTypeGuards(bind, original, current, context);
         if (this.next instanceof Expression)
-            this.next.evaluateTypeSet(bind, original, current, context);
+            this.next.evaluateTypeGuards(bind, original, current, context);
         return current;
     }
 
@@ -316,23 +301,26 @@ export default class Reaction extends Expression {
         return this.dots;
     }
 
-    getNodeLocale(translation: Locale) {
-        return translation.node.Reaction;
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.Reaction);
     }
 
-    getStartExplanations(locale: Locale) {
-        return concretize(locale, locale.node.Reaction.start);
+    getStartExplanations(locales: Locales) {
+        return concretize(
+            locales,
+            locales.get((l) => l.node.Reaction.start)
+        );
     }
 
     getFinishExplanations(
-        locale: Locale,
+        locales: Locales,
         context: Context,
         evaluator: Evaluator
     ) {
         return concretize(
-            locale,
-            locale.node.Reaction.finish,
-            this.getValueIfDefined(locale, context, evaluator)
+            locales,
+            locales.get((l) => l.node.Reaction.finish),
+            this.getValueIfDefined(locales, context, evaluator)
         );
     }
 

@@ -1,17 +1,22 @@
 <script lang="ts">
-    import { SaveStatus, locale } from '../../db/Database';
+    import { SaveStatus, locales } from '../../db/Database';
     import { status } from '../../db/Database';
     import { getUser } from '../project/Contexts';
 
     const user = getUser();
+    $: device = $user === null;
 </script>
 
-<div class="status {$status}">
+<div class="status {$status}" class:device>
     {$status === SaveStatus.Saved
-        ? `${$user === null ? $locale.ui.save.local : $locale.ui.save.saved} ✔`
+        ? `${
+              device
+                  ? $locales.get((l) => l.ui.save.local)
+                  : $locales.get((l) => l.ui.save.saved)
+          } ✔`
         : $status === SaveStatus.Saving
-        ? `${$locale.ui.save.saving} …`
-        : `${$locale.ui.save.unsaved} ⨉`}
+        ? `${$locales.get((l) => l.ui.save.saving)} …`
+        : `${$locales.get((l) => l.ui.save.unsaved)} ⨉`}
 </div>
 
 <style>
@@ -24,12 +29,18 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        white-space: nowrap;
     }
 
     .status.error {
         background: var(--wordplay-error);
         color: var(--wordplay-background);
         animation: shake 1s infinite;
+    }
+
+    .status.device {
+        background: var(--wordplay-warning);
+        color: var(--wordplay-background);
     }
 
     @keyframes shake {

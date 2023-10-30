@@ -2,7 +2,7 @@ import toStructure from '@basis/toStructure';
 import StructureValue from '@values/StructureValue';
 import type Value from '@values/Value';
 import type Color from './Color';
-import Output, { getOutputInputs } from './Output';
+import Valued, { getOutputInputs } from './Valued';
 import type Place from './Place';
 import { toPlace } from './Place';
 import { toBoolean, toNumber } from './Stage';
@@ -10,11 +10,11 @@ import { toColor } from './Color';
 import { getBind } from '@locale/getBind';
 import Evaluate from '@nodes/Evaluate';
 import Reference from '@nodes/Reference';
-import type Locale from '../locale/Locale';
 import type Project from '../models/Project';
 import concretize from '../locale/concretize';
+import type Locales from '../locale/Locales';
 
-export function createPoseType(locales: Locale[]) {
+export function createPoseType(locales: Locales) {
     return toStructure(`
     ${getBind(locales, (locale) => locale.output.Pose, '•')}(
         ${getBind(locales, (locale) => locale.output.Pose.color)}•Color|ø: ø
@@ -28,7 +28,7 @@ export function createPoseType(locales: Locale[]) {
 `);
 }
 
-export default class Pose extends Output {
+export default class Pose extends Valued {
     readonly color?: Color;
     readonly opacity?: number;
     readonly offset?: Place;
@@ -74,11 +74,11 @@ export default class Pose extends Output {
         );
     }
 
-    getDescription(locales: Locale[]) {
+    getDescription(locales: Locales) {
         if (this._description === undefined) {
             this._description = concretize(
-                locales[0],
-                locales[0].output.Pose.description,
+                locales,
+                locales.get((l) => l.output.Pose.description),
                 this.opacity !== undefined && this.opacity !== 1
                     ? Math.round(this.opacity)
                     : undefined,
@@ -157,13 +157,10 @@ export function toPose(
     );
 }
 
-export function createPoseLiteral(project: Project, locales: Locale[]) {
+export function createPoseLiteral(project: Project, locales: Locales) {
     const PoseType = project.shares.output.Pose;
     return Evaluate.make(
-        Reference.make(
-            PoseType.names.getPreferredNameString(locales),
-            PoseType
-        ),
+        Reference.make(locales.getName(PoseType.names), PoseType),
         []
     );
 }

@@ -1,8 +1,4 @@
-import {
-    QUESTION_SYMBOL,
-    EXPONENT_SYMBOL,
-    LANGUAGE_SYMBOL,
-} from '@parser/Symbols';
+import { EXPONENT_SYMBOL, LANGUAGE_SYMBOL } from '@parser/Symbols';
 import { PRODUCT_SYMBOL } from '@parser/Symbols';
 import Dimension from './Dimension';
 import Token from './Token';
@@ -13,7 +9,6 @@ import type { BasisTypeName } from '../basis/BasisConstants';
 import LanguageToken from './LanguageToken';
 import Sym from './Sym';
 import { node, type Grammar, type Replacement, list, optional } from './Node';
-import type Locale from '@locale/Locale';
 import Emotion from '../lore/Emotion';
 import type Context from './Context';
 import {
@@ -21,6 +16,7 @@ import {
     getPossibleUnits,
 } from '../edit/getPossibleUnits';
 import type Node from './Node';
+import type Locales from '../locale/Locales';
 
 export default class Unit extends Type {
     /** In case this was parsed, we keep the original tokens around. */
@@ -104,9 +100,9 @@ export default class Unit extends Type {
                         else {
                             this.denominator.push(
                                 Dimension.make(
-                                    this.numerator.length > 0,
+                                    this.denominator.length > 0,
                                     unit,
-                                    exp
+                                    Math.abs(exp)
                                 )
                             );
                             if (this.slash === undefined)
@@ -153,11 +149,6 @@ export default class Unit extends Type {
     }
 
     static Empty = new Unit();
-    static Wildcard = (() => {
-        const exp = new Map();
-        exp.set(QUESTION_SYMBOL, 1);
-        return new Unit(exp);
-    })();
 
     getGrammar(): Grammar {
         return [
@@ -218,9 +209,6 @@ export default class Unit extends Type {
         return newUnit;
     }
 
-    isWildcard() {
-        return this.exponents.get('?') === 1;
-    }
     isUnitless() {
         return this.exponents.size === 0;
     }
@@ -228,12 +216,10 @@ export default class Unit extends Type {
     isEqualTo(unit: Unit) {
         return (
             unit instanceof Unit &&
-            ((this.exponents.size === 0 && unit.isWildcard()) ||
-                (this.exponents.size === unit.exponents.size &&
-                    Array.from(this.exponents.keys()).every(
-                        (key) =>
-                            this.exponents.get(key) === unit.exponents.get(key)
-                    )))
+            this.exponents.size === unit.exponents.size &&
+            Array.from(this.exponents.keys()).every(
+                (key) => this.exponents.get(key) === unit.exponents.get(key)
+            )
         );
     }
 
@@ -272,9 +258,17 @@ export default class Unit extends Type {
         ]);
     }
 
-    accepts(unit: Unit): boolean {
+    accepts(unit: Type): boolean {
         // Every key in this exists in the given unit and they have the same exponents.
-        return this.isEqualTo(unit);
+        return (
+            // Is this a unit?
+            unit instanceof Unit &&
+            // And...
+            // The units are equal
+            (this.isEqualTo(unit) ||
+                // Or this is unitless
+                this.isUnitless())
+        );
     }
 
     acceptsAll(types: TypeSet): boolean {
@@ -375,8 +369,8 @@ export default class Unit extends Type {
         return Unit.get(newExponents);
     }
 
-    getNodeLocale(translation: Locale) {
-        return translation.node.Unit;
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.Unit);
     }
 
     getGlyphs() {
@@ -386,11 +380,15 @@ export default class Unit extends Type {
         };
     }
 
-    getDescriptionInputs(locale: Locale) {
+    getDescriptionInputs(locales: Locales) {
         return [
             this.exponents.size === 0
-                ? locale.basis.Number.name[0]
+                ? locales.get((l) => l.basis.Number.name[0])
                 : this.toWordplay(),
         ];
+    }
+
+    static meters() {
+        return Unit.create(['m']);
     }
 }

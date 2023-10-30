@@ -54,9 +54,9 @@
 </script>
 
 <script lang="ts">
-    import { locale } from '../../db/Database';
-    import { getFirstName } from '../../locale/Locale';
+    import { locales } from '../../db/Database';
     import Button from './Button.svelte';
+    import { getFirstName } from '../../locale/Locale';
 
     /** a degree (any number remainder 360) */
     export let hue: number;
@@ -68,7 +68,11 @@
     export let change: (l: number, c: number, h: number) => void;
     export let editable = true;
 
-    $: color = new ColorJS(ColorJS.spaces.lch, [lightness, chroma, hue], 1);
+    $: color = new ColorJS(
+        ColorJS.spaces.lch,
+        [lightness * 100, chroma, hue],
+        1
+    );
 
     let hueWidth: number | undefined = undefined;
     let hueHeight: number | undefined = undefined;
@@ -103,7 +107,7 @@
                 class="band"
                 style:height="{100 / Bands.length}%"
                 style:background="linear-gradient(to right, {getColors(
-                    lightness,
+                    lightness * 100,
                     val
                 ).join(', ')})"
             />
@@ -116,18 +120,19 @@
         />
     </div>
     <div class="primary">
-        {#each Primary as color}<Button
+        {#each Primary as primary}<Button
                 tip="color"
                 action={() => {
-                    [lightness, chroma, hue] = color;
-                    lightness /= 100;
+                    lightness = primary[0] / 100;
+                    chroma = primary[1];
+                    hue = primary[2];
+                    broadcast();
                 }}
-                padding={false}
                 ><div
                     class="color"
                     style:background={new ColorJS(
                         ColorJS.spaces.lch,
-                        color
+                        primary
                     ).display()}
                 /></Button
             >{/each}
@@ -138,10 +143,13 @@
             min={0}
             max={1}
             increment={0.01}
-            tip={getFirstName($locale.output.Color.lightness.names)}
+            tip={$locales.get((l) =>
+                getFirstName(l.output.Color.lightness.names)
+            )}
             unit={'%'}
+            precision={0}
             change={(value) => {
-                lightness = value;
+                lightness = value.toNumber();
                 broadcast();
             }}
             {editable}
@@ -152,9 +160,9 @@
             max={150}
             increment={1}
             unit=""
-            tip={getFirstName($locale.output.Color.chroma.names)}
+            tip={$locales.get((l) => getFirstName(l.output.Color.chroma.names))}
             change={(value) => {
-                chroma = Math.round(value);
+                chroma = value.round().toNumber();
                 broadcast();
             }}
             {editable}
@@ -165,9 +173,9 @@
             max={360}
             increment={1}
             unit={'°'}
-            tip={getFirstName($locale.output.Color.hue.names)}
+            tip={$locales.get((l) => getFirstName(l.output.Color.hue.names))}
             change={(value) => {
-                hue = Math.round(value);
+                hue = value.round().toNumber();
                 broadcast();
             }}
             {editable}

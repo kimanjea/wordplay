@@ -16,7 +16,7 @@
     import PlayView from './PlayView.svelte';
     import Button from '../widgets/Button.svelte';
     import Source from '../../nodes/Source';
-    import { locale, locales, Projects } from '../../db/Database';
+    import { locales, Projects } from '@db/Database';
     import type Spaces from '../../parser/Spaces';
     import { toMarkup } from '../../parser/toMarkup';
     import MarkupHTMLView from '../concepts/MarkupHTMLView.svelte';
@@ -33,9 +33,11 @@
     import type Markup from '../../nodes/Markup';
     import Header from './Header.svelte';
     import { PersistenceType } from '../../db/ProjectHistory';
+    import { moderatedFlags } from '../../models/Moderation';
 
     export let progress: Progress;
     export let navigate: (progress: Progress) => void;
+    export let fallback: boolean;
 
     // Get the concept index and path from the project view and put it in
     // a store, and the store in a context so that ContextViewUI can access the index.
@@ -125,19 +127,30 @@
     let initialProject: Project;
     $: if (
         initialProject === undefined ||
-        progress.getProjectID() !== initialProject.id
+        progress.getProjectID() !== initialProject.getID()
     )
-        initialProject = new Project(
+        initialProject = Project.make(
             progress.getProjectID(),
-            scene ? scene.title : act ? act.title : $locale.wordplay,
-            new Source($locale.term.start, source),
+            scene
+                ? scene.title
+                : act
+                ? act.title
+                : $locales.getLocale().wordplay,
+            new Source(
+                $locales.get((l) => l.term.start),
+                source
+            ),
             [],
-            $locales,
+            $locales.getLocales(),
             $user?.uid ?? null,
             [],
             false,
             undefined,
-            false
+            false,
+            false,
+            false,
+            null,
+            moderatedFlags()
         );
 
     // Every time the progress changes, see if there's a revision to the project stored in the database,
@@ -168,7 +181,7 @@
 
     // When the project changes to something other than the initial project, start persisting it.
     $: if ($projectStore !== undefined && !$projectStore.equals(initialProject))
-        Projects.getHistory($projectStore.id)?.setPersist(
+        Projects.getHistory($projectStore.getID())?.setPersist(
             PersistenceType.Local
         );
 
@@ -210,16 +223,20 @@
     on:pointerdown|stopPropagation|preventDefault={() => nextButton?.focus()}
 >
     <div class="header">
-        <Header>Learn</Header>
+        <Header block={false}
+            >{#if fallback}🚧{/if}{$locales.get(
+                (l) => l.ui.page.learn.header
+            )}</Header
+        >
         <nav>
             <Button
-                tip={$locale.ui.page.learn.button.previous}
+                tip={$locales.get((l) => l.ui.page.learn.button.previous)}
                 action={() => navigate(progress.previousPause() ?? progress)}
                 active={progress.previousPause() !== undefined}
                 bind:view={previousButton}>⇦</Button
             >
             <Button
-                tip={$locale.ui.page.learn.button.next}
+                tip={$locales.get((l) => l.ui.page.learn.button.next)}
                 action={() => navigate(progress.nextPause() ?? progress)}
                 active={progress.nextPause() !== undefined}
                 bind:view={nextButton}>⇨</Button
@@ -265,15 +282,17 @@
         <div role="article" class="dialog">
             <div class="turns" aria-live="assertive">
                 {#if act === undefined}
-                    <div class="title play">{$locale.wordplay}</div>
+                    <div class="title play"
+                        >{$locales.get((l) => l.wordplay)}</div
+                    >
                 {:else if scene === undefined}
                     <div class="title act"
-                        >{$locale.term.act}
+                        >{$locales.get((l) => l.term.act)}
                         {progress.act}<p><em>{act.title}</em></p></div
                     >
                 {:else if dialog === undefined}
                     <div class="title scene"
-                        >{$locale.term.scene}
+                        >{$locales.get((l) => l.term.scene)}
                         {progress.scene}<p><em>{scene.title}</em></p
                         >{#if scene.subtitle}<em>{scene.subtitle}</em>{/if}</div
                     >
@@ -310,10 +329,12 @@
                         project={$projectStore ?? initialProject}
                         original={initialProject}
                         bind:index={concepts}
-                        playing={!editable}
+                        showOutput={!editable}
                         {fit}
                         autofocus={false}
                         showHelp={false}
+                        warn={false}
+                        shareable={false}
                     /></div
                 >{:else}<PlayView
                     project={$projectStore ?? initialProject}

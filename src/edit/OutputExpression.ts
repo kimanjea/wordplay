@@ -11,7 +11,8 @@ import type OutputProperty from './OutputProperty';
 import getStageProperties from './StageProperties';
 import getGroupProperties from './GroupProperties';
 import getPhraseProperties from './PhraseProperties';
-import getTypeOutputProperties from './TypeOutputProperties';
+import getShapeProperties from './getShapeProperties';
+import type Locales from '../locale/Locales';
 
 /**
  * Represents the value of a property. If given is true, it means its set explicitly.
@@ -39,9 +40,13 @@ export default class OutputExpression {
     /** The evaluate node that this wraps. */
     readonly node: Evaluate;
 
-    constructor(project: Project, evaluate: Evaluate) {
+    /** The locales currently active */
+    readonly locales: Locales;
+
+    constructor(project: Project, evaluate: Evaluate, locales: Locales) {
         this.project = project;
         this.node = evaluate;
+        this.locales = locales;
     }
 
     /** True if the evaluate represents one of the known output types */
@@ -56,6 +61,7 @@ export default class OutputExpression {
             (fun === this.project.shares.output.Stage ||
                 fun === this.project.shares.output.Group ||
                 fun === this.project.shares.output.Phrase ||
+                fun === this.project.shares.output.Shape ||
                 fun === this.project.shares.output.Pose ||
                 fun === this.project.shares.output.Sequence)
             ? fun
@@ -71,25 +77,23 @@ export default class OutputExpression {
 
         // What type of output is this?
         const type = this.getType();
-        const locale = this.project.basis.locales[0];
+        const locales = this.project.basis.locales;
 
         // We handle pose types differently, so we return an empty list here.
         return type === this.project.shares.output.Pose
             ? []
-            : // For all other types, we create a list of editable properties.
+            : // For all other types, we create a list of editable properties if we know how.
               [
                   // Add output type specific properties first
                   ...(type === this.project.shares.output.Phrase
-                      ? getPhraseProperties(locale)
+                      ? getPhraseProperties(this.project, locales)
                       : type === this.project.shares.output.Group
-                      ? getGroupProperties(this.project, locale)
+                      ? getGroupProperties(this.project, locales)
                       : type === this.project.shares.output.Stage
-                      ? getStageProperties(this.project, locale)
+                      ? getStageProperties(this.project, locales)
+                      : type === this.project.shares.output.Shape
+                      ? getShapeProperties(this.project, locales)
                       : []),
-                  ...getTypeOutputProperties(
-                      this.project,
-                      this.project.basis.locales[0]
-                  ),
               ];
     }
 
@@ -130,7 +134,7 @@ export default class OutputExpression {
                 expression instanceof Expression ? expression : undefined,
             value:
                 expression instanceof Literal
-                    ? expression.getValue(this.project.locales)
+                    ? expression.getValue(this.locales)
                     : undefined,
         };
     }
@@ -162,10 +166,18 @@ export default class OutputExpression {
     }
 
     withPropertyUnset(name: string): Evaluate {
-        return this.node.withBindAs(
-            name,
-            undefined,
-            this.project.getNodeContext(this.node)
-        );
+        // Find the bind corresponding to the given name.
+
+        const context = this.project.getNodeContext(this.node);
+        const fun = this.node.getFunction(context);
+        const bind = fun?.inputs.find((bind) => bind.hasName(name));
+
+        return bind
+            ? this.node.withBindAs(
+                  bind,
+                  undefined,
+                  this.project.getNodeContext(this.node)
+              )
+            : this.node;
     }
 }

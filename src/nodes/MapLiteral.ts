@@ -21,25 +21,27 @@ import SetOpenToken from './SetOpenToken';
 import SetCloseToken from './SetCloseToken';
 import UnclosedDelimiter from '@conflicts/UnclosedDelimiter';
 import { node, type Grammar, type Replacement, optional, list } from './Node';
-import type Locale from '@locale/Locale';
 import Glyphs from '../lore/Glyphs';
 import Purpose from '../concepts/Purpose';
 import type { BasisTypeName } from '../basis/BasisConstants';
 import concretize from '../locale/concretize';
 import ValueException from '../values/ValueException';
 import Sym from './Sym';
+import type Locales from '../locale/Locales';
 
 export default class MapLiteral extends Expression {
     readonly open: Token;
     readonly values: (Expression | KeyValue)[];
     readonly close?: Token;
     readonly bind?: Token;
+    readonly literal: Token | undefined;
 
     constructor(
         open: Token,
         values: (KeyValue | Expression)[],
         bind?: Token,
-        close?: Token
+        close?: Token,
+        literal?: Token
     ) {
         super();
 
@@ -47,6 +49,7 @@ export default class MapLiteral extends Expression {
         this.values = values;
         this.bind = bind;
         this.close = close;
+        this.literal = literal;
 
         this.computeChildren();
     }
@@ -75,6 +78,7 @@ export default class MapLiteral extends Expression {
                 indent: true,
             },
             { name: 'close', kind: node(Sym.SetClose) },
+            { name: 'literal', kind: node(Sym.Literal) },
         ];
     }
 
@@ -83,7 +87,8 @@ export default class MapLiteral extends Expression {
             this.replaceChild('open', this.open, replace),
             this.replaceChild('values', this.values, replace),
             this.replaceChild('bind', this.bind, replace),
-            this.replaceChild('close', this.close, replace)
+            this.replaceChild('close', this.close, replace),
+            this.replaceChild('literal', this.literal, replace)
         ) as this;
     }
 
@@ -136,7 +141,10 @@ export default class MapLiteral extends Expression {
                   );
 
         // Strip away any concrete types in the item types.
-        return MapType.make(keyType, valueType).generalize(context);
+        return MapType.make(
+            this.literal ? keyType : keyType.generalize(context),
+            this.literal ? valueType : valueType.generalize(context)
+        );
     }
 
     getDependencies(): Expression[] {
@@ -145,7 +153,7 @@ export default class MapLiteral extends Expression {
             .flat();
     }
 
-    compile(context: Context): Step[] {
+    compile(evaluator: Evaluator, context: Context): Step[] {
         return [
             new Start(this),
             // Evaluate all of the item or key/value expressions
@@ -153,8 +161,8 @@ export default class MapLiteral extends Expression {
                 (steps: Step[], item) => [
                     ...steps,
                     ...[
-                        ...item.key.compile(context),
-                        ...item.value.compile(context),
+                        ...item.key.compile(evaluator, context),
+                        ...item.value.compile(evaluator, context),
                     ],
                 ],
                 []
@@ -179,7 +187,7 @@ export default class MapLiteral extends Expression {
         return new MapValue(this, values);
     }
 
-    evaluateTypeSet(
+    evaluateTypeGuards(
         bind: Bind,
         original: TypeSet,
         current: TypeSet,
@@ -187,7 +195,7 @@ export default class MapLiteral extends Expression {
     ) {
         this.values.forEach((val) => {
             if (val instanceof Expression)
-                val.evaluateTypeSet(bind, original, current, context);
+                val.evaluateTypeGuards(bind, original, current, context);
         });
         return current;
     }
@@ -205,23 +213,26 @@ export default class MapLiteral extends Expression {
         );
     }
 
-    getNodeLocale(translation: Locale) {
-        return translation.node.MapLiteral;
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.MapLiteral);
     }
 
-    getStartExplanations(locale: Locale) {
-        return concretize(locale, locale.node.MapLiteral.start);
+    getStartExplanations(locales: Locales) {
+        return concretize(
+            locales,
+            locales.get((l) => l.node.MapLiteral.start)
+        );
     }
 
     getFinishExplanations(
-        locale: Locale,
+        locales: Locales,
         context: Context,
         evaluator: Evaluator
     ) {
         return concretize(
-            locale,
-            locale.node.MapLiteral.finish,
-            this.getValueIfDefined(locale, context, evaluator)
+            locales,
+            locales.get((l) => l.node.MapLiteral.finish),
+            this.getValueIfDefined(locales, context, evaluator)
         );
     }
 

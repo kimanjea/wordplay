@@ -3,7 +3,7 @@ import { TYPE_SYMBOL } from '@parser/Symbols';
 import StructureValue from '@values/StructureValue';
 import type Value from '@values/Value';
 import { getBind } from '@locale/getBind';
-import Output, { getOutputInputs } from './Output';
+import Valued, { getOutputInputs } from './Valued';
 import type Pose from './Pose';
 import { toPose } from './Pose';
 import { toDecimal } from './Stage';
@@ -13,12 +13,12 @@ import NumberValue from '@values/NumberValue';
 import Transition from './Transition';
 import type Place from './Place';
 import type { TransitionSequence } from './OutputAnimation';
-import type Locale from '../locale/Locale';
 import type Project from '../models/Project';
+import type Locales from '../locale/Locales';
 
 const MaxCount = 5;
 
-export function createSequenceType(locales: Locale[]) {
+export function createSequenceType(locales: Locales) {
     return toStructure(`
     ${getBind(locales, (locale) => locale.output.Sequence, TYPE_SYMBOL)}(
         ${getBind(
@@ -30,11 +30,14 @@ export function createSequenceType(locales: Locale[]) {
             (locale) => locale.output.Sequence.duration
         )}•#s: 0.25s
         ${getBind(locales, (locale) => locale.output.Sequence.style)}•${locales
+        .getLocales()
         .map((locale) =>
             Object.values(locale.output.Easing).map((id) => `"${id}"`)
         )
         .flat()
-        .join('|')}: "${Object.values(locales[0].output.Easing)[0]}"
+        .join('|')}: "${
+        Object.values(locales.getLocales()[0].output.Easing)[0]
+    }"
         ${getBind(locales, (locale) => locale.output.Sequence.count)}•${[
         ...Array(MaxCount + 1).keys(),
     ]
@@ -47,7 +50,7 @@ export function createSequenceType(locales: Locale[]) {
 
 type SequenceStep = { percent: number; pose: Pose };
 
-export default class Sequence extends Output {
+export default class Sequence extends Valued {
     readonly count: number;
     readonly poses: SequenceStep[];
     readonly duration: number;

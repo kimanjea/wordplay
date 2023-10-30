@@ -48,7 +48,7 @@ import IsLocale from '../nodes/IsLocale';
 import parseLanguage from './parseLanguage';
 import StructureDefinition from '../nodes/StructureDefinition';
 import type Type from '../nodes/Type';
-import parseType, { parseTableType } from './paresType';
+import parseType, { parseTableType } from './parseType';
 import Translation, { type TranslationSegment } from '../nodes/Translation';
 import parseMarkup, { parseExample } from './parseMarkup';
 import { EXPONENT_SYMBOL, PRODUCT_SYMBOL } from './Symbols';
@@ -58,6 +58,7 @@ import { toTokens } from './toTokens';
 import Docs from '../nodes/Docs';
 import parseDoc from './parseDoc';
 import type Doc from '../nodes/Doc';
+import Spread from '../nodes/Spread';
 
 export function toExpression(code: string): Expression {
     return parseExpression(toTokens(code));
@@ -74,32 +75,20 @@ export function parseDocs(tokens: Tokens): Docs {
     return new Docs([docs[0], ...docs.slice(1)]);
 }
 
-/** EXPRESSION :: BINARY_OPERATION [ conditional EXPRESSION EXPRESSION ]? */
-export default function parseExpression(
-    tokens: Tokens,
-    expectSpace = false,
-    allowReaction = true
-): Expression {
-    // If the next token has more than one preceding line break, just return an unparsable.
-    // This prevents runaway expressions and provides an opportunity to provide feedback precisely
-    // where the expression was expected.
-    if (!expectSpace && tokens.nextHasMoreThanOneLineBreak())
-        return new UnparsableExpression([]);
-
+export default function parseExpression(tokens: Tokens): Expression {
     let left = parseBinaryEvaluate(tokens);
 
     // Is it conditional statement?
     if (tokens.nextIs(Sym.Conditional)) left = parseConditional(left, tokens);
 
-    // Is it a reaction?
-    if (tokens.nextIs(Sym.Stream) && allowReaction)
+    // Is it a reaction and are reactions allowed?
+    if (tokens.nextIs(Sym.Stream) && tokens.reactionsAllowed())
         left = parseReaction(left, tokens);
 
     // Return whatever expression we got
     return left;
 }
 
-/** BLOCK :: DOCS ? ( [BIND|EXPRESSION]+ )  */
 export function parseBlock(
     tokens: Tokens,
     kind: BlockKind = BlockKind.Block,
@@ -135,7 +124,7 @@ export function parseBlock(
         statements.push(
             nextIsBind(tokens, true)
                 ? parseBind(tokens)
-                : parseExpression(tokens, true)
+                : parseExpression(tokens)
         );
 
     const close = root
@@ -157,7 +146,6 @@ export function parseConditional(
     return new Conditional(condition, question, yes, no);
 }
 
-/** BINARY_OPERATION :: ATOMIC_EXPRESSION [ binary_op ATOMIC_EXPRESSION ]* */
 export function parseBinaryEvaluate(tokens: Tokens): Expression {
     let left = parseAtomicExpression(tokens);
 
@@ -179,24 +167,6 @@ export function parseBinaryEvaluate(tokens: Tokens): Expression {
     return left;
 }
 
-/**
- *
- * ATOMIC_EXPRESSION ::
- *   name |
- *   number |
- *   boolean |
- *   LIST |
- *   SET |
- *   MAP |
- *   TABLE |
- *   ACCESS |
- *   EVAL |
- *   BLOCK |
- *   TEMPLATE |
- *   FUNCTION |
- *   CONVERSION |
- *   STREAM |
- */
 function parseAtomicExpression(tokens: Tokens): Expression {
     // All expressions must start with one of the following
     let left: Expression =
@@ -265,8 +235,8 @@ function parseAtomicExpression(tokens: Tokens): Expression {
             : // A documented expression
             tokens.nextIs(Sym.Doc)
             ? parseDocumentedExpression(tokens)
-            : // Unknown expression
-              new UnparsableExpression(tokens.readLine());
+            : // Unknown expression? Parse something appropriate.
+              parseUnparsable(tokens);
 
     // But wait! Is it one or more infix expressions? Slurp them up.
     let match = false;
@@ -339,13 +309,11 @@ function parseDocumentedExpression(tokens: Tokens): Expression {
     return new DocumentedExpression(docs, expression);
 }
 
-/** NONE :: ! ALIASES */
 function parseNone(tokens: Tokens): NoneLiteral {
     const error = tokens.read(Sym.None);
     return new NoneLiteral(error);
 }
 
-/** NUMBER :: number name? */
 export function parseNumber(tokens: Tokens): NumberLiteral {
     const number = tokens.read(Sym.Number);
     const unit =
@@ -356,25 +324,7 @@ export function parseNumber(tokens: Tokens): NumberLiteral {
     return new NumberLiteral(number, unit ?? Unit.Empty);
 }
 
-/** UNIT :: DIMENSION (·DIMENSION)* (/ DIMENSION (·DIMENSION*))? */
 export function parseUnit(tokens: Tokens): Unit | undefined {
-    // Parse a wildcard unit.
-    if (tokens.nextIs(Sym.Conditional)) {
-        return new Unit(
-            undefined,
-            [
-                new Dimension(
-                    undefined,
-                    tokens.read(Sym.Conditional),
-                    undefined,
-                    undefined
-                ),
-            ],
-            undefined,
-            []
-        );
-    }
-
     // A unit is just a series of names, carets, numbers, and product symbols not separated by spaces.
     const numerator: Dimension[] = [];
 
@@ -425,7 +375,6 @@ function parseDimension(tokens: Tokens): Dimension {
     return new Dimension(product, name, caret, exponent);
 }
 
-/** TEXT :: text name? TEXT? */
 function parseText(tokens: Tokens): TextLiteral {
     const texts: Translation[] = [];
 
@@ -451,25 +400,35 @@ function parseTranslation(tokens: Tokens): Translation {
     return new Translation(text, segments, close, language);
 }
 
-/** LIST :: [ EXPRESSION* ] */
 function parseList(tokens: Tokens): ListLiteral {
     const open = tokens.read(Sym.ListOpen);
-    const values: Expression[] = [];
+    const values: (Spread | Expression)[] = [];
 
     while (
         tokens.hasNext() &&
         tokens.nextIsnt(Sym.ListClose) &&
-        tokens.nextIsnt(Sym.Code) &&
-        !tokens.nextHasMoreThanOneLineBreak()
-    )
-        values.push(parseExpression(tokens));
+        tokens.nextIsnt(Sym.Code)
+    ) {
+        // Is there a spread next? Parse it.
+        if (tokens.nextIs(Sym.Bind)) {
+            const dots = tokens.read(Sym.Bind);
+            const value =
+                tokens.hasNext() &&
+                tokens.nextIsnt(Sym.ListClose) &&
+                tokens.nextIsnt(Sym.Code)
+                    ? parseExpression(tokens)
+                    : undefined;
+            values.push(new Spread(dots, value));
+        } else values.push(parseExpression(tokens));
+    }
 
     const close = tokens.readIf(Sym.ListClose);
 
-    return new ListLiteral(open, values, close);
+    const literal = tokens.readIf(Sym.Literal);
+
+    return new ListLiteral(open, values, close, literal);
 }
 
-/** LIST_ACCESS :: EXPRESSION ([ EXPRESSION ])+ */
 function parseListAccess(left: Expression, tokens: Tokens): Expression {
     do {
         const open = tokens.read(Sym.ListOpen);
@@ -487,7 +446,6 @@ function parseListAccess(left: Expression, tokens: Tokens): Expression {
     return left;
 }
 
-/** SET :: { EXPRESSION* } | { (EXPRESSION:EXPRESSION)* } | {:} */
 function parseSetOrMap(tokens: Tokens): MapLiteral | SetLiteral {
     const open = tokens.read(Sym.SetOpen);
     const values: (Expression | KeyValue)[] = [];
@@ -501,8 +459,7 @@ function parseSetOrMap(tokens: Tokens): MapLiteral | SetLiteral {
     while (
         tokens.hasNext() &&
         tokens.nextIsnt(Sym.SetClose) &&
-        tokens.nextIsnt(Sym.Code) &&
-        !tokens.nextHasMoreThanOneLineBreak()
+        tokens.nextIsnt(Sym.Code)
     ) {
         const key = parseExpression(tokens);
         if (tokens.nextIs(Sym.Bind)) {
@@ -514,13 +471,14 @@ function parseSetOrMap(tokens: Tokens): MapLiteral | SetLiteral {
 
     const close = tokens.readIf(Sym.SetClose);
 
+    const literal = tokens.readIf(Sym.Literal);
+
     // Make a map
     return values.some((v): v is KeyValue => v instanceof KeyValue)
-        ? new MapLiteral(open, values, undefined, close)
-        : new SetLiteral(open, values as Expression[], close);
+        ? new MapLiteral(open, values, undefined, close, literal)
+        : new SetLiteral(open, values as Expression[], close, literal);
 }
 
-/** SET_ACCESS :: EXPRESSION ([ EXPRESSION ])+ */
 function parseSetOrMapAccess(left: Expression, tokens: Tokens): Expression {
     do {
         const open = tokens.read(Sym.SetOpen);
@@ -535,17 +493,12 @@ function parseSetOrMapAccess(left: Expression, tokens: Tokens): Expression {
         // But wait, is it a function evaluation?
         if (nextIsEvaluate(tokens) && tokens.nextLacksPrecedingSpace())
             left = parseEvaluate(left, tokens);
-    } while (
-        tokens.hasNext() &&
-        tokens.nextIs(Sym.SetOpen) &&
-        !tokens.nextHasMoreThanOneLineBreak()
-    );
+    } while (tokens.hasNext() && tokens.nextIs(Sym.SetOpen));
 
     // Return the series of accesses and evaluations we created.
     return left;
 }
 
-/** PREVIOUS :: ← EXPRESSION →? EXPRESSION  */
 function parsePrevious(tokens: Tokens): Previous {
     const previous = tokens.read(Sym.Previous);
     const range = tokens.nextIs(Sym.Previous)
@@ -557,7 +510,6 @@ function parsePrevious(tokens: Tokens): Previous {
     return new Previous(previous, range, index, stream);
 }
 
-/** TABLE :: ⎡ BIND* ⎦ ROWS* */
 function parseTable(tokens: Tokens): TableLiteral {
     const type = parseTableType(tokens);
 
@@ -568,9 +520,11 @@ function parseTable(tokens: Tokens): TableLiteral {
     return new TableLiteral(type, rows);
 }
 
-/** ROW :: ⎡ (BIND|EXPRESSION)* ⎦ */
 function parseRow(tokens: Tokens, expected: Sym = Sym.TableOpen): Row {
     const open = tokens.read(expected);
+
+    // Don't allow reactions on row values.
+    tokens.pushReactionAllowed(false);
 
     const cells: (Bind | Expression)[] = [];
     // Read the cells.
@@ -589,10 +543,12 @@ function parseRow(tokens: Tokens, expected: Sym = Sym.TableOpen): Row {
     // Read the closing row marker.
     const close = tokens.readIf(Sym.TableClose);
 
+    // Restore previous allowance.
+    tokens.popReactionAllowed();
+
     return new Row(open, cells, close);
 }
 
-/** SELECT :: EXPRESSION |? ROW EXPRESSION */
 function parseSelect(table: Expression, tokens: Tokens): Select {
     const row = parseRow(tokens, Sym.Select);
     const query = parseExpression(tokens);
@@ -600,14 +556,12 @@ function parseSelect(table: Expression, tokens: Tokens): Select {
     return new Select(table, row, query);
 }
 
-/** INSERT :: EXPRESSION |+ ROW */
 function parseInsert(table: Expression, tokens: Tokens): Insert {
     const row = parseRow(tokens, Sym.Insert);
 
     return new Insert(table, row);
 }
 
-/** UPDATE :: EXPRESSION |: ROW EXPRESSION */
 function parseUpdate(table: Expression, tokens: Tokens): Update {
     const row = parseRow(tokens, Sym.Update);
     const query = parseExpression(tokens);
@@ -615,7 +569,6 @@ function parseUpdate(table: Expression, tokens: Tokens): Update {
     return new Update(table, row, query);
 }
 
-/** DELETE :: EXPRESSION |- EXPRESSION */
 function parseDelete(table: Expression, tokens: Tokens): Delete {
     const del = tokens.read(Sym.Delete);
     const query = parseExpression(tokens);
@@ -623,18 +576,21 @@ function parseDelete(table: Expression, tokens: Tokens): Delete {
     return new Delete(table, del, query);
 }
 
-/** STREAM :: EXPRESSION … EXPRESSION */
 function parseReaction(initial: Expression, tokens: Tokens): Reaction {
     const dots = tokens.read(Sym.Stream);
-    const condition = parseExpression(tokens, false, false);
+    // Parse the condition, but don't allow reactions.
+    tokens.pushReactionAllowed(false);
+    const condition = parseExpression(tokens);
     const nextdots = tokens.nextIs(Sym.Stream)
         ? tokens.read(Sym.Stream)
         : undefined;
-    const next = parseExpression(tokens, false, false);
+    // Parse the next value expression, still not allowing reactions.
+    const next = parseExpression(tokens);
+    // Revert to previous reactions allowed state.
+    tokens.popReactionAllowed();
     return new Reaction(initial, dots, condition, nextdots, next);
 }
 
-/** FUNCTION :: DOCS? (ƒ | ALIASES) TYPE_VARIABLES? ( BIND* ) (•TYPE)? EXPRESSION */
 export function parseFunction(tokens: Tokens): FunctionDefinition {
     const docs = tokens.nextIs(Sym.Doc) ? parseDocs(tokens) : undefined;
     const share = tokens.nextIs(Sym.Share) ? tokens.read(Sym.Share) : undefined;
@@ -650,6 +606,9 @@ export function parseFunction(tokens: Tokens): FunctionDefinition {
         ? tokens.read(Sym.EvalOpen)
         : undefined;
 
+    // Don't allow reactions on input binds values.
+    tokens.pushReactionAllowed(false);
+
     const inputs: Bind[] = [];
     while (
         tokens.hasNext() &&
@@ -658,6 +617,9 @@ export function parseFunction(tokens: Tokens): FunctionDefinition {
         nextIsBind(tokens, false)
     )
         inputs.push(parseBind(tokens));
+
+    // Restore
+    tokens.popReactionAllowed();
 
     const close = tokens.nextIs(Sym.EvalClose)
         ? tokens.read(Sym.EvalClose)
@@ -692,7 +654,6 @@ export function parseFunction(tokens: Tokens): FunctionDefinition {
     );
 }
 
-/** CUSTOM_TYPE :: DOCS? •NAMES (•NAME)* TYPE_VARS ( BIND* ) BLOCK? */
 export function parseStructure(tokens: Tokens): StructureDefinition {
     const docs = tokens.nextIs(Sym.Doc) ? parseDocs(tokens) : undefined;
     const share = tokens.nextIs(Sym.Share) ? tokens.read(Sym.Share) : undefined;
@@ -709,9 +670,17 @@ export function parseStructure(tokens: Tokens): StructureDefinition {
     const open = tokens.nextIs(Sym.EvalOpen)
         ? tokens.read(Sym.EvalOpen)
         : undefined;
+
+    // Don't allow reactions on structure input binds
+    tokens.pushReactionAllowed(false);
+
     const inputs: Bind[] = [];
     while (tokens.nextIsnt(Sym.EvalClose) && nextIsBind(tokens, false))
         inputs.push(parseBind(tokens));
+
+    // Restore
+    tokens.popReactionAllowed();
+
     const close = tokens.nextIs(Sym.EvalClose)
         ? tokens.read(Sym.EvalClose)
         : undefined;
@@ -748,7 +717,6 @@ function nextIsEvaluate(tokens: Tokens): boolean {
     return nextIsEval;
 }
 
-/** EVAL :: EXPRESSION (<TYPE*>)? (EXPRESSION*) */
 function parseEvaluate(left: Expression, tokens: Tokens): Evaluate {
     const types = tokens.nextIs(Sym.TypeOpen)
         ? parseTypeInputs(tokens)
@@ -761,8 +729,7 @@ function parseEvaluate(left: Expression, tokens: Tokens): Evaluate {
     while (
         tokens.hasNext() &&
         tokens.nextIsnt(Sym.Code) &&
-        tokens.nextIsnt(Sym.EvalClose) &&
-        !tokens.nextHasMoreThanOneLineBreak()
+        tokens.nextIsnt(Sym.EvalClose)
     )
         inputs.push(
             nextIsBind(tokens, true)
@@ -775,7 +742,6 @@ function parseEvaluate(left: Expression, tokens: Tokens): Evaluate {
     return new Evaluate(left, types, open, inputs, close);
 }
 
-/** CONVERSION :: DOCS? TYPE → TYPE EXPRESSION */
 function parseConversion(tokens: Tokens): ConversionDefinition {
     const docs = tokens.nextIs(Sym.Doc) ? parseDocs(tokens) : undefined;
     const convert = tokens.read(Sym.Convert);
@@ -786,7 +752,6 @@ function parseConversion(tokens: Tokens): ConversionDefinition {
     return new ConversionDefinition(docs, convert, input, output, expression);
 }
 
-/** CONVERT :: EXPRESSION → TYPE */
 function parseConvert(expression: Expression, tokens: Tokens): Convert {
     const convert = tokens.read(Sym.Convert);
     const type = parseType(tokens, true);
@@ -794,12 +759,18 @@ function parseConvert(expression: Expression, tokens: Tokens): Convert {
     return new Convert(expression, convert, type);
 }
 
-/** TYPE_VARS :: <NAMES*> */
 export function parseTypeVariables(tokens: Tokens): TypeVariables {
     const open = tokens.read(Sym.TypeOpen);
     const variables: TypeVariable[] = [];
-    while (tokens.hasNext() && tokens.nextIs(Sym.Name))
-        variables.push(new TypeVariable(parseNames(tokens)));
+    while (tokens.hasNext() && tokens.nextIs(Sym.Name)) {
+        const names = parseNames(tokens);
+        let dot, type;
+        if (tokens.nextIs(Sym.Type)) {
+            dot = tokens.read(Sym.Type);
+            type = parseType(tokens, false);
+        }
+        variables.push(new TypeVariable(names, dot, type));
+    }
     const close = tokens.nextIs(Sym.TypeClose)
         ? tokens.read(Sym.TypeClose)
         : undefined;
@@ -819,7 +790,6 @@ export function parseTypeInputs(tokens: Tokens): TypeInputs {
     return new TypeInputs(open, inputs, close);
 }
 
-/** ACCESS :: EXPRESSION (.NAME)+ */
 function parsePropertyReference(left: Expression, tokens: Tokens): Expression {
     if (!tokens.nextIs(Sym.Access)) return left;
     do {
@@ -859,14 +829,19 @@ function parsePropertyReference(left: Expression, tokens: Tokens): Expression {
     return left;
 }
 
+function parseUnparsable(tokens: Tokens): Expression {
+    // Are there tokens? Make an unparsable expression with the tokens on the line.
+    if (tokens.hasNext()) return new UnparsableExpression(tokens.readLine());
+
+    // Otherwise, return an expression placeholder.
+    return new ExpressionPlaceholder(undefined, undefined, undefined);
+}
+
 export function parseFormattedLiteral(tokens: Tokens): FormattedLiteral {
     const translations: FormattedTranslation[] = [];
     do {
         translations.push(parseFormattedTranslation(tokens));
-    } while (
-        tokens.nextIs(Sym.Formatted) &&
-        !tokens.nextHasMoreThanOneLineBreak()
-    );
+    } while (tokens.nextIs(Sym.Formatted) && tokens.nextLacksPrecedingSpace());
     return new FormattedLiteral(translations);
 }
 

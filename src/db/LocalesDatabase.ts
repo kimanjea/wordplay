@@ -1,14 +1,19 @@
-import { derived, get, writable, type Writable } from 'svelte/store';
+import { get, writable, type Writable } from 'svelte/store';
 import type Locale from '../locale/Locale';
-import { Database, DefaultLocale } from './Database';
-import { getLanguageDirection } from '../locale/LanguageCode';
-import { SupportedLocales, type SupportedLocale } from '../locale/Locale';
+import type { Database } from './Database';
+import {
+    SupportedLocales,
+    type SupportedLocale,
+    toLocaleString,
+} from '../locale/Locale';
 import Fonts from '../basis/Fonts';
 import { Basis } from '../basis/Basis';
 import type Setting from './Setting';
 import type LanguageCode from '../locale/LanguageCode';
 import type { RegionCode } from '../locale/Regions';
 import type Tutorial from '../tutorial/Tutorial';
+import DefaultLocale, { DefaultLocales } from '../locale/DefaultLocale';
+import Locales from '../locale/Locales';
 
 /** A cache of locales loaded */
 export default class LocalesDatabase {
@@ -18,15 +23,8 @@ export default class LocalesDatabase {
     /** The default locale */
     private readonly defaultLocale: Locale;
 
-    /** Derived stores based on selected locales. */
-    readonly locales: Writable<Locale[]> = writable([DefaultLocale]);
-    readonly locale = derived(this.locales, ($locales) => $locales[0]);
-    readonly languages = derived(this.locales, ($locales) =>
-        $locales.map((locale) => locale.language)
-    );
-    readonly writingDirection = derived(this.locales, ($locales) =>
-        getLanguageDirection($locales[0].language)
-    );
+    /** A reactive store of preferred locales based on the selected languages. */
+    readonly locales: Writable<Locales> = writable(DefaultLocales);
 
     /** The locales loaded, loading, or failed to load. */
     private localesLoaded: Record<
@@ -52,14 +50,15 @@ export default class LocalesDatabase {
         this.defaultLocale = defaultLocale;
 
         // Store the default locale
-        this.localesLoaded[
-            `${defaultLocale.language}-${defaultLocale.region}` as SupportedLocale
-        ] = defaultLocale;
+        this.localesLoaded[toLocaleString(defaultLocale) as SupportedLocale] =
+            defaultLocale;
 
         this.setting = setting;
 
-        // Load the requested locales.
-        this.loadLocales(locales);
+        // Load the requested locales, combining those given (from the browser) and those from the local storage settings.
+        this.loadLocales(
+            Array.from(new Set([...locales, ...this.setting.get()]))
+        );
     }
 
     async refreshLocales() {
@@ -82,18 +81,15 @@ export default class LocalesDatabase {
         // Ask fonts to load the locale's preferred fonts.
         Fonts.loadLocales(locales);
 
-        // Update the locales stores
-        this.locales.set(
-            this.setting
-                .get()
-                .map((l) => this.localesLoaded[l])
-                .filter(
-                    (l): l is Locale =>
-                        l !== undefined && !(l instanceof Promise)
-                )
-        );
+        // Update locales
+        this.syncLocales();
 
         return locales;
+    }
+
+    syncLocales() {
+        // Update the locales stores
+        this.locales.set(new Locales(this.computeLocales(), DefaultLocale));
     }
 
     async loadLocale(
@@ -109,7 +105,7 @@ export default class LocalesDatabase {
             return undefined;
 
         // Is this en-US? We bundle it. Bail.
-        if (lang === 'en-US') return undefined;
+        if (lang === 'en-US') return this.defaultLocale;
 
         const current = this.localesLoaded[lang];
 
@@ -131,6 +127,7 @@ export default class LocalesDatabase {
                 this.localesLoaded[lang] = promise;
                 const locale = await promise;
                 this.localesLoaded[lang] = locale;
+
                 return locale;
             } catch (_) {
                 this.localesLoaded[lang] = undefined;
@@ -139,24 +136,33 @@ export default class LocalesDatabase {
         } else return current;
     }
 
+    getLocaleSet() {
+        return get(this.locales);
+    }
+
     getLocales(): Locale[] {
-        // Map preferred languages into locales, filtering out missing locales.
-        const locales = this.setting
-            .get()
-            .map((locale) => this.localesLoaded[locale])
-            .filter(
-                (locale): locale is Locale =>
-                    locale !== undefined && !(locale instanceof Promise)
-            );
-        return locales.length === 0 ? [this.defaultLocale] : locales;
+        return get(this.locales).getLocales();
     }
 
     getLocale(): Locale {
         return this.getLocales()[0];
     }
 
+    private computeLocales(): Locale[] {
+        const selected = this.setting
+            .get()
+            .map((locale) => this.localesLoaded[locale])
+            .filter(
+                (locale): locale is Locale =>
+                    locale !== undefined && !(locale instanceof Promise)
+            );
+
+        // Update the locales stores
+        return selected.length === 0 ? [this.defaultLocale] : selected;
+    }
+
     getLocaleBasis(): Basis {
-        return Basis.getLocalizedBasis(this.getLocales());
+        return Basis.getLocalizedBasis(this.getLocaleSet());
     }
 
     getLanguages(): LanguageCode[] {
@@ -164,11 +170,11 @@ export default class LocalesDatabase {
     }
 
     getWritingDirection() {
-        return get(this.writingDirection);
+        return get(this.locales).getDirection();
     }
 
     /** Set the languages, load all locales if they aren't loaded, revise all projects to include any new locales, and save the new configuration. */
-    async setLocales(preferredLocales: SupportedLocale[]) {
+    async setLocales(preferredLocales: SupportedLocale[]): Promise<Locale[]> {
         // Update the configuration with the new languages, regardless of whether we successfully loaded them.
         this.setting.set(this.database, preferredLocales);
 
@@ -177,6 +183,12 @@ export default class LocalesDatabase {
 
         // Revise all projects to have the new locale
         this.database.Projects.localize(locales);
+
+        return locales;
+    }
+
+    getTutorialURL(locale: string) {
+        return `/locales/${locale}/${locale}-tutorial.json`;
     }
 
     async getTutorial(
@@ -191,13 +203,11 @@ export default class LocalesDatabase {
         let tutorial: Tutorial | undefined;
         try {
             // Load the locale's tutorial, if it exists.
-            const response = await fetch(
-                `/locales/${localeString}/${localeString}-tutorial.json`
-            );
+            const response = await fetch(this.getTutorialURL(localeString));
             tutorial = await response.json();
         } catch (err) {
-            // Couldn't load it? Show an error.
-            tutorial = undefined;
+            // Couldn't load it? Fallback to english.
+            tutorial = await (await fetch(this.getTutorialURL('en-US'))).json();
         }
 
         this.tutorialsLoaded[localeString] = tutorial;

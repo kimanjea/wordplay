@@ -10,7 +10,7 @@
     } from '../project/Contexts';
     import { addContent, moveContent, removeContent } from './editOutput';
     import type ListLiteral from '../../nodes/ListLiteral';
-    import { DB, locale } from '../../db/Database';
+    import { DB, locales } from '@db/Database';
     import { EDIT_SYMBOL } from '../../parser/Symbols';
 
     export let project: Project;
@@ -32,6 +32,10 @@
                     value.is(
                         project.shares.output.Group,
                         project.getNodeContext(value)
+                    ) ||
+                    value.is(
+                        project.shares.output.Shape,
+                        project.getNodeContext(value)
                     ))
         );
 
@@ -49,7 +53,7 @@
         {#each list.values as content, index}
             <div class="content">
                 <Button
-                    tip={$locale.ui.palette.button.remove}
+                    tip={$locales.get((l) => l.ui.palette.button.remove)}
                     action={() =>
                         list
                             ? removeContent(DB, project, list, index)
@@ -57,7 +61,7 @@
                     active={editable && list.values.length > 0}>⨉</Button
                 >
                 <Button
-                    tip={$locale.ui.palette.button.up}
+                    tip={$locales.get((l) => l.ui.palette.button.up)}
                     action={() =>
                         list
                             ? moveContent(DB, project, list, index, -1)
@@ -65,7 +69,7 @@
                     active={editable && index > 0}>↑</Button
                 >
                 <Button
-                    tip={$locale.ui.palette.button.down}
+                    tip={$locales.get((l) => l.ui.palette.button.down)}
                     action={() =>
                         list
                             ? moveContent(DB, project, list, index, 1)
@@ -74,7 +78,7 @@
                     >↓</Button
                 >
                 <Button
-                    tip={$locale.ui.palette.button.edit}
+                    tip={$locales.get((l) => l.ui.palette.button.edit)}
                     active={editable}
                     action={() => editContent(index)}>{EDIT_SYMBOL}</Button
                 >
@@ -83,7 +87,7 @@
         {/each}
         <div class="add">
             <Button
-                tip={$locale.ui.palette.button.addPhrase}
+                tip={$locales.get((l) => l.ui.palette.button.addPhrase)}
                 active={editable}
                 action={() =>
                     list
@@ -92,13 +96,13 @@
                               project,
                               list,
                               list?.values.length ?? 1 - 1,
-                              true
+                              'phrase'
                           )
                         : undefined}
                 >+{project.shares.output.Phrase.getNames()[0]}</Button
             >
             <Button
-                tip={$locale.ui.palette.button.addGroup}
+                tip={$locales.get((l) => l.ui.palette.button.addGroup)}
                 active={editable}
                 action={() =>
                     list
@@ -107,14 +111,29 @@
                               project,
                               list,
                               list?.values.length ?? 1 - 1,
-                              false
+                              'group'
                           )
                         : undefined}
                 >+{project.shares.output.Group.getNames()[0]}</Button
+            >
+            <Button
+                tip={$locales.get((l) => l.ui.palette.button.addShape)}
+                active={editable}
+                action={() =>
+                    list
+                        ? addContent(
+                              DB,
+                              project,
+                              list,
+                              list?.values.length ?? 1 - 1,
+                              'shape'
+                          )
+                        : undefined}
+                >+{project.shares.output.Shape.getNames()[0]}</Button
             ></div
         >
     {:else}
-        <Note>{$locale.ui.palette.labels.computed}</Note>
+        <Note>{$locales.get((l) => l.ui.palette.labels.computed)}</Note>
     {/if}
 </div>
 

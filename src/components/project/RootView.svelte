@@ -10,19 +10,20 @@
     import Spaces from '@parser/Spaces';
     import NodeView from '@components/editor/NodeView.svelte';
     import {
-        getCaret,
         HiddenSymbol,
         RootSymbol,
         SpaceSymbol,
         type SpaceContext,
         CaretSymbol,
+        getEditor,
     } from './Contexts';
     import Root from '@nodes/Root';
     import Source from '@nodes/Source';
     import Name from '@nodes/Name';
     import Program from '@nodes/Program';
-    import { languages } from '../../db/Database';
+    import { locales } from '../../db/Database';
     import TextLiteral from '../../nodes/TextLiteral';
+    import FormattedLiteral from '../../nodes/FormattedLiteral';
 
     export let node: Node;
     /** Optional space; if not provided, all nodes are rendered with preferred space. */
@@ -78,7 +79,7 @@
         renderedSpace.set(newSpace);
     }
 
-    let caret = getCaret();
+    let editor = getEditor();
 
     // A set of hidden nodes, such as hidden translations.
     let hidden = writable<Set<Node>>(new Set());
@@ -88,40 +89,38 @@
     $: {
         const newHidden = new Set<Node>();
 
-        if (localized) {
+        if (localized && ($editor === undefined || !$editor.focused)) {
             // Hide any language tagged nodes that 1) the caret isn't in, and 2) either have no language tag or aren't one of the selected tags.
             // Also hide any name separators if the first visible name has one.
             for (const tagged of node
                 .nodes()
                 .filter(
-                    (n): n is Names | Docs | TextLiteral =>
+                    (n): n is Names | Docs | TextLiteral | FormattedLiteral =>
                         n instanceof Names ||
                         n instanceof Docs ||
-                        n instanceof TextLiteral
+                        n instanceof TextLiteral ||
+                        n instanceof FormattedLiteral
                 )) {
                 // Get all the names or docs
                 const tags = tagged.getTags();
                 // If at least one is visible, hide all those not in a preferred language.
                 if (
-                    $languages.some((lang) =>
-                        tags.some((l) => l.getLanguage() === lang)
-                    )
+                    $locales
+                        .getLanguages()
+                        .some((lang) =>
+                            tags.some((l) => l.getLanguage() === lang)
+                        )
                 ) {
                     let first = false;
                     for (const nameOrDoc of tags) {
-                        const caretIn = $caret?.isIn(nameOrDoc, true);
-                        const selectedLocale = $languages.some(
-                            (t) => t === nameOrDoc.getLanguage()
-                        );
-                        // Not a selected language and not in the node? Hide it.
-                        if (!selectedLocale && !caretIn)
+                        const selectedLocale = $locales
+                            .getLanguages()
+                            .some((t) => t === nameOrDoc.getLanguage());
+                        // Not a selected language and not in the node and has a language? Hide it.
+                        if (!selectedLocale && nameOrDoc.language)
                             newHidden.add(nameOrDoc);
                         // Is the selected language and inert? Hide the language tag.
-                        else if (
-                            selectedLocale &&
-                            nameOrDoc.language &&
-                            !caretIn
-                        )
+                        else if (selectedLocale && nameOrDoc.language)
                             newHidden.add(nameOrDoc.language);
                         // Not first? Hide the separator.
                         if (!first) {
@@ -175,6 +174,10 @@
 
         /** This allows us to style things up the the tree. */
         text-decoration: inherit;
+    }
+
+    :global(.dragging) .root {
+        cursor: grabbing;
     }
 
     .elide {

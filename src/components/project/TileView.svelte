@@ -19,13 +19,16 @@
     import type Layout from './Layout';
     import TextField from '../widgets/TextField.svelte';
     import { isName } from '../../parser/Tokenizer';
-    import { locale } from '../../db/Database';
+    import { locales } from '../../db/Database';
     import { onMount } from 'svelte';
     import Arrangement from '../../db/Arrangement';
     import Glyphs from '../../lore/Glyphs';
     import Color from '../../output/Color';
     import Toggle from '../widgets/Toggle.svelte';
+    import { EnterFullscreen, ExitFullscreen } from '../editor/util/Commands';
+    import type Project from '../../models/Project';
 
+    export let project: Project;
     export let tile: Tile;
     export let layout: Layout;
     export let arrangement: Arrangement;
@@ -201,22 +204,29 @@
                 {#if editable && tile.isSource()}
                     {Glyphs.Program.symbols}
                     <TextField
-                        text={tile.name}
-                        description={$locale.ui.source.field.name.description}
-                        placeholder={$locale.ui.source.field.name.placeholder}
+                        text={tile
+                            .getSource(project)
+                            ?.getPreferredName($locales.getLocales())}
+                        description={$locales.get(
+                            (l) => l.ui.source.field.name.description
+                        )}
+                        placeholder={$locales.get(
+                            (l) => l.ui.source.field.name.placeholder
+                        )}
                         validator={(text) => isName(text)}
                         changed={handleRename}
                     />
                 {:else}
-                    {tile.name}
+                    {tile.getName(project, $locales)}
                 {/if}
                 <slot name="name" />
             </div>
             <div class="toolbar">
                 <slot name="extra" />
                 <Toggle
-                    tips={$locale.ui.tile.toggle.fullscreen}
+                    tips={$locales.get((l) => l.ui.tile.toggle.fullscreen)}
                     on={fullscreen}
+                    command={fullscreen ? ExitFullscreen : EnterFullscreen}
                     toggle={() =>
                         dispatch('fullscreen', {
                             fullscreen: !fullscreen,
@@ -226,7 +236,7 @@
                         height="13px"
                         viewBox="0 0 14 14"
                         width="14px"
-                        style="stroke: var(--wordplay-foreground)"
+                        style="stroke: currentColor; fill: currentColor; pointer-events: none;"
                         ><title /><desc /><defs /><g
                             fill-rule="evenodd"
                             stroke-width="1"
@@ -242,11 +252,14 @@
                         ></svg
                     >
                 </Toggle>
-                <Button
-                    tip={$locale.ui.tile.button.collapse}
-                    action={() => dispatch('mode', { mode: Mode.Collapsed })}
-                    active={!layout.isFullscreen()}>⨉</Button
-                >
+                {#if !layout.isFullscreen()}
+                    <Button
+                        tip={$locales.get((l) => l.ui.tile.button.collapse)}
+                        action={() =>
+                            dispatch('mode', { mode: Mode.Collapsed })}
+                        >–</Button
+                    >
+                {/if}
             </div>
         </div>
         <!-- Render the content -->
@@ -273,6 +286,10 @@
 
         /* Don't let iOS grab pointer move events, so we can do drag and drop. */
         touch-action: none;
+    }
+
+    .tile.fullscreen {
+        border: none !important;
     }
 
     .tile.responsive,
@@ -357,7 +374,7 @@
         flex-wrap: nowrap;
         align-items: center;
         min-width: max-content;
-        gap: calc(var(--wordplay-spacing) / 2);
+        gap: calc(var(--wordplay-spacing));
     }
 
     .footer {
@@ -386,9 +403,9 @@
     }
 
     .fullscreen {
-        position: fixed;
-        width: 100vw;
-        height: 100vh;
+        position: absolute;
+        width: 100%;
+        height: 100%;
         top: 0;
         left: 0;
         right: 0;

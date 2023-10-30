@@ -6,9 +6,9 @@ import type Type from './Type';
 import type Step from '@runtime/Step';
 import type Bind from './Bind';
 import type TypeSet from './TypeSet';
-import type Locale from '@locale/Locale';
 import ValueRef from '@locale/ValueRef';
 import type Markup from './Markup';
+import type Locales from '../locale/Locales';
 
 export enum ExpressionKind {
     Simple = 'simple',
@@ -42,6 +42,22 @@ export default abstract class Expression extends Node {
 
     abstract getDependencies(_: Context): Expression[];
 
+    getAllDependencies(
+        context: Context,
+        dependencies?: Set<Expression>
+    ): Set<Expression> {
+        if (dependencies === undefined) dependencies = new Set();
+
+        // Prevent cycles.
+        if (dependencies.has(this)) return dependencies;
+
+        for (const dep of this.getDependencies(context)) {
+            dep.getAllDependencies(context, dependencies);
+            dependencies.add(dep);
+        }
+        return dependencies;
+    }
+
     /** By default, an expression is constant if all of it's dependencies are constant. */
     isConstant(context: Context): boolean {
         // Get the expression's dependencies.
@@ -54,42 +70,47 @@ export default abstract class Expression extends Node {
     }
 
     /**
-     * Used to determine what types are possible for a given after evalutaing this expression/
+     * Used to determine what types are possible for a given after evaluating this expression, implementing type guards.
      * Most expressions do not manipulate possible types at all; primarily is just logical operators and type checks.
      * */
-    abstract evaluateTypeSet(
+    abstract evaluateTypeGuards(
         bind: Bind,
         original: TypeSet,
         current: TypeSet,
         context: Context
     ): TypeSet;
 
-    abstract compile(context: Context): Step[];
+    /** Used to decide whether to consider an expression as filtering types based on the behavior of evaluateTypeGuards() */
+    guardsTypes() {
+        return false;
+    }
+
+    abstract compile(evaluator: Evaluator, context: Context): Step[];
     abstract evaluate(evaluator: Evaluator, prior: Value | undefined): Value;
 
     abstract getStart(): Node;
     abstract getFinish(): Node;
 
     abstract getStartExplanations(
-        locale: Locale,
+        locales: Locales,
         context: Context,
         evaluator: Evaluator
     ): Markup;
 
     abstract getFinishExplanations(
-        locale: Locale,
+        locales: Locales,
         context: Context,
         evaluator: Evaluator
     ): Markup;
 
     /** Utility function for getting an optional result   */
     getValueIfDefined(
-        translation: Locale,
+        locales: Locales,
         context: Context,
         evaluator: Evaluator
     ) {
         const value = evaluator.peekValue();
-        return value ? new ValueRef(value, translation, context) : undefined;
+        return value ? new ValueRef(value, locales, context) : undefined;
     }
 
     /** Get the kind of node, for highlighting or other purposes */

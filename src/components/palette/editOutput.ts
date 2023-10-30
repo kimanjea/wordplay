@@ -10,7 +10,6 @@ import UnaryEvaluate from '../../nodes/UnaryEvaluate';
 import Decimal from 'decimal.js';
 import TextLiteral from '../../nodes/TextLiteral';
 import ListLiteral from '../../nodes/ListLiteral';
-import type Locale from '../../locale/Locale';
 import FormattedLiteral from '../../nodes/FormattedLiteral';
 import Convert from '../../nodes/Convert';
 import TextType from '../../nodes/TextType';
@@ -20,6 +19,9 @@ import {
     STAGE_SYMBOL,
 } from '../../parser/Symbols';
 import { toExpression } from '../../parser/parseExpression';
+import { getPlaceExpression } from '../../output/getOrCreatePlace';
+import type Spread from '../../nodes/Spread';
+import type Locales from '../../locale/Locales';
 
 export function getNumber(given: Expression): number | undefined {
     const measurement =
@@ -42,7 +44,7 @@ export default function moveOutput(
     db: Database,
     project: Project,
     evaluates: Evaluate[],
-    locales: Locale[],
+    locales: Locales,
     horizontal: number,
     vertical: number,
     relative: boolean
@@ -54,78 +56,88 @@ export default function moveOutput(
         evaluates.map((evaluate) => {
             const ctx = project.getNodeContext(evaluate);
 
-            const given = evaluate.getMappingFor('place', ctx);
+            const given = getPlaceExpression(project, evaluate, ctx);
             const place =
-                given &&
-                given.given instanceof Evaluate &&
-                given.given.is(PlaceType, ctx)
-                    ? given.given
-                    : given &&
-                      given.given instanceof Bind &&
-                      given.given.value instanceof Evaluate &&
-                      given.given.value.is(PlaceType, ctx)
-                    ? given.given.value
+                given instanceof Evaluate && given.is(PlaceType, ctx)
+                    ? given
                     : undefined;
 
-            const x = place?.getMappingFor('x', ctx)?.given;
-            const y = place?.getMappingFor('y', ctx)?.given;
-            const z = place?.getMappingFor('z', ctx)?.given;
+            const x = place?.getInput(
+                project.shares.output.Place.inputs[0],
+                ctx
+            );
+            const y = place?.getInput(
+                project.shares.output.Place.inputs[1],
+                ctx
+            );
+            const z = place?.getInput(
+                project.shares.output.Place.inputs[2],
+                ctx
+            );
 
             const xValue = x instanceof Expression ? getNumber(x) : undefined;
             const yValue = y instanceof Expression ? getNumber(y) : undefined;
             const zValue = z instanceof Expression ? getNumber(z) : undefined;
 
+            const bind = evaluate.is(project.shares.output.Phrase, ctx)
+                ? project.shares.output.Phrase.inputs[3]
+                : evaluate.is(project.shares.output.Group, ctx)
+                ? project.shares.output.Phrase.inputs[4]
+                : undefined;
+
             return [
                 evaluate,
-                evaluate.withBindAs(
-                    'place',
-                    Evaluate.make(
-                        Reference.make(
-                            PlaceType.names.getPreferredNameString(locales),
-                            PlaceType
-                        ),
-                        [
-                            // If coordinate is computed, and not a literal, don't change it.
-                            x instanceof Expression && xValue === undefined
-                                ? x
-                                : NumberLiteral.make(
-                                      relative
-                                          ? new Decimal(xValue ?? 0)
-                                                .add(horizontal)
-                                                .toNumber()
-                                          : horizontal,
-                                      Unit.create(['m'])
-                                  ),
-                            y instanceof Expression && yValue === undefined
-                                ? y
-                                : NumberLiteral.make(
-                                      relative
-                                          ? new Decimal(yValue ?? 0)
-                                                .add(vertical)
-                                                .toNumber()
-                                          : vertical,
-                                      Unit.create(['m'])
-                                  ),
-                            z instanceof Expression && zValue !== undefined
-                                ? z
-                                : NumberLiteral.make(0, Unit.create(['m'])),
-                        ]
-                    ),
-                    ctx
-                ),
+                bind === undefined
+                    ? evaluate
+                    : evaluate.withBindAs(
+                          bind,
+                          Evaluate.make(
+                              Reference.make(
+                                  locales.getName(PlaceType.names),
+                                  PlaceType
+                              ),
+                              [
+                                  // If coordinate is computed, and not a literal, don't change it.
+                                  x instanceof Expression &&
+                                  xValue === undefined
+                                      ? x
+                                      : NumberLiteral.make(
+                                            relative
+                                                ? new Decimal(xValue ?? 0)
+                                                      .add(horizontal)
+                                                      .toNumber()
+                                                : horizontal,
+                                            Unit.meters()
+                                        ),
+                                  y instanceof Expression &&
+                                  yValue === undefined
+                                      ? y
+                                      : NumberLiteral.make(
+                                            relative
+                                                ? new Decimal(yValue ?? 0)
+                                                      .add(vertical)
+                                                      .toNumber()
+                                                : vertical,
+                                            Unit.meters()
+                                        ),
+                                  z instanceof Expression &&
+                                  zValue !== undefined
+                                      ? z
+                                      : NumberLiteral.make(0, Unit.meters()),
+                              ]
+                          ),
+                          ctx
+                      ),
             ];
         })
     );
 }
 
-export function createPlaceholderPhrase(database: Database, project: Project) {
+export function createPlaceholderPhrase(project: Project, locales: Locales) {
     const PhraseType = project.shares.output.Phrase;
-    return Evaluate.make(
-        Reference.make(
-            PhraseType.names.getPreferredNameString(project.locales)
-        ),
-        [TextLiteral.make(project.locales[0].ui.phrases.welcome)]
-    );
+    return Evaluate.make(Reference.make(locales.getName(PhraseType.names)), [
+        TextLiteral.make(locales.get((l) => l.ui.phrases.welcome)),
+    ]);
 }
 
 export function addContent(
@@ -133,32 +145,34 @@ export function addContent(
     project: Project,
     list: ListLiteral,
     index: number,
-    phrase: boolean
+    kind: 'phrase' | 'group' | 'shape'
 ) {
     const GroupType = project.shares.output.Group;
     const RowType = project.shares.output.Row;
-    const newPhrase = createPlaceholderPhrase(database, project);
+    const locales = database.Locales.getLocaleSet();
     reviseContent(database, project, list, [
         ...list.values.slice(0, index + 1),
-        phrase
-            ? newPhrase
+        kind === 'phrase'
+            ? // Create a placeholder phrase
+              createPlaceholderPhrase(project, locales)
             : // Create a group with a Row layout and a single phrase
-              Evaluate.make(
-                  Reference.make(
-                      GroupType.names.getPreferredNameString(project.locales)
+            kind === 'group'
+            ? Evaluate.make(GroupType.getReference(locales), [
+                  Evaluate.make(RowType.getReference(locales), []),
+                  ListLiteral.make([createPlaceholderPhrase(project, locales)]),
+              ])
+            : // Create a placeholder shape
+              Evaluate.make(project.shares.output.Shape.getReference(locales), [
+                  Evaluate.make(
+                      project.shares.output.Rectangle.getReference(locales),
+                      [
+                          NumberLiteral.make(-5, Unit.meters()),
+                          NumberLiteral.make(0, Unit.meters()),
+                          NumberLiteral.make(5, Unit.meters()),
+                          NumberLiteral.make(-1, Unit.meters()),
+                      ]
                   ),
-                  [
-                      Evaluate.make(
-                          Reference.make(
-                              RowType.names.getPreferredNameString(
-                                  project.locales
-                              )
-                          ),
-                          []
-                      ),
-                      ListLiteral.make([newPhrase]),
-                  ]
-              ),
+              ]),
         ...list.values.slice(index + 1),
     ]);
 }
@@ -167,7 +181,7 @@ export function reviseContent(
     db: Database,
     project: Project,
     list: ListLiteral,
-    newValues: Expression[]
+    newValues: (Expression | Spread)[]
 ) {
     db.Projects.revise(project, [[list, ListLiteral.make(newValues)]]);
 }
@@ -227,16 +241,19 @@ export function addStageContent(
     }
 
     if (content === undefined)
-        content = createPlaceholderPhrase(database, project);
+        content = createPlaceholderPhrase(
+            project,
+            database.Locales.getLocaleSet()
+        );
 
     if (stage) {
         const context = project.getNodeContext(stage);
-        const list = stage.getExpressionFor(
-            StageType.inputs[0].getNames()[0],
-            context
-        );
-        if (list instanceof ListLiteral) {
-            reviseContent(database, project, list, [...list.values, content]);
+        const content = stage.getInput(StageType.inputs[0], context);
+        if (content instanceof ListLiteral) {
+            reviseContent(database, project, content, [
+                ...content.values,
+                content,
+            ]);
         }
     }
 }
@@ -289,7 +306,7 @@ export function addSoloPhrase(db: Database, project: Project) {
     if (phrase) return;
 
     // If there's not, find the last non-bind value of the program.
-    const block = project.main.expression.expression;
+    const block = project.getMain().expression.expression;
     const statements = block.statements.filter(
         (node) => !(node instanceof Bind)
     );
@@ -344,11 +361,14 @@ export function addStage(
 
     // Build a new stage, wrapping the phrase.
     stage = Evaluate.make(Reference.make(STAGE_SYMBOL), [
-        ListLiteral.make([existing ?? createPlaceholderPhrase(db, project)]),
+        ListLiteral.make([
+            existing ??
+                createPlaceholderPhrase(project, db.Locales.getLocaleSet()),
+        ]),
     ]);
 
     // Find the block to insert
-    const block = project.main.expression.expression;
+    const block = project.getMain().expression.expression;
 
     // Replace the phrase with the group.
     db.Projects.reviseProject(

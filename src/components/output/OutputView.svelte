@@ -23,10 +23,8 @@
     import {
         animationFactor,
         DB,
-        locale,
         locales,
         Projects,
-        writingDirection,
         writingLayout,
     } from '../../db/Database';
     import type Color from '../../output/Color';
@@ -38,7 +36,7 @@
     import Pointer from '../../input/Pointer';
     import Place from '../../output/Place';
     import moveOutput, { addStageContent } from '../palette/editOutput';
-    import { getPlace } from '../../output/getPlace';
+    import { getOrCreatePlace } from '../../output/getOrCreatePlace';
     import { SvelteComponent, afterUpdate, beforeUpdate } from 'svelte';
     import Placement from '../../input/Placement';
     import { toExpression } from '../../parser/parseExpression';
@@ -95,11 +93,17 @@
     let startGesturePlace: Place | undefined = undefined;
 
     $: exception = value instanceof ExceptionValue ? value : undefined;
-    $: stageValue = value === undefined ? undefined : toStage(project, value);
+
+    /** Everyt ime the value changes, try to parse a Stage from it. */
+    $: stageValue = value === undefined ? undefined : toStage(evaluator, value);
+
+    /** Keep track of whether the creator is typing, so we can blur output until the next change. */
     $: typing =
         !mini &&
         $evaluation?.playing === true &&
         $keyboardEditIdle === IdleKind.Typing;
+
+    /** Keep a background color up to date. */
     $: background =
         value instanceof ExceptionValue
             ? 'var(--wordplay-error)'
@@ -118,10 +122,10 @@
     $: if ($announce && value && (exception || stageValue === undefined))
         $announce(
             'value',
-            $locale.language,
+            $locales.getLanguages()[0],
             exception
-                ? exception.getExplanation($locale).toText()
-                : value.getDescription(concretize, $locale).toText()
+                ? exception.getExplanation($locales).toText()
+                : value.getDescription(concretize, $locales).toText()
         );
 
     /** When creator's preferred animation factor changes, update evaluator */
@@ -133,7 +137,9 @@
         if (event.key === 'Tab') return;
 
         // Reset the value if there's not a chat.
-        if (!chats && keyboardInputView) keyboardInputView.value = '';
+        if (!chats && keyboardInputView) {
+            keyboardInputView.value = '';
+        }
 
         // Is the program evaluating?
         if (evaluator.isPlaying()) {
@@ -282,7 +288,8 @@
                 .map((stream) => stream.react({ key: event.key, down: true }));
 
             // Announce the key pressed
-            if ($announce) $announce('keyinput', $locale.language, event.key);
+            if ($announce)
+                $announce('keyinput', $locales.getLanguages()[0], event.key);
 
             // Map keys onto axes of change for any Placement streams.
             if (
@@ -438,10 +445,11 @@
                     : // If moving focus, the start place is the rendered focus
                     focus
                     ? renderedFocus
-                    : // If there's selected output, it's the first output selected
+                    : // If there's selected output, it's the first output selected, and it has a place
                     $selectedOutput && $selectedOutput.length > 0
-                    ? getPlace(
-                          $locale,
+                    ? getOrCreatePlace(
+                          project,
+                          $locales,
                           $selectedOutput[0],
                           evaluator.project.getNodeContext($selectedOutput[0])
                       )
@@ -581,7 +589,7 @@
                         // Scale down the mouse delta and offset by the drag starting point.
                         stage.setFocus(
                             renderedDeltaX / scale + drag.startPlace.x,
-                            -renderedDeltaY / scale + drag.startPlace.y,
+                            renderedDeltaY / scale + drag.startPlace.y,
                             drag.startPlace.z
                         );
                         event.stopPropagation();
@@ -845,7 +853,7 @@
     class="output"
     data-uuid="stage"
     role="application"
-    aria-label={$locale.ui.output.label}
+    aria-label={$locales.get((l) => l.ui.output.label)}
     class:mini
     class:editing={$evaluation?.playing === false && !painting}
     class:selected={stageValue &&
@@ -853,7 +861,7 @@
         stageValue.value.creator instanceof Evaluate &&
         $selectedOutput &&
         $selectedOutput.includes(stageValue.value.creator)}
-    style:direction={$writingDirection}
+    style:direction={$locales.getDirection()}
     style:writing-mode={$writingLayout}
 >
     <div
@@ -878,11 +886,13 @@
                     type="text"
                     class="keyboard-input"
                     placeholder={chats
-                        ? $locale.ui.output.field.key.placeholder
+                        ? $locales.get((l) => l.ui.output.field.key.placeholder)
                         : null}
                     data-defaultfocus
                     aria-autocomplete="none"
-                    aria-label={$locale.ui.output.field.key.label}
+                    aria-label={$locales.get(
+                        (l) => l.ui.output.field.key.description
+                    )}
                     autocomplete={chats ? 'on' : 'off'}
                     autocorrect={chats ? 'on' : 'off'}
                     on:keydown={(event) =>
@@ -897,7 +907,8 @@
                 />
                 {#if chats}
                     <ButtonUI
-                        tip={$locale.ui.output.button.submit}
+                        background
+                        tip={$locales.get((l) => l.ui.output.button.submit)}
                         action={submitChat}>↑</ButtonUI
                     >
                 {/if}
@@ -913,12 +924,10 @@
                         invert
                     >
                         <svelte:fragment slot="content">
-                            {#each $locales as locale}
-                                <MarkupHTMLView
-                                    markup={exception.getExplanation(locale)}
-                                />
-                            {/each}</svelte:fragment
-                        ></Speech
+                            <MarkupHTMLView
+                                markup={exception.getExplanation($locales)}
+                            />
+                        </svelte:fragment></Speech
                     >
                 {/if}
             </div>
@@ -932,7 +941,7 @@
                     <ValueView {value} interactive={false} />
                 {:else}
                     {@const description = value
-                        .getDescription(concretize, $locale)
+                        .getDescription(concretize, $locales)
                         .toText()}
                     <h2>{description}</h2>
                     <ValueView {value} inline={false} />
@@ -992,6 +1001,9 @@
         transition: ease-in-out background-color, filter, ease-in,
             height ease-in;
         transition-duration: calc(var(--animation-factor) * 200ms);
+
+        /** Query the container size */
+        container-type: inline-size;
     }
 
     .value.typing {
@@ -1013,11 +1025,12 @@
         max-height: 100%;
         width: 100%;
         padding: var(--wordplay-spacing);
-        font-size: 48pt;
         transform-origin: center;
         align-items: center;
         margin: auto;
         overflow: auto;
+        font-size: 5cqw;
+        padding-block-start: 2em;
     }
 
     .message.mini {

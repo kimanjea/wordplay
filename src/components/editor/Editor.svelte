@@ -10,7 +10,12 @@
         setContext,
     } from 'svelte';
     import UnicodeString from '@models/UnicodeString';
-    import { handleKeyCommand, type Edit } from './util/Commands';
+    import {
+        handleKeyCommand,
+        type Edit,
+        type ProjectRevision,
+        InsertSymbol,
+    } from './util/Commands';
     import type Source from '@nodes/Source';
     import { writable } from 'svelte/store';
     import type Program from '@nodes/Program';
@@ -35,6 +40,7 @@
         getConceptIndex,
         getEditors,
         getAnnounce,
+        type EditorState,
     } from '../project/Contexts';
     import {
         type Highlights,
@@ -46,7 +52,7 @@
     import TypePlaceholder from '@nodes/TypePlaceholder';
     import Sym from '@nodes/Sym';
     import RootView from '../project/RootView.svelte';
-    import type Project from '@models/Project';
+    import Project from '@models/Project';
     import type Conflict from '@conflicts/Conflict';
     import { tick } from 'svelte';
     import { getEditsAt } from '../../edit/Autocomplete';
@@ -69,10 +75,9 @@
     import {
         DB,
         Projects,
+        animationFactor,
         blocks,
-        locale,
         locales,
-        writingDirection,
         writingLayout,
     } from '../../db/Database';
     import Button from '../widgets/Button.svelte';
@@ -121,7 +126,7 @@
     $: if (project) restoredPosition = undefined;
     // When the project is undone or redone, if we haven't restored the position, restore it, then remember the restored position.
     $: if (
-        Projects.getHistory(project.id)?.wasRestored() &&
+        Projects.getHistory(project.getID())?.wasRestored() &&
         restoredPosition === undefined
     ) {
         const position = project.getCaretPosition(source);
@@ -133,10 +138,7 @@
 
     $: caretExpressionType =
         $caret.position instanceof Expression
-            ? $caret.position
-                  .getType(context)
-                  .simplify(context)
-                  .generalize(context)
+            ? $caret.position.getType(context).simplify(context)
             : undefined;
 
     // A menu of potential transformations based on the caret position.
@@ -184,10 +186,6 @@
     const menuNode = writable<CaretPosition | undefined>(undefined);
     setContext(MenuNodeSymbol, menuNode);
 
-    // A store of the handle edit function
-    const editHandler = writable<typeof handleEdit>(handleEdit);
-    setContext(EditorSymbol, editHandler);
-
     // When the menu node changes, show the menu.
     const unsubscribe = menuNode.subscribe((position) => {
         if (position !== undefined) {
@@ -223,6 +221,7 @@
     }
 
     async function evalUpdate() {
+        // No evaluator, or we're playing? No need to update the eval editor info.
         if (evaluator === undefined || evaluator.isPlaying()) return;
 
         // If the program contains this node, scroll it's first token into view.
@@ -245,14 +244,25 @@
 
     // Keep the project-level editors store in sync with this editor's state.
     $: if (editors) {
-        $editors.set(sourceID, {
+        const state = {
             caret: $caret,
             edit: handleEdit,
             focused,
             toggleMenu,
-        });
+        };
+        $editors.set(sourceID, state);
         editors.set($editors);
+        editHandler.set(state);
     }
+
+    // A store of the handle edit function
+    const editHandler = writable<EditorState>({
+        edit: handleEdit,
+        caret: $caret,
+        focused: false,
+        toggleMenu,
+    });
+    setContext(EditorSymbol, editHandler);
 
     // True if the last keyboard input was not handled by a command.
     let lastKeyDownIgnored = false;
@@ -451,12 +461,7 @@
     }
 
     // Update the highlights when any of these stores values change
-    $: if (
-        $nodeConflicts &&
-        $evaluation &&
-        $writingLayout &&
-        $writingDirection
-    ) {
+    $: if ($nodeConflicts && $evaluation && $writingLayout && $locales) {
         tick().then(() =>
             highlights.set(
                 getHighlights(
@@ -478,7 +483,7 @@
     $: outlines = updateOutlines(
         $highlights,
         $writingLayout === 'horizontal-tb',
-        $writingDirection === 'rtl' || $writingLayout === 'vertical-rl',
+        $locales.getDirection() === 'rtl' || $writingLayout === 'vertical-rl',
         getNodeView
     );
 
@@ -487,7 +492,8 @@
         updateOutlines(
             $highlights,
             $writingLayout === 'horizontal-tb',
-            $writingDirection === 'rtl' || $writingLayout === 'vertical-rl',
+            $locales.getDirection() === 'rtl' ||
+                $writingLayout === 'vertical-rl',
             getNodeView
         );
 
@@ -509,6 +515,17 @@
             }
         }
     });
+
+    function setIgnored(ignored: boolean) {
+        if (ignored) {
+            lastKeyDownIgnored = true;
+            // Flip back to unignored after the animation so we can give more feedback.
+            setTimeout(
+                () => (lastKeyDownIgnored = false),
+                $animationFactor * 250
+            );
+        } else lastKeyDownIgnored = false;
+    }
 
     function getNodeView(node: Node): HTMLElement | undefined {
         // See if there's a node or value view that corresponds to this node.
@@ -870,7 +887,7 @@
                 ? Math.round(
                       Math.abs(
                           event.clientX -
-                              ($writingDirection === 'ltr'
+                              ($locales.getDirection() === 'ltr'
                                   ? spaceBounds.left
                                   : spaceBounds.right)
                       ) / spaceWidth
@@ -957,7 +974,7 @@
 
     function exceededDragThreshold(event: PointerEvent) {
         return (
-            dragPoint === undefined ||
+            dragPoint !== undefined &&
             Math.sqrt(
                 Math.pow(event.clientX - dragPoint.x, 2) +
                     Math.pow(event.clientY - dragPoint.y, 2)
@@ -971,8 +988,11 @@
         // Remove the touch action disabling now that we're moving.
         if (editor) editor.style.removeProperty('touchAction');
 
-        if (evaluator.isPlaying()) handleEditHover(event);
-        else handleDebugHover(event);
+        // Handle an edit
+        handleEditHover(event);
+
+        // Hover debug stuff when paused.
+        if (!evaluator.isPlaying()) handleDebugHover(event);
     }
 
     function handleEditHover(event: PointerEvent) {
@@ -1044,7 +1064,11 @@
         const position = node ?? $caret.position;
 
         // Get the unique valid edits at the caret.
-        const revisions = getEditsAt(project, $caret.withPosition(position));
+        const revisions = getEditsAt(
+            project,
+            $caret.withPosition(position),
+            $locales
+        );
 
         // Set the menu.
         if ($concepts)
@@ -1090,7 +1114,7 @@
      *      But there are other things that edit, and they may not want the editor grabbing focus.
      **/
     async function handleEdit(
-        edit: Edit | undefined,
+        edit: Edit | ProjectRevision | undefined,
         idle: IdleKind,
         focusAfter: boolean
     ) {
@@ -1140,12 +1164,18 @@
         if (newSource) {
             if (editable) {
                 Projects.reviseProject(
-                    project
-                        .withSource(source, newSource)
-                        .withCaret(newSource, newCaret.position)
+                    newSource instanceof Project
+                        ? newSource
+                        : project
+                              .withSource(source, newSource)
+                              .withCaret(newSource, newCaret.position)
                 );
-                caret.set(newCaret.withSource(newSource));
-            } else lastKeyDownIgnored = true;
+                caret.set(
+                    newSource instanceof Project
+                        ? newCaret
+                        : newCaret.withSource(newSource)
+                );
+            } else setIgnored(true);
         } else {
             // Remove the addition, since the caret moved since being added.
             caret.set(newCaret.withoutAddition());
@@ -1163,11 +1193,12 @@
     /** True if the last symbol was a dead key*/
     let keyWasDead = false;
     let replacePreviousWithNext = false;
+    let composing = false;
 
     function handleTextInput(event: Event) {
-        lastKeyDownIgnored = false;
+        setIgnored(false);
 
-        let edit: Edit | undefined = undefined;
+        let edit: Edit | ProjectRevision | undefined = undefined;
 
         // Somehow no reference to the input? Bail.
         if (input === null) return;
@@ -1221,13 +1252,13 @@
                 }
             }
             // Otherwise, just insert the grapheme and limit the input field to the last character.
-            else {
+            else if (!composing) {
                 const char = lastChar.toString();
 
-                // Insert the character tht was added last.
-                edit = newCaret.insert(char, !keyWasDead);
+                // Insert the character that was added last.
+                edit = newCaret.insert(char, project, !keyWasDead);
                 if (edit) {
-                    // Rset the value to the last character.
+                    // Reset the value to the last character.
                     if (value.getLength() > 1)
                         input.value = lastChar.toString();
                 }
@@ -1239,11 +1270,11 @@
         }
 
         // Prevent the OS from doing anything with this input.
-        event.preventDefault();
+        if (!composing) event.preventDefault();
 
         // Did we make an update?
         if (edit) handleEdit(edit, IdleKind.Typing, true);
-        else lastKeyDownIgnored = true;
+        else setIgnored(true);
     }
 
     function handleKeyDown(event: KeyboardEvent) {
@@ -1251,7 +1282,7 @@
         if (editor === null) return;
 
         // Assume we'll handle it.
-        lastKeyDownIgnored = false;
+        setIgnored(false);
 
         // If it was a dead key, don't handle it as a command, just remember that it was
         // a dead key, then let the input event above insert it.
@@ -1266,11 +1297,16 @@
 
         const [command, result] = handleKeyCommand(event, {
             caret: $caret,
+            project,
+            editor: true,
             evaluator,
             dragging: $dragged !== undefined,
             database: DB,
             toggleMenu,
         });
+
+        // Don't insert symbols if composing.
+        if (composing && command === InsertSymbol) return;
 
         // If it produced a new caret and optionally a new project, update the stores.
         const idle =
@@ -1283,13 +1319,32 @@
                 handleEdit(result, idle, true);
             }
 
-            // Prevent default keyboard commands from being otherwise handled.
+            // Prevent default keyboard commands from being otherwise handled, since they were handled here.
             event.preventDefault();
             event.stopPropagation();
         }
         // Give feedback that we didn't execute a command.
         else if (!/^(Shift|Control|Alt|Meta|Tab)$/.test(event.key))
-            lastKeyDownIgnored = true;
+            setIgnored(true);
+    }
+
+    function handleCompositionStart() {
+        composing = true;
+
+        // Backspace over the character just inserted
+        const edit = $caret.backspace(project);
+        if (edit) handleEdit(edit, IdleKind.Typing, false);
+    }
+
+    function handleCompositionEnd() {
+        composing = false;
+
+        if (input) {
+            // Insert the character that was added last.
+            const edit = $caret.insert(input.value, project, !keyWasDead);
+            if (edit) handleEdit(edit, IdleKind.Typing, true);
+            input.value = '';
+        }
     }
 
     function getInputID() {
@@ -1312,13 +1367,15 @@
         : 'stepping'}"
     class:readonly={!editable}
     class:focused
-    class:dragging={dragCandidate !== undefined || $dragged !== undefined}
+    class:dragging={dragCandidate !== undefined ||
+        $dragged !== undefined ||
+        dragPoint !== undefined}
     data-uiid="editor"
     role="application"
-    aria-label={`${$locale.ui.source.label} ${source.getPreferredName(
-        $locales
+    aria-label={`${$locales.get((l) => l.ui.source.label)} ${$locales.getName(
+        source.names
     )}`}
-    style:direction={$writingDirection}
+    style:direction={$locales.getDirection()}
     style:writing-mode={$writingLayout}
     data-id={source.id}
     bind:this={editor}
@@ -1356,11 +1413,14 @@
         autocorrect="off"
         autocapitalize="none"
         class="keyboard-input"
+        class:composing
         style:left={caretLocation ? `${caretLocation.left}px` : null}
         style:top={caretLocation ? `${caretLocation.top}px` : null}
         bind:this={input}
         on:input={handleTextInput}
         on:keydown={handleKeyDown}
+        on:compositionstart={handleCompositionStart}
+        on:compositionend={handleCompositionEnd}
         on:focusin={() => (focused = true)}
         on:focusout={() => (focused = false)}
     />
@@ -1407,10 +1467,10 @@
                     />{/if}
                 <!-- Show the node's label and type -->
                 {$caret.position.getLabel(
-                    $locale
+                    $locales
                 )}{#if caretExpressionType}&nbsp;{TYPE_SYMBOL}&nbsp;{caretExpressionType.toWordplay(
                         undefined,
-                        $locale
+                        $locales.getLocale()
                     )}{/if}
                 <PlaceholderView position={$caret.position} />{/if}</div
         >
@@ -1418,10 +1478,10 @@
     {#if source.isEmpty() && showHelp}
         <EditorHelp />
     {/if}
-    {#if project.supplements.length > 0}
+    {#if project.getSupplements().length > 0}
         <div class="output-preview-container">
             <Button
-                tip={$locale.ui.source.button.selectOutput}
+                tip={$locales.get((l) => l.ui.source.button.selectOutput)}
                 active={!selected}
                 action={() => dispatch('preview')}
                 scale={false}
@@ -1463,6 +1523,7 @@
 
     .editor.dragging {
         touch-action: none;
+        cursor: grabbing;
     }
 
     .keyboard-input {
@@ -1478,6 +1539,11 @@
         /* outline: 1px solid red;
         opacity: 1;
         width: 10px; */
+    }
+
+    .keyboard-input.composing {
+        opacity: 1;
+        width: auto;
     }
 
     .caret-description {

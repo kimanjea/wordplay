@@ -1,16 +1,16 @@
 import toStructure from '../basis/toStructure';
 import type Value from '@values/Value';
 import type Color from './Color';
-import type TypeOutput from './TypeOutput';
+import type Output from './Output';
 import type RenderContext from './RenderContext';
 import Place from './Place';
 import { getBind } from '@locale/getBind';
 import Arrangement from './Arrangement';
 import Phrase from './Phrase';
 import concretize from '../locale/concretize';
-import type Locale from '../locale/Locale';
+import type Locales from '../locale/Locales';
 
-export function createFreeType(locales: Locale[]) {
+export function createFreeType(locales: Locales) {
     return toStructure(`
     ${getBind(locales, (locale) => locale.output.Free, '•')} Arrangement()
 `);
@@ -21,8 +21,8 @@ export class Free extends Arrangement {
         super(value);
     }
 
-    getLayout(children: (TypeOutput | null)[], context: RenderContext) {
-        const places: [TypeOutput, Place][] = [];
+    getLayout(children: (Output | null)[], context: RenderContext) {
+        const places: [Output, Place][] = [];
         let left = 0,
             right = 0,
             bottom = 0,
@@ -62,10 +62,10 @@ export class Free extends Arrangement {
         return undefined;
     }
 
-    getDescription(output: TypeOutput[], locales: Locale[]) {
+    getDescription(output: Output[], locales: Locales) {
         return concretize(
-            locales[0],
-            locales[0].output.Free.description,
+            locales,
+            locales.get((l) => l.output.Free.description),
             output.length
         ).toText();
     }

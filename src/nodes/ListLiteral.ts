@@ -17,30 +17,39 @@ import type Conflict from '@conflicts/Conflict';
 import ListOpenToken from './ListOpenToken';
 import ListCloseToken from './ListCloseToken';
 import { node, type Grammar, type Replacement, list } from './Node';
-import type Locale from '@locale/Locale';
 import Glyphs from '../lore/Glyphs';
 import Purpose from '../concepts/Purpose';
 import type { BasisTypeName } from '../basis/BasisConstants';
 import concretize from '../locale/concretize';
 import Sym from './Sym';
 import AnyType from './AnyType';
+import Spread from './Spread';
+import TypeException from '../values/TypeException';
+import type Locales from '../locale/Locales';
 
 export default class ListLiteral extends Expression {
     readonly open: Token;
-    readonly values: Expression[];
+    readonly values: (Spread | Expression)[];
     readonly close?: Token;
+    readonly literal?: Token;
 
-    constructor(open: Token, values: Expression[], close?: Token) {
+    constructor(
+        open: Token,
+        values: (Spread | Expression)[],
+        close?: Token,
+        literal?: Token
+    ) {
         super();
 
         this.open = open;
         this.values = values;
         this.close = close;
+        this.literal = literal;
 
         this.computeChildren();
     }
 
-    static make(values?: Expression[]) {
+    static make(values?: (Expression | Spread)[]) {
         return new ListLiteral(
             new ListOpenToken(),
             values ?? [],
@@ -57,9 +66,9 @@ export default class ListLiteral extends Expression {
             { name: 'open', kind: node(Sym.ListOpen) },
             {
                 name: 'values',
-                kind: list(true, node(Expression)),
-                label: (translation: Locale) =>
-                    translation.node.ListLiteral.item,
+                kind: list(true, node(Expression), node(Spread)),
+                label: (locales: Locales) =>
+                    locales.get((l) => l.node.ListLiteral.item),
                 // Only allow types to be inserted that are of the list's type, if provided.
                 getType: (context) =>
                     this.getItemType(context)?.generalize(context) ??
@@ -68,14 +77,16 @@ export default class ListLiteral extends Expression {
                 indent: true,
             },
             { name: 'close', kind: node(Sym.ListClose) },
+            { name: 'literal', kind: node(Sym.Literal) },
         ];
     }
 
     clone(replace?: Replacement) {
         return new ListLiteral(
             this.replaceChild('open', this.open, replace),
-            this.replaceChild<Expression[]>('values', this.values, replace),
-            this.replaceChild('close', this.close, replace)
+            this.replaceChild('values', this.values, replace),
+            this.replaceChild('close', this.close, replace),
+            this.replaceChild('literal', this.literal, replace)
         ) as this;
     }
 
@@ -101,10 +112,13 @@ export default class ListLiteral extends Expression {
 
     computeType(context: Context): Type {
         // Strip away any concrete types in the item types.
-        return ListType.make(
+        const union = ListType.make(
             this.getItemType(context),
             this.values.length
-        ).generalize(context);
+        );
+
+        // If a literal type, keep it, otherwise generalize the type.
+        return this.literal ? union : union.generalize(context);
     }
 
     computeConflicts(): Conflict[] {
@@ -117,14 +131,23 @@ export default class ListLiteral extends Expression {
     }
 
     getDependencies(): Expression[] {
-        return [...this.values];
+        return this.values
+            .map((val) => (val instanceof Spread ? val.list : val))
+            .filter((val): val is Expression => val !== undefined);
     }
 
-    compile(context: Context): Step[] {
+    compile(evaluator: Evaluator, context: Context): Step[] {
         return [
             new Start(this),
             ...this.values.reduce(
-                (steps: Step[], item) => [...steps, ...item.compile(context)],
+                (steps: Step[], item) => [
+                    ...steps,
+                    ...(item instanceof Spread
+                        ? item.list
+                            ? item.list.compile(evaluator, context)
+                            : []
+                        : item.compile(evaluator, context)),
+                ],
                 []
             ),
             new Finish(this),
@@ -134,16 +157,40 @@ export default class ListLiteral extends Expression {
     evaluate(evaluator: Evaluator, prior: Value | undefined): Value {
         if (prior) return prior;
 
+        // Start with the list of values from the expression to help keep track of the ones that were handled.
+        const items = this.values.slice();
+
         // Pop all of the values.
         const values = [];
-        for (let i = 0; i < this.values.length; i++)
-            values.unshift(evaluator.popValue(this));
+        for (let i = 0; i < this.values.length; i++) {
+            const value = evaluator.popValue(this);
+            let item;
+            do {
+                item = items.pop();
+            } while (item instanceof Spread && item.list === undefined);
+            // Was this a spread value? Add all of its items to this list.
+            if (item instanceof Spread) {
+                if (value instanceof ListValue) {
+                    // Add them in reverse order so they end up in the correct order.
+                    for (let j = value.values.length - 1; j >= 0; j--)
+                        values.unshift(value.values[j]);
+                } else
+                    return new TypeException(
+                        this,
+                        evaluator,
+                        ListType.make(),
+                        value
+                    );
+            }
+            // Add the non-spread value.
+            else values.unshift(value);
+        }
 
         // Construct the new list.
         return new ListValue(this, values);
     }
 
-    evaluateTypeSet(
+    evaluateTypeGuards(
         bind: Bind,
         original: TypeSet,
         current: TypeSet,
@@ -151,7 +198,9 @@ export default class ListLiteral extends Expression {
     ) {
         this.values.forEach((val) => {
             if (val instanceof Expression)
-                val.evaluateTypeSet(bind, original, current, context);
+                val.evaluateTypeGuards(bind, original, current, context);
+            else if (val.list)
+                val.list.evaluateTypeGuards(bind, original, current, context);
         });
         return current;
     }
@@ -163,23 +212,26 @@ export default class ListLiteral extends Expression {
         return this.close ?? this.values[this.values.length - 1] ?? this.open;
     }
 
-    getNodeLocale(translation: Locale) {
-        return translation.node.ListLiteral;
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.ListLiteral);
     }
 
-    getStartExplanations(locale: Locale) {
-        return concretize(locale, locale.node.ListLiteral.start);
+    getStartExplanations(locales: Locales) {
+        return concretize(
+            locales,
+            locales.get((l) => l.node.ListLiteral.start)
+        );
     }
 
     getFinishExplanations(
-        locale: Locale,
+        locales: Locales,
         context: Context,
         evaluator: Evaluator
     ) {
         return concretize(
-            locale,
-            locale.node.ListLiteral.finish,
-            this.getValueIfDefined(locale, context, evaluator)
+            locales,
+            locales.get((l) => l.node.ListLiteral.finish),
+            this.getValueIfDefined(locales, context, evaluator)
         );
     }
 

@@ -42,6 +42,7 @@ import PropertyReference from './PropertyReference';
 import Reference from './Reference';
 import Purpose from '../concepts/Purpose';
 import DefinitionExpression from './DefinitionExpression';
+import type Locales from '../locale/Locales';
 
 export default class FunctionDefinition extends DefinitionExpression {
     readonly docs?: Docs;
@@ -125,21 +126,20 @@ export default class FunctionDefinition extends DefinitionExpression {
 
     /** Create an expression that evaluates this function with typed placeholders for its inputs. */
     getEvaluateTemplate(
-        nameOrLocales: Locale[] | string,
+        nameOrLocales: Locales | string,
         context: Context,
         structureType: Expression | Type | undefined
     ) {
         const possibleStructure = context.getRoot(this)?.getParent(this);
-        const structure =
-            structureType instanceof Expression
-                ? structureType
-                : possibleStructure instanceof StructureDefinition
-                ? possibleStructure
-                : undefined;
+        const structure = structureType
+            ? structureType
+            : possibleStructure instanceof StructureDefinition
+            ? possibleStructure
+            : undefined;
         const reference = Reference.make(
             typeof nameOrLocales === 'string'
                 ? nameOrLocales
-                : this.names.getPreferredNameString(nameOrLocales),
+                : nameOrLocales.getName(this.names),
             this
         );
         return this.isOperator() && this.inputs.length === 0
@@ -404,27 +404,51 @@ export default class FunctionDefinition extends DefinitionExpression {
         );
     }
 
-    evaluateTypeSet(
+    /** True if a name matches, the output matches, and the input type matches. */
+    isEquivalentTo(definition: Definition) {
+        return (
+            definition === this ||
+            (definition instanceof FunctionDefinition &&
+                this.output &&
+                definition.output &&
+                this.names.sharesName(definition.names) &&
+                this.output.isEqualTo(definition.output) &&
+                this.inputs.length === definition.inputs.length &&
+                this.inputs.every((input, index) =>
+                    input.isEqualTo(definition.inputs[index])
+                ))
+        );
+    }
+
+    evaluateTypeGuards(
         bind: Bind,
         original: TypeSet,
         current: TypeSet,
         context: Context
     ) {
         if (this.expression !== undefined)
-            this.expression.evaluateTypeSet(bind, original, current, context);
+            this.expression.evaluateTypeGuards(
+                bind,
+                original,
+                current,
+                context
+            );
         return current;
     }
 
-    getNodeLocale(translation: Locale) {
-        return translation.node.FunctionDefinition;
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.FunctionDefinition);
     }
 
-    getStartExplanations(locale: Locale) {
-        return concretize(locale, locale.node.FunctionDefinition.start);
+    getStartExplanations(locales: Locales) {
+        return concretize(
+            locales,
+            locales.get((l) => l.node.FunctionDefinition.start)
+        );
     }
 
-    getDescriptionInputs(locale: Locale) {
-        return [this.names.getPreferredNameString([locale])];
+    getDescriptionInputs(locales: Locales) {
+        return [locales.getName(this.names)];
     }
 
     getGlyphs() {

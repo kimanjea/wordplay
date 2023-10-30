@@ -4,10 +4,10 @@ import Expression from '@nodes/Expression';
 import Context from '@nodes/Context';
 import Source from '@nodes/Source';
 import Project from '../models/Project';
-import { DefaultLocale } from '../db/Database';
 import type Node from '../nodes/Node';
 import type Conflict from './Conflict';
 import type Type from '../nodes/Type';
+import DefaultLocale from '../locale/DefaultLocale';
 
 export function testConflict(
     goodCode: string,
@@ -17,7 +17,7 @@ export function testConflict(
     nodeIndex = 0
 ) {
     const goodSource = new Source('test', goodCode);
-    const goodProject = new Project(
+    const goodProject = Project.make(
         null,
         'good',
         goodSource,
@@ -36,7 +36,7 @@ export function testConflict(
     ).toBeUndefined();
 
     const badSource = new Source('test', badCode);
-    const badProject = new Project(null, 'bad', badSource, [], DefaultLocale);
+    const badProject = Project.make(null, 'bad', badSource, [], DefaultLocale);
     const badProgram = badSource.expression;
     const badOp = badProgram.nodes().filter((n) => n instanceof nodeType)[
         nodeIndex
@@ -54,7 +54,7 @@ export function testTypes(
     typeExpected: new (...params: never[]) => Type
 ) {
     const source = new Source('test', code);
-    const project = new Project(null, 'test', source, [], DefaultLocale);
+    const project = Project.make(null, 'test', source, [], DefaultLocale);
     const last =
         source.expression.expression instanceof Block
             ? source.expression.expression.getLast()

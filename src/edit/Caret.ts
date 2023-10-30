@@ -1,4 +1,8 @@
-import type { Edit, Revision } from '../components/editor/util/Commands';
+import type {
+    Edit,
+    ProjectRevision,
+    Revision,
+} from '../components/editor/util/Commands';
 import Block from '@nodes/Block';
 import Node, { ListOf } from '@nodes/Node';
 import Token from '@nodes/Token';
@@ -8,6 +12,7 @@ import {
     FormattingSymbols,
     DelimiterOpenByClose,
     TextOpenByTextClose,
+    isName,
 } from '@parser/Tokenizer';
 import {
     CONVERT_SYMBOL,
@@ -33,6 +38,14 @@ import NodeRef from '../locale/NodeRef';
 import type Conflict from '../conflicts/Conflict';
 import Translation from '../nodes/Translation';
 import { LanguageTagged } from '../nodes/LanguageTagged';
+import Reference from '../nodes/Reference';
+import Name from '../nodes/Name';
+import type Project from '../models/Project';
+import type Definition from '../nodes/Definition';
+import DefinitionExpression from '../nodes/DefinitionExpression';
+import NameType from '../nodes/NameType';
+import TypeVariable from '../nodes/TypeVariable';
+import Bind from '../nodes/Bind';
 
 export type InsertionContext = { before: Node[]; after: Node[] };
 export type CaretPosition = number | Node;
@@ -89,6 +102,17 @@ export default class Caret {
             typeof this.position === 'number'
                 ? this.source.getTokenAt(this.position, false)
                 : undefined;
+    }
+
+    getExpressionAt() {
+        const start =
+            this.position instanceof Node
+                ? this.position
+                : this.tokenExcludingSpace;
+        if (start === undefined) return undefined;
+        return this.source.root
+            .getAncestors(start)
+            .find((n): n is Expression => n instanceof Expression);
     }
 
     getNodeInside() {
@@ -491,6 +515,8 @@ export default class Caret {
                 this.position - 1,
                 false
             );
+
+            // If we found a token and we're moving next and we're at the token's start, choose the token or its parent if it's an only child or a child of a placeholder
             if (
                 token &&
                 direction > 0 &&
@@ -501,6 +527,7 @@ export default class Caret {
                     this.column,
                     entry
                 );
+            // If we found a token before and we're moving before and we're at the token's end, choose the token or its parent if it's an only child or a child of a placeholder
             else if (
                 tokenBefore &&
                 direction < 0 &&
@@ -570,7 +597,7 @@ export default class Caret {
                     return index + last.getTextLength() + offset;
             }
             return undefined;
-        } else return undefined;
+        } else return this.position;
     }
 
     getPlaceholderAtPosition(position: number): Node | undefined {
@@ -685,10 +712,69 @@ export default class Caret {
         }
     }
 
-    /** If complete is true, will automatically close a delimited symbol. */
-    insert(text: string, complete = true): Edit | undefined {
+    /** Insert text at the current position. If complete is true, will automatically close a delimited symbol. */
+    insert(
+        text: string,
+        project?: Project,
+        complete = true
+    ): Edit | ProjectRevision | undefined {
         // Normalize the mystery string, ensuring it follows Unicode normalization form.
         text = text.normalize();
+
+        // In a name or just after name that's part of a reference or a bind? Try to do a rename instead of an edit.
+        if (project && typeof this.position === 'number') {
+            // Are we in the middle of a name or at it's end?
+            const rename = this.tokenExcludingSpace?.isSymbol(Sym.Name)
+                ? this.tokenExcludingSpace
+                : this.tokenPrior?.isSymbol(Sym.Name) && this.atTokenEnd()
+                ? this.tokenPrior
+                : undefined;
+            const renameParent = rename
+                ? this.source.root.getParent(rename)
+                : undefined;
+            if (
+                renameParent instanceof Name
+                // Disabled reference renaming, it's annoying.
+                // || renameParent instanceof Reference
+            ) {
+                let start: number | undefined;
+                let newName: string | undefined;
+
+                if (
+                    rename === this.tokenExcludingSpace &&
+                    this.tokenExcludingSpace
+                ) {
+                    start = this.source.getTokenTextPosition(
+                        this.tokenExcludingSpace
+                    );
+                    newName =
+                        start === undefined
+                            ? undefined
+                            : this.tokenExcludingSpace
+                                  .getText()
+                                  .substring(0, this.position - start) +
+                              text +
+                              this.tokenExcludingSpace
+                                  .getText()
+                                  .substring(this.position - start);
+                } else if (rename === this.tokenPrior && this.tokenPrior) {
+                    start = this.source.getTokenTextPosition(this.tokenPrior);
+                    newName = this.tokenPrior.getText() + text;
+                }
+
+                if (start !== undefined && newName && isName(newName)) {
+                    const edit = this.rename(
+                        renameParent,
+                        newName,
+                        project,
+                        this.position -
+                            start +
+                            new UnicodeString(text).getLength()
+                    );
+                    if (edit) return edit;
+                }
+            }
+        }
 
         let newSource: Source | undefined;
         let newPosition: number;
@@ -831,13 +917,6 @@ export default class Caret {
         return this.position instanceof Node && this.position.isPlaceholder();
     }
 
-    isPlaceholderToken() {
-        return (
-            this.position instanceof Token &&
-            this.position.isSymbol(Sym.Placeholder)
-        );
-    }
-
     /** If the caret is a node, set the position to its first index */
     enter() {
         if (this.position instanceof Node) {
@@ -903,7 +982,163 @@ export default class Caret {
         ];
     }
 
-    backspace(): Edit | undefined {
+    /**
+     *
+     * @param edited The name or reference that was edited
+     * @param newName The new name
+     * @param project The project being edited
+     * @param offset How far from the start of the edited name to move the cursor. Relative to the name since the name's source positions are not stable since many names can change.
+     * @returns A revised project and caret, or nothing
+     */
+    rename(
+        edited: Reference | Name,
+        newName: string,
+        project: Project,
+        offset: number
+    ): ProjectRevision | undefined {
+        let name: Name | undefined;
+        let definition: Definition | undefined;
+        // If the edited thing is a reference, find it's definition and the corresponding name that was edited.
+        if (edited instanceof Reference) {
+            definition = edited.resolve(project.getContext(this.source));
+            name = definition?.names.names.find(
+                (n) => n.getName() === edited.getName()
+            );
+        }
+        // If it was a name, find the definition that the name is naming
+        else {
+            name = edited;
+            definition = this.source.root
+                .getAncestors(edited)
+                .find(
+                    (node): node is Definition =>
+                        node instanceof DefinitionExpression ||
+                        node instanceof Bind ||
+                        node instanceof TypeVariable
+                );
+            // Rename
+        }
+
+        // If we found both a name and a definition, find all of the references to the definition
+        if (name && definition) {
+            const references = project
+                .getSources()
+                .map((source) =>
+                    source
+                        .nodes()
+                        .filter(
+                            (node): node is Reference | NameType =>
+                                (node instanceof Reference ||
+                                    node instanceof NameType) &&
+                                node.resolve(project.getContext(source)) ===
+                                    definition &&
+                                node.getName() === name?.getName()
+                        )
+                )
+                .flat();
+
+            // Remember which source we're editing.
+            const sourceIndex = project.getSources().indexOf(this.source);
+
+            // Rename the name and all the references
+            const revisions = [
+                [name, name.withName(newName)],
+                ...references.map((ref) => [ref, ref.withName(newName)]),
+            ] as [Node, Node][];
+
+            // Revise the project and get the corresponding revised source.
+            const revisedProject = project.withRevisedNodes(revisions);
+            const revisedSource = revisedProject.getSources()[sourceIndex];
+
+            // Find the new source position of the edited name so we can find the new position of the caret.
+            const editedRevision = revisions.find(
+                (revision) => revision[0] === edited
+            );
+            // Bail if we couldn't find it for some reason.
+            if (editedRevision === undefined) return undefined;
+            const start = revisedSource.getTokenTextPosition(
+                editedRevision[1].getFirstLeaf() as Token
+            );
+            // Bail if we couldn't find the start position for some reason.
+            if (start === undefined) return undefined;
+
+            // Return the revised project and caret position.
+            return [
+                revisedProject,
+                this.withSource(revisedSource).withPosition(start + offset),
+            ];
+        }
+    }
+
+    backspace(project: Project): Edit | ProjectRevision | undefined {
+        // If the position is a number, see if this is a rename
+        if (typeof this.position === 'number') {
+            // Are we in the middle of a name or at it's end?
+            const rename =
+                this.tokenExcludingSpace?.isSymbol(Sym.Name) &&
+                !this.atTokenStart()
+                    ? this.tokenExcludingSpace
+                    : this.tokenPrior?.isSymbol(Sym.Name) && this.atTokenEnd()
+                    ? this.tokenPrior
+                    : undefined;
+            const renameParent = rename
+                ? this.source.root.getParent(rename)
+                : undefined;
+            // If the name token is in a name or reference and the name being backspaced is more than one character, then try to rename.
+            if (
+                renameParent instanceof Name &&
+                // Disabled  reference renaming, it's annoying.
+                // || renameParent instanceof Reference
+                // Don't rename if we're deleting the whole name.
+                rename &&
+                rename?.getTextLength() > 1
+            ) {
+                let start: number | undefined;
+                let newName: string | undefined;
+
+                // Are we backspacing in the middle of the name?
+                if (
+                    rename === this.tokenExcludingSpace &&
+                    this.tokenExcludingSpace
+                ) {
+                    // Remember the offset of the caret
+                    start = this.source.getTokenTextPosition(
+                        this.tokenExcludingSpace
+                    );
+                    newName =
+                        start !== undefined
+                            ? this.tokenExcludingSpace
+                                  .getText()
+                                  .substring(0, this.position - start - 1) +
+                              this.tokenExcludingSpace
+                                  .getText()
+                                  .substring(this.position - start)
+                            : undefined;
+                }
+                // If we're backspacing the end of the name...
+                else if (rename === this.tokenPrior && this.tokenPrior) {
+                    // Remmeber position at the end of the token
+                    start = this.source.getTokenTextPosition(this.tokenPrior);
+                    newName = this.tokenPrior
+                        .getText()
+                        .substring(0, this.tokenPrior.getTextLength() - 1);
+                }
+
+                // Without the character prior to the current one in the name.
+                if (start !== undefined && newName) {
+                    // Try to rename, removing the character just before the caret.
+                    const edit = this.rename(
+                        renameParent,
+                        newName,
+                        project,
+                        this.position - start - 1
+                    );
+                    // If we succeeded, return the edit.
+                    if (edit) return edit;
+                }
+            }
+        }
+
         if (typeof this.position === 'number') {
             const before = this.source.getCode().at(this.position - 1);
             const after = this.source.getCode().at(this.position);
@@ -994,8 +1229,8 @@ export default class Caret {
                             this.withPosition(index).withAddition(undefined),
                         ];
                     }
-                    // If it allows a program, replace it with a program.
-                    else if (kind.allowsKind(Program)) {
+                    // If the selected node is a program, replace it with an empty program.
+                    else if (node instanceof Program) {
                         return [
                             this.source.replace(node, Program.make()),
                             this.withPosition(index).withAddition(undefined),
@@ -1019,8 +1254,11 @@ export default class Caret {
                             ),
                         ];
                     }
-                    // If allows an expression, replace it with an expression placeholder.
-                    else if (kind.allowsKind(Expression)) {
+                    // If allows and requires an expression, replace it with an expression placeholder, since it's required.
+                    else if (
+                        !(kind instanceof ListOf) &&
+                        kind.allowsKind(Expression)
+                    ) {
                         const placeholder = ExpressionPlaceholder.make();
                         return [
                             this.source.replace(node, placeholder),
@@ -1152,14 +1390,14 @@ export default class Caret {
         conflicts: Conflict[],
         context: Context
     ): string {
-        const locale = context.getBasis().locales[0];
+        const locales = context.getBasis().locales;
 
         /** Get description of conflicts */
         const conflictDescription =
             conflicts.length > 0
                 ? concretize(
-                      locale,
-                      locale.ui.edit.conflicts,
+                      locales,
+                      locales.get((l) => l.ui.edit.conflicts),
                       conflicts.length
                   ).toText()
                 : undefined;
@@ -1170,15 +1408,15 @@ export default class Caret {
     }
 
     getPositionDescription(type: Type | undefined, context: Context) {
-        const locale = context.getBasis().locales[0];
+        const locales = context.getBasis().locales;
 
         /** If the caret is a node, describe the node. */
         if (this.position instanceof Node) {
             return concretize(
-                locale,
-                locale.ui.edit.node,
-                new NodeRef(this.position, locale, context),
-                type ? new NodeRef(type, locale, context) : undefined
+                locales,
+                locales.get((l) => l.ui.edit.node),
+                new NodeRef(this.position, locales, context),
+                type ? new NodeRef(type, locales, context) : undefined
             ).toText();
         }
 
@@ -1188,37 +1426,37 @@ export default class Caret {
 
         if (this.tokenExcludingSpace && this.isInsideText()) {
             return concretize(
-                locale,
-                locale.ui.edit.inside,
-                new NodeRef(this.tokenExcludingSpace, locale, context)
+                locales,
+                locales.get((l) => l.ui.edit.inside),
+                new NodeRef(this.tokenExcludingSpace, locales, context)
             ).toText();
         } else if (this.isEmptyLine()) {
             return concretize(
-                locale,
-                locale.ui.edit.line,
+                locales,
+                locales.get((l) => l.ui.edit.line),
                 beforeNode
-                    ? new NodeRef(beforeNode, locale, context)
+                    ? new NodeRef(beforeNode, locales, context)
                     : undefined,
-                afterNode ? new NodeRef(afterNode, locale, context) : undefined
+                afterNode ? new NodeRef(afterNode, locales, context) : undefined
             ).toText();
         } else if (this.tokenIncludingSpace) {
             if (this.tokenPrior && this.tokenPrior !== this.tokenIncludingSpace)
                 return concretize(
-                    locale,
-                    locale.ui.edit.between,
+                    locales,
+                    locales.get((l) => l.ui.edit.between),
                     beforeNode
-                        ? new NodeRef(beforeNode, locale, context)
+                        ? new NodeRef(beforeNode, locales, context)
                         : undefined,
                     afterNode
-                        ? new NodeRef(afterNode, locale, context)
+                        ? new NodeRef(afterNode, locales, context)
                         : undefined
                 ).toText();
             else
                 return concretize(
-                    locale,
-                    locale.ui.edit.before,
+                    locales,
+                    locales.get((l) => l.ui.edit.before),
                     afterNode
-                        ? new NodeRef(afterNode, locale, context)
+                        ? new NodeRef(afterNode, locales, context)
                         : undefined
                 ).toText();
         }

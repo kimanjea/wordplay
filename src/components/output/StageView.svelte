@@ -34,8 +34,8 @@
         getEvaluation,
     } from '../project/Contexts';
     import type Evaluator from '@runtime/Evaluator';
-    import type TypeOutput from '../../output/TypeOutput';
-    import { animationFactor, locale, locales } from '../../db/Database';
+    import type Output from '../../output/Output';
+    import { animationFactor, locales } from '../../db/Database';
     import {
         describeEnteredOutput,
         describeMovedOutput,
@@ -91,16 +91,16 @@
     }
 
     let exiting: OutputInfoSet = new Map();
-    let entered: Map<string, TypeOutput> = new Map();
-    let present: Map<string, TypeOutput> = new Map();
+    let entered: Map<string, Output> = new Map();
+    let present: Map<string, Output> = new Map();
     let moved: Moved = new Map();
-    let previouslyPresent: Map<string, TypeOutput> | undefined = undefined;
+    let previouslyPresent: Map<string, Output> | undefined = undefined;
 
     const announcer = getAnnounce();
 
     // Announce changes on stage.
     $: if ($announcer) {
-        const language = $locales[0].language;
+        const language = $locales.getLocale().language;
         if (entered.size > 0)
             $announcer(
                 'entered',
@@ -127,7 +127,9 @@
     /** A stage to manage entries, exits, animations. A new one each time the for each project. */
     let scene: Scene;
     $: {
+        // Previous scene? Stop it.
         if (scene !== undefined) scene.stop();
+        // Make a new one.
         scene = new Scene(
             evaluator,
             // When output exits, remove it from the map and triggering a render.
@@ -154,7 +156,7 @@
     $: editableStore.set(editable);
     setContext('project', project);
 
-    /** Whenever the verse, languages, fonts, or rendered focus changes, update the rendered scene accordingly. */
+    /** Whenever the stage, languages, fonts, or rendered focus changes, update the rendered scene accordingly. */
     $: {
         const results = scene.update(
             stage,
@@ -216,7 +218,7 @@
     }
 
     $: context = new RenderContext(
-        stage.face ?? $locale.ui.font.app,
+        stage.face ?? $locales.getLocale().ui.font.app,
         stage.size ?? DefaultSize,
         $locales,
         $loadedFonts,
@@ -256,7 +258,7 @@
         fitFocus = createPlace(
             evaluator,
             -(contentBounds.left + contentBounds.width / 2),
-            -contentBounds.top + contentBounds.height / 2,
+            contentBounds.top - contentBounds.height / 2,
             z
         );
         // If we're currently fitting to content, just make the adjusted focus the same in case the setting is inactive.
@@ -284,7 +286,7 @@
     <section
         class="output stage {interactive && !editing
             ? 'live'
-            : 'inert'} {project.main.names.getNames()[0]}"
+            : 'inert'} {project.getMain().names.getNames()[0]}"
         class:interactive
         class:changed
         class:editing={$evaluation?.playing === false && !painting}
@@ -457,5 +459,11 @@
     .axis {
         background-color: var(--grid-color);
         opacity: 0.4;
+    }
+
+    .rectangle-barrier {
+        position: absolute;
+        background: var(--wordplay-inactive-color);
+        border-radius: calc(var(--wordplay-border-radius) * 2);
     }
 </style>

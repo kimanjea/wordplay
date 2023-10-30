@@ -46,8 +46,8 @@ test.each([
     [`1 = 1`, TRUE_SYMBOL],
     [`1 = 2`, FALSE_SYMBOL],
     [`1m = 1m`, TRUE_SYMBOL],
-    [`1m = 1`, '!TypeException'],
-    [`1 = ø`, '!TypeException'],
+    [`1m = 1`, FALSE_SYMBOL],
+    [`1 = ø`, FALSE_SYMBOL],
     ['5 < 3', FALSE_SYMBOL],
     ['5 < 10', TRUE_SYMBOL],
     ['100.1 < 100.2', TRUE_SYMBOL],
@@ -85,6 +85,16 @@ test.each([
     ['2.1 ÷ 0.1', '21'],
     ['-2.1 ÷ 0.1', '-21'],
     ['2.1 ÷ -0.1', '-21'],
+    ['1.min(0)', '0'],
+    ['1.min(1)', '1'],
+    ['1.min(2)', '1'],
+    ['1m.min(2m)', '1m'],
+    ['1.max(0)', '1'],
+    ['1.max(2 3)', '3'],
+    ['1.max(0 -1)', '1'],
+    ['1m.max()', '!ValueException'],
+    ['1 = ø', '⊥'],
+    ['1 ≠ ø', '⊤'],
 ])('Expect %s to be %s', (code, value) => {
     expect(evaluateCode(code)?.toString()).toBe(value);
 });
@@ -157,6 +167,7 @@ test.each([
     ['1m→#Mm', '0.000001Mm'],
     ['1m→#Gm', '1e-9Gm'],
     ['1m→#Tm', '1e-12Tm'],
+    ['1m→#ft', '3.2808398950131233596ft'],
 
     // Transitive conversions
     ['1km→#cm', '100000cm'],

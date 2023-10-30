@@ -1,40 +1,55 @@
 import type { SupportedFace } from '../basis/Fonts';
+import type { TileKind } from '../components/project/Tile';
 import type EditTexts from './EditTexts';
 import type { DocText, Template } from './Locale';
 
 export type ButtonText = {
+    /** The buttons label */
     label: string;
+    /** THe buttons tooltip and ARIA-label, spoken by screen readers */
     tip: string;
 };
 
 export type ToggleText = {
+    /** The tooltip and ARIA-label for when the toggle is in the on state */
     on: string;
+    /** The tooltip and ARIA-label for when the toggle is in the off state */
     off: string;
 };
 
 export type ModeText<Modes extends string[]> = {
+    /** The tooltip and ARIA-label for the entire mode widget, describing the kind of modes it supports switching to. */
     label: string;
+    /** The tooltip and ARIA-labels to use for each mode button describing the mode to be switched to, in the order of appearance */
     modes: Modes;
 };
 
 export type DialogText = {
+    /** The header to be shown at the top of the dialog */
     header: string;
-    explanation: Template;
+    /** The explanation text just below the header. */
+    explanation: Template | Template[];
 };
 
 export type ConfirmText = {
+    /** The tooltip and ARIA-label for the button */
     description: string;
+    /** The confirmation prompt to show after clicked the first time. */
     prompt: string;
 };
 
 export type FieldText = {
+    /** The tooltip and ARIA-label for the text field */
     description: string;
+    /** The placeholder text fo the text field. */
     placeholder: string;
 };
 
 type UITexts = {
     font: {
+        /** The application font to use throughout the application. Should support the language used in this locale so that glyphs render correctly. Add the face to Fonts.ts if the one you choose is not yet supported. */
         app: SupportedFace;
+        /** The monospace font to use for code in the editor and code examples. Should support the language used in this locale so that glyphs render correctly. Add the face to Fonts.ts if the one you choose is not yet supported. */
         code: SupportedFace;
     };
     phrases: {
@@ -58,6 +73,8 @@ type UITexts = {
             /** The message shown in the page loading feedback */
             message: string;
         };
+        /** The go home button description */
+        home: string;
     };
     /** Controls for the tiled windows in the project */
     tile: {
@@ -65,6 +82,8 @@ type UITexts = {
             /** Collapse the tile window */
             collapse: string;
         };
+        /** Tile labels appearing in the project footer tile toggles, except for source files. */
+        label: { [ID in TileKind]: string };
         toggle: {
             /** Enter and exit tile fullscreen mode */
             fullscreen: ToggleText;
@@ -104,13 +123,39 @@ type UITexts = {
         };
         field: {
             /** The project name text field */
-            name: {
-                description: string;
-                placeholder: string;
-            };
+            name: FieldText;
         };
         /** The keyboard shortcut to show the shortcut menu */
         help: string;
+    };
+    /** Gallery page labels */
+    gallery: {
+        /** What to call a gallery by default, before it's given a name */
+        untitled: string;
+        /** Headers on the page */
+        subheader: {
+            /** The list of curators */
+            curators: DialogText;
+            /** The list of curators */
+            creators: DialogText;
+            /** Delete header */
+            delete: DialogText;
+        };
+        /** Confirm buttons on the gallery page */
+        confirm: {
+            /** The confirm button that deletes a source file */
+            delete: ConfirmText;
+            /** The confirm button that removes a project from a gallery */
+            remove: ConfirmText;
+        };
+        error: {
+            /** When the gallery is not known or is not public */
+            unknown: string;
+        };
+        field: {
+            name: FieldText;
+            description: FieldText;
+        };
     };
     /** Source file controls */
     source: {
@@ -122,10 +167,7 @@ type UITexts = {
         overwritten: string;
         confirm: {
             /** The confirm button that deletes a source file */
-            delete: {
-                description: string;
-                prompt: string;
-            };
+            delete: ConfirmText;
         };
         toggle: {
             /** The blocks/text toggle */
@@ -148,6 +190,7 @@ type UITexts = {
             back: string;
         };
         field: {
+            /** The name of the source file */
             name: FieldText;
         };
         cursor: {
@@ -207,6 +250,12 @@ type UITexts = {
             insertConvert: string;
             /** Insert table symbol */
             insertTable: string;
+            /** Insert table close symbol */
+            insertTableClose: string;
+            /** Insert borrow symbol */
+            insertBorrow: string;
+            /** Insert share symbol */
+            insertShare: string;
             /** Insert new line */
             insertLine: string;
             /** Delete previous symbol */
@@ -229,6 +278,8 @@ type UITexts = {
             redo: string;
             /** Search for glyph */
             search: string;
+            /** Tidy spacing */
+            tidy: string;
         };
     };
     /** The conflicts area at the bottom of the editor. */
@@ -249,10 +300,7 @@ type UITexts = {
         };
         field: {
             /** The text field that accepts key, placement, and chat input when a key stream is active */
-            key: {
-                label: string;
-                placeholder: string;
-            };
+            key: FieldText;
         };
         button: {
             /** The chat submit button */
@@ -319,6 +367,12 @@ type UITexts = {
             addGroup: string;
             /** Add a phrase to the output */
             addPhrase: string;
+            /** Add a shape to the output */
+            addShape: string;
+            /** Set place to Motion stream */
+            addMotion: string;
+            /** Set place to Placement stream */
+            addPlacement: string;
             /** Remove child from this output */
             remove: string;
             /** Move child up in list */
@@ -349,10 +403,14 @@ type UITexts = {
             editing: Template;
         };
         field: {
+            /** The tooltip and ARIA-label for the text input to Phrase */
             text: string;
+            /** The tooltip and ARIA-label fro the text input for a Place coordinate */
             coordinate: string;
         };
+        /** Widgets for editing sequences */
         sequence: {
+            /** Buttons for editing sequences */
             button: {
                 /** Add pose */
                 add: string;
@@ -363,6 +421,7 @@ type UITexts = {
                 /** Move pose down */
                 down: string;
             };
+            /** Text fields for editing sequences */
             field: {
                 /** Edit percent for pose */
                 percent: string;
@@ -405,25 +464,31 @@ type UITexts = {
     dialog: {
         /** The sharing dialog */
         share: DialogText & {
+            /** The subheaders of the dialog */
             subheader: {
+                /** The collaborators subheader and explanation */
                 collaborators: DialogText;
+                /** The gallery subheader and explanation */
+                gallery: DialogText;
+                /** The public/private toggle subheader and explanation */
                 public: DialogText;
             };
+            /** Text fields in the share dialog */
             field: {
                 /** The email address of the collaborator being added */
-                email: {
-                    placeholder: string;
-                    description: string;
-                };
+                email: FieldText;
             };
+            /** Buttons in the share dialog */
             button: {
                 /** Description for the email submission button. */
                 submit: string;
             };
+            /** Modes in the share dialog */
             mode: {
                 /** The private and public mode descriptions */
                 public: ModeText<[string, string]>;
             };
+            /** Errors in the share dialog */
             error: {
                 /** When someone tries to add an email collaborator that doesn't have a Wordplay account */
                 unknown: string;
@@ -448,6 +513,7 @@ type UITexts = {
         };
         /** The locale chooser dialog */
         locale: DialogText & {
+            /** Subheaders in the local chooser dialog. */
             subheader: {
                 /** How to label the locales that have been selected */
                 selected: string;
@@ -456,11 +522,14 @@ type UITexts = {
                 /** How to request help with localization */
                 help: string;
             };
+            /** Buttons in the locale chooser dialog */
             button: {
                 /** Show the locale chooser dialog */
                 show: string;
                 /** Add a locale */
                 add: string;
+                /** Replace locale */
+                replace: string;
                 /** Remove a locale */
                 remove: string;
             };
@@ -496,6 +565,8 @@ type UITexts = {
         landing: {
             /** What function says as a call to action */
             call: Template[];
+            /** The landing page beta warning */
+            beta: Template[];
             /** The subtitles below links */
             link: {
                 /** What content is on the about page */
@@ -527,16 +598,43 @@ type UITexts = {
             /** Header for the projects page */
             header: string;
             /** Explanation for the project page */
-            prompt: string;
+            projectprompt: string;
+            /** The header for the archived subsection */
+            archiveheader: string;
+            /** Explanation for the archive subsection */
+            archiveprompt: string;
+            /** Header for the galleries page */
+            galleriesheader: string;
+            /** A prompt to create galleries */
+            galleryprompt: string;
+            /** Buttons on the project page */
             button: {
                 /** Create a new project */
-                create: string;
+                newproject: string;
                 /** Edit a project */
-                edit: string;
+                editproject: string;
+                /** Create a new gallery */
+                newgallery: string;
+                /** The project unarchive button description */
+                unarchive: string;
             };
             confirm: {
                 /** The project archive button */
                 archive: ConfirmText;
+                /** The project delete button */
+                delete: ConfirmText;
+            };
+            error: {
+                /** When there's no access to the database. */
+                noaccess: string;
+                /** When the creator is not logged in. */
+                nogalleryedits: string;
+                /** Unable to create a gallery */
+                newgallery: string;
+                /** Feedback that we are unable to delete when logged out */
+                nodeletes: string;
+                /** Unable to delete project */
+                delete: string;
             };
         };
         galleries: {
@@ -557,6 +655,12 @@ type UITexts = {
         login: {
             /** Header for the login page when not logged in */
             header: string;
+            subheader: {
+                /** Header for logging in via email */
+                email: string;
+                /** Header for logging in via username and password */
+                username: string;
+            };
             prompt: {
                 /** Prompts creator to login to save their work */
                 login: string;
@@ -568,6 +672,12 @@ type UITexts = {
                 enter: string;
                 /** Encouragement to go create after logging in. */
                 play: string;
+                /** Gives rules for emails above the login form */
+                emailrules: string[];
+                /** Gives rules for usernames and passwords above the login form */
+                usernamerules: string[];
+                /** Reminder to write down password */
+                passwordreminder: string;
                 /** Offers to log out the creator. */
                 logout: string;
                 /** Shown briefly before page redirects to projects */
@@ -578,15 +688,20 @@ type UITexts = {
                 delete: string;
                 /** Offers to really delete account forever */
                 reallyDelete: string;
+                /** Pick an emoji as a name */
+                name: string;
+                /** Text for age prompt */
+                age: ModeText<[string, string]>;
             };
             /** Shown in the footer a creator is not logged in. */
             anonymous: string;
             field: {
                 /** The login email */
-                email: {
-                    description: string;
-                    placeholder: string;
-                };
+                email: FieldText;
+                /** The login username */
+                username: FieldText;
+                /** The login password */
+                password: FieldText;
             };
             feedback: {
                 /** Change email pending */
@@ -605,10 +720,12 @@ type UITexts = {
                 failure: string;
                 /** When there's no connection to Firebase */
                 offline: string;
-                /** When the email addres couldn't be changed for unknown reasons. */
+                /** When the email address couldn't be changed for unknown reasons. */
                 unchanged: string;
                 /** When account deletion failed */
                 delete: string;
+                /** When a password is wrong */
+                wrongPassword: string;
             };
             button: {
                 /** Log out of the account */
@@ -631,6 +748,15 @@ type UITexts = {
             content: Template[];
             /** The consequences of violating a promise. */
             consequences: Template[];
+        };
+        /** Giving related text */
+        donate: {
+            /** The label for the link and header */
+            header: Template;
+            /** The explanation of the link */
+            prompt: Template;
+            /** The content of the page */
+            content: Template[];
         };
     };
     /** Descriptions of cursor positions and code transformations */

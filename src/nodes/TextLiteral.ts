@@ -23,18 +23,16 @@ import Start from '@runtime/Start';
 import Finish from '@runtime/Finish';
 import type Evaluator from '@runtime/Evaluator';
 import type Value from '../values/Value';
+import type Locales from '../locale/Locales';
 
 export default class TextLiteral extends Literal {
-    /** The raw token in the program */
+    /** The list of translations for the text literal */
     readonly texts: Translation[];
 
     constructor(text: Translation[]) {
         super();
 
         this.texts = text;
-        if (text.length === 0) {
-            console.log('Test');
-        }
 
         this.computeChildren();
     }
@@ -78,8 +76,8 @@ export default class TextLiteral extends Literal {
         return this.texts.map((text) => text.getExpressions()).flat();
     }
 
-    compile(context: Context): Step[] {
-        const text = this.getLocaleText(context.project.locales);
+    compile(evaluator: Evaluator, context: Context): Step[] {
+        const text = this.getLocaleText(evaluator.getLocales());
         // Choose a locale, compile its expressions, and then construct a string from the results.
         return [
             new Start(this),
@@ -88,7 +86,7 @@ export default class TextLiteral extends Literal {
                 .reduce(
                     (parts: Step[], part) => [
                         ...parts,
-                        ...part.expression.compile(context),
+                        ...part.expression.compile(evaluator, context),
                     ],
                     []
                 ),
@@ -99,7 +97,7 @@ export default class TextLiteral extends Literal {
     evaluate(evaluator: Evaluator, prior: Value | undefined): Value {
         if (prior) return prior;
 
-        const translation = this.getLocaleText(evaluator.project.locales);
+        const translation = this.getLocaleText(evaluator.getLocales());
         const expressions = translation.segments;
 
         // Build the string in reverse, accounting for the reversed stack of values.
@@ -162,9 +160,9 @@ export default class TextLiteral extends Literal {
             : getPreferred(locales, this.texts);
     }
 
-    getValue(locales: Locale[]): TextValue {
+    getValue(locales: Locales): TextValue {
         // Get the alternatives
-        const best = this.getLocaleText(locales);
+        const best = this.getLocaleText(locales.getLocales());
         return new TextValue(
             this,
             best.getText(),
@@ -174,7 +172,7 @@ export default class TextLiteral extends Literal {
         );
     }
 
-    evaluateTypeSet(
+    evaluateTypeGuards(
         bind: Bind,
         original: TypeSet,
         current: TypeSet,
@@ -198,12 +196,15 @@ export default class TextLiteral extends Literal {
         return this.texts[0];
     }
 
-    getNodeLocale(translation: Locale) {
-        return translation.node.TextLiteral;
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.TextLiteral);
     }
 
-    getStartExplanations(translation: Locale) {
-        return concretize(translation, translation.node.TextLiteral.start);
+    getStartExplanations(locales: Locales) {
+        return concretize(
+            locales,
+            locales.get((l) => l.node.TextLiteral.start)
+        );
     }
 
     getGlyphs() {

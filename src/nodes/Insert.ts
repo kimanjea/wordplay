@@ -18,7 +18,6 @@ import Halt from '@runtime/Halt';
 import ExceptionValue from '@values/ExceptionValue';
 import TypeException from '@values/TypeException';
 import { node, type Grammar, type Replacement } from './Node';
-import type Locale from '@locale/Locale';
 import UnimplementedException from '@values/UnimplementedException';
 import NodeRef from '@locale/NodeRef';
 import Glyphs from '../lore/Glyphs';
@@ -34,6 +33,7 @@ import Token from './Token';
 import { INSERT_SYMBOL, TABLE_CLOSE_SYMBOL } from '../parser/Symbols';
 import Sym from './Sym';
 import ExpressionPlaceholder from './ExpressionPlaceholder';
+import type Locales from '../locale/Locales';
 
 export default class Insert extends Expression {
     readonly table: Expression;
@@ -64,12 +64,12 @@ export default class Insert extends Expression {
             {
                 name: 'table',
                 kind: node(Expression),
-                label: (translation: Locale) => translation.term.table,
+                label: (locales: Locales) => locales.get((l) => l.term.table),
             },
             {
                 name: 'row',
                 kind: node(Row),
-                label: (translation: Locale) => translation.term.row,
+                label: (locales: Locales) => locales.get((l) => l.term.row),
                 space: true,
             },
         ];
@@ -207,12 +207,12 @@ export default class Insert extends Expression {
         return [this.table, ...this.row.cells.map((cell) => cell)];
     }
 
-    compile(context: Context): Step[] {
+    compile(evaluator: Evaluator, context: Context): Step[] {
         const tableType = this.table.getType(context);
 
         return [
             new Start(this),
-            ...this.table.compile(context),
+            ...this.table.compile(evaluator, context),
             ...(!(tableType instanceof TableType)
                 ? [
                       new Halt(
@@ -231,7 +231,7 @@ export default class Insert extends Expression {
                   this.row.cells.reduce(
                       (steps: Step[], cell) => [
                           ...steps,
-                          ...cell.compile(context),
+                          ...cell.compile(evaluator, context),
                       ],
                       []
                   )
@@ -260,7 +260,10 @@ export default class Insert extends Expression {
                                   this
                               ),
                           ];
-                      return [...steps, ...matchingCell.value.compile(context)];
+                      return [
+                          ...steps,
+                          ...matchingCell.value.compile(evaluator, context),
+                      ];
                   }, [])),
             new Finish(this),
         ];
@@ -285,16 +288,16 @@ export default class Insert extends Expression {
         return row instanceof StructureValue ? table.insert(this, row) : row;
     }
 
-    evaluateTypeSet(
+    evaluateTypeGuards(
         bind: Bind,
         original: TypeSet,
         current: TypeSet,
         context: Context
     ) {
         if (this.table instanceof Expression)
-            this.table.evaluateTypeSet(bind, original, current, context);
+            this.table.evaluateTypeGuards(bind, original, current, context);
         if (this.row instanceof Expression)
-            this.row.evaluateTypeSet(bind, original, current, context);
+            this.row.evaluateTypeGuards(bind, original, current, context);
         return current;
     }
 
@@ -305,27 +308,27 @@ export default class Insert extends Expression {
         return this.row.close ?? this.row.open;
     }
 
-    getNodeLocale(translation: Locale) {
-        return translation.node.Insert;
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.Insert);
     }
 
-    getStartExplanations(locale: Locale, context: Context) {
+    getStartExplanations(locales: Locales, context: Context) {
         return concretize(
-            locale,
-            locale.node.Insert.start,
-            new NodeRef(this.table, locale, context)
+            locales,
+            locales.get((l) => l.node.Insert.start),
+            new NodeRef(this.table, locales, context)
         );
     }
 
     getFinishExplanations(
-        locale: Locale,
+        locales: Locales,
         context: Context,
         evaluator: Evaluator
     ) {
         return concretize(
-            locale,
-            locale.node.Insert.finish,
-            this.getValueIfDefined(locale, context, evaluator)
+            locales,
+            locales.get((l) => l.node.Insert.finish),
+            this.getValueIfDefined(locales, context, evaluator)
         );
     }
 

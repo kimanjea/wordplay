@@ -3,7 +3,7 @@
 </script>
 
 {#if inline}<span class="feedback"><slot /></span>{:else}
-    <h1 class="feedback"><slot /></h1>{/if}
+    <p class="feedback"><slot /></p>{/if}
 
 <style>
     .feedback {
@@ -11,6 +11,7 @@
         font-weight: normal;
         color: var(--wordplay-background);
         background: var(--wordplay-error);
+        margin-block-start: var(--wordplay-spacing);
         padding: var(--wordplay-spacing);
         border-radius: var(--wordplay-border-radius);
     }
@@ -19,9 +20,8 @@
         display: inline-block;
     }
 
-    h1 {
-        font-size: xx-large;
-        margin-block-start: 4em;
+    p {
+        font-size: large;
         text-align: center;
     }
 </style>

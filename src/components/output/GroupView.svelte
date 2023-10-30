@@ -15,16 +15,18 @@
     import Group from '@output/Group';
     import Evaluate from '@nodes/Evaluate';
     import { getSelectedOutput } from '../project/Contexts';
-    import type { Shape } from '../../output/Shapes';
     import type Stage from '../../output/Stage';
-    import { locale, locales } from '../../db/Database';
+    import { locales } from '../../db/Database';
+    import type { Form } from '../../output/Form';
+    import Shape from '../../output/Shape';
+    import ShapeView from './ShapeView.svelte';
 
     export let group: Group | Stage;
     export let place: Place;
     export let focus: Place;
     export let viewport: { width: number; height: number } | undefined =
         undefined;
-    export let clip: Shape | undefined = undefined;
+    export let clip: Form | undefined = undefined;
     export let interactive: boolean;
     export let parentAscent: number;
     export let context: RenderContext;
@@ -59,8 +61,8 @@
     role={!group.selectable ? 'presentation' : 'group'}
     aria-label={still ? group.getDescription($locales) : null}
     aria-roledescription={group instanceof Group
-        ? $locale.term.group
-        : $locale.term.stage}
+        ? $locales.get((l) => l.term.group)
+        : $locales.get((l) => l.term.stage)}
     aria-hidden={empty ? 'true' : null}
     class="output group {group.constructor.name}"
     class:selected={selected && !root}
@@ -108,6 +110,17 @@
                 {editing}
                 {still}
             />
+        {:else if child instanceof Shape}
+            <ShapeView
+                shape={child}
+                place={childPlace}
+                focus={offsetFocus}
+                {interactive}
+                parentAscent={root ? 0 : layout.height}
+                {context}
+                {editing}
+                {still}
+            />
         {:else}
             <svelte:self
                 group={child}
@@ -125,10 +138,11 @@
         <svg
             class="frame"
             role="presentation"
-            width={clip.getWidth()}
-            height={clip.getHeight()}
+            width={clip.getWidth() * PX_PER_METER}
+            height={clip.getHeight() * PX_PER_METER}
             xmlns="http://www.w3.org/2000/svg"
-            style="transform: translate({clip.getLeft()}px, {clip.getTop()}px)"
+            style="transform: translate({clip.getLeft() *
+                PX_PER_METER}px, {-clip.getTop() * PX_PER_METER}px)"
         >
             <path class="border" d={clip.toSVGPath()} />
         </svg>

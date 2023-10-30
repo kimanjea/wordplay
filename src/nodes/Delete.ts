@@ -15,7 +15,6 @@ import type Definition from './Definition';
 import type TypeSet from './TypeSet';
 import type Evaluator from '@runtime/Evaluator';
 import { node, type Grammar, type Replacement } from './Node';
-import type Locale from '@locale/Locale';
 import NodeRef from '@locale/NodeRef';
 import Glyphs from '../lore/Glyphs';
 import IncompatibleInput from '../conflicts/IncompatibleInput';
@@ -31,6 +30,7 @@ import BoolValue from '@values/BoolValue';
 import { getIteration, getIterationResult } from '../basis/Iteration';
 import { DELETE_SYMBOL } from '../parser/Symbols';
 import ExpressionPlaceholder from './ExpressionPlaceholder';
+import type Locales from '../locale/Locales';
 
 type DeleteState = { index: number; list: StructureValue[]; table: TableValue };
 
@@ -58,13 +58,13 @@ export default class Delete extends Expression {
             {
                 name: 'table',
                 kind: node(Expression),
-                label: (translation: Locale) => translation.term.table,
+                label: (locales: Locales) => locales.get((l) => l.term.table),
             },
             { name: 'del', kind: node(Sym.Delete), space: true },
             {
                 name: 'query',
                 kind: node(Expression),
-                label: (translation: Locale) => translation.term.query,
+                label: (locales: Locales) => locales.get((l) => l.term.query),
                 // Must be a boolean
                 getType: () => BooleanType.make(),
                 space: true,
@@ -153,7 +153,7 @@ export default class Delete extends Expression {
         return [this.table, this.query];
     }
 
-    compile(context: Context): Step[] {
+    compile(evaluator: Evaluator, context: Context): Step[] {
         /** A derived function based on the query, used to evaluate each row of the table. */
         const query = FunctionDefinition.make(
             undefined,
@@ -166,7 +166,7 @@ export default class Delete extends Expression {
 
         return [
             new Start(this),
-            ...this.table.compile(context),
+            ...this.table.compile(evaluator, context),
             ...getIteration<DeleteState, this>(
                 this,
                 // Initialize a keep list and a counter as we iterate through the rows.
@@ -218,16 +218,16 @@ export default class Delete extends Expression {
         return new TableValue(this, table.type, list);
     }
 
-    evaluateTypeSet(
+    evaluateTypeGuards(
         bind: Bind,
         original: TypeSet,
         current: TypeSet,
         context: Context
     ) {
         if (this.table instanceof Expression)
-            this.table.evaluateTypeSet(bind, original, current, context);
+            this.table.evaluateTypeGuards(bind, original, current, context);
         if (this.query instanceof Expression)
-            this.query.evaluateTypeSet(bind, original, current, context);
+            this.query.evaluateTypeGuards(bind, original, current, context);
         return current;
     }
 
@@ -238,27 +238,27 @@ export default class Delete extends Expression {
         return this.del;
     }
 
-    getNodeLocale(translation: Locale) {
-        return translation.node.Delete;
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.Delete);
     }
 
-    getStartExplanations(locale: Locale, context: Context) {
+    getStartExplanations(locales: Locales, context: Context) {
         return concretize(
-            locale,
-            locale.node.Delete.start,
-            new NodeRef(this.table, locale, context)
+            locales,
+            locales.get((l) => l.node.Delete.start),
+            new NodeRef(this.table, locales, context)
         );
     }
 
     getFinishExplanations(
-        locale: Locale,
+        locales: Locales,
         context: Context,
         evaluator: Evaluator
     ) {
         return concretize(
-            locale,
-            locale.node.Delete.finish,
-            this.getValueIfDefined(locale, context, evaluator)
+            locales,
+            locales.get((l) => l.node.Delete.finish),
+            this.getValueIfDefined(locales, context, evaluator)
         );
     }
 

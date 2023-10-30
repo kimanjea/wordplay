@@ -1,0 +1,21 @@
+Letters
+=== start/en
+letters: "മAあ韓नेئبअขማঅবাংབོދިεفગુע中رšՀꆈᓄქ" ÷ ""
+
+latest•['']: 
+	letters … ∆ Time(1000ms) … 
+		latest.replace(Random(1 25) letters.random())
+
+Group(
+	Grid(5 5 0.25m 1m 1m) 
+	latest.translate(
+		ƒ (letter•"" index•#) 
+			Phrase(
+				letter 
+				name: "\letter\-\index\"
+				entering: Pose(opacity: 0 scale: 2)
+				resting: Sequence(sway() duration:0.25s)
+				duration: 0.5s
+			)
+	)
+)

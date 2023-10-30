@@ -34,84 +34,87 @@
         "exception": "异常",
         "table": "表格",
         "none": "空的",
-        "list": "清单",
+        "list": "列表",
         "stream": "溪流",
         "structure": "结构",
         "index": "索引",
         "query": "询问",
         "row": "排",
         "set": "组",
-        "key": "钥匙"
+        "key": "钥匙",
+        "help": "$?",
+        "feedback": "$?"
     },
     "token": {
-        "EvalOpen": "$?",
-        "EvalClose": "$?",
-        "SetOpen": "$?",
-        "SetClose": "$?",
-        "ListOpen": "$?",
-        "ListClose": "$?",
-        "TagOpen": "$?",
-        "TagClose": "$?",
-        "Bind": "$?",
-        "Access": "$?",
-        "Function": "$?",
-        "Borrow": "$?",
-        "Share": "$?",
-        "Convert": "$?",
-        "Doc": "$?",
-        "Formatted": "$?",
-        "FormattedType": "$?",
-        "Words": "$?",
-        "Link": "$?",
-        "Italic": "$?",
-        "Underline": "$?",
-        "Light": "$?",
-        "Bold": "$?",
-        "Extra": "$?",
-        "Concept": "$?",
-        "URL": "$?",
-        "Code": "$?",
-        "Mention": "$?",
-        "Branch": "$?",
-        "None": "$?",
-        "Type": "$?",
-        "TypeOperator": "$?",
-        "TypeOpen": "$?",
-        "TypeClose": "$?",
-        "Separator": "$?",
-        "Language": "$?",
-        "Region": "$?",
-        "BooleanType": "$?",
-        "NumberType": "$?",
-        "JapaneseNumeral": "$?",
-        "RomanNumeral": "$?",
-        "Pi": "$?",
-        "Infinity": "$?",
-        "TableOpen": "$?",
-        "TableClose": "$?",
-        "Select": "$?",
-        "Insert": "$?",
-        "Update": "$?",
-        "Delete": "$?",
-        "Union": "$?",
-        "Stream": "$?",
-        "Change": "$?",
-        "Initial": "$?",
-        "Previous": "$?",
-        "Placeholder": "$?",
-        "Etc": "$?",
-        "This": "$?",
-        "Operator": "$?",
-        "Conditional": "$?",
-        "Text": "$?",
-        "Number": "$?",
-        "Decimal": "$?",
-        "Base": "$?",
-        "Boolean": "$?",
-        "Name": "$?",
-        "Unknown": "$?",
-        "Locale": "$?",
-        "End": "$?"
+        "EvalOpen": "评估开放",
+        "EvalClose": "评估结束",
+        "SetOpen": "设置打开",
+        "SetClose": "设置关闭",
+        "ListOpen": "组打开",
+        "ListClose": "组关闭",
+        "TagOpen": "标签打开",
+        "TagClose": "标签关闭",
+        "Bind": "联结",
+        "Access": "访问",
+        "Function": "函数",
+        "Borrow": "借",
+        "Share": "分享",
+        "Convert": "转变",
+        "Doc": "文件",
+        "Formatted": "格式化的",
+        "FormattedType": "格式化类型",
+        "Words": "字",
+        "Link": "链接",
+        "Italic": "斜体",
+        "Underline": "底线",
+        "Light": "轻",
+        "Bold": "粗体",
+        "Extra": "额外的",
+        "Concept": "概念",
+        "URL": "网址",
+        "Code": "代码",
+        "Mention": "提到",
+        "Branch": "分支",
+        "None": "空的",
+        "Type": "类型",
+        "Literal": "$?",
+        "TypeOperator": "类型运算符",
+        "TypeOpen": "类型打开",
+        "TypeClose": "类型关闭",
+        "Separator": "分隔器",
+        "Language": "语言",
+        "Region": "地区",
+        "BooleanType": "布尔类型",
+        "NumberType": "数字类型",
+        "JapaneseNumeral": "日语数字",
+        "RomanNumeral": "罗马数字",
+        "Pi": "Pi",
+        "Infinity": "无穷",
+        "TableOpen": "表格打开",
+        "TableClose": "表格关闭",
+        "Select": "选择",
+        "Insert": "插入",
+        "Update": "更新",
+        "Delete": "删除",
+        "Union": "联盟",
+        "Stream": "溪流",
+        "Change": "改变",
+        "Initial": "初步",
+        "Previous": "以前的",
+        "Placeholder": "占位符",
+        "Etc": "Etc",
+        "This": "这",
+        "Operator": "运算符",
+        "Conditional": "有条件的",
+        "Text": "文本",
+        "Number": "数字",
+        "Decimal": "小数",
+        "Base": "基数",
+        "Boolean": "布尔值",
+        "Name": "名字",
+        "Unknown": "不明",
+        "Locale": "语言环境",
+        "End": "结束"
     },
     "node": {
         "Dimension": {
@@ -492,6 +495,11 @@
             "finish": "$?",
             "item": "$?"
         },
+        "Spread": {
+            "name": "$?",
+            "emotion": "serious",
+            "doc": "$?"
+        },
         "MapLiteral": {
             "name": "$?",
             "description": "$?",
@@ -513,7 +521,7 @@
                 "NotANumber": "$?"
             }
         },
-        "BasisExpression": {
+        "InternalExpression": {
             "name": "$?",
             "emotion": "$?",
             "doc": "$?",
@@ -665,7 +673,6 @@
             "description": "$?",
             "emotion": "$?",
             "doc": "$?",
-            "item": "$?",
             "start": "$?",
             "finish": "$?"
         },
@@ -764,11 +771,6 @@
             "emotion": "$?",
             "doc": "$?"
         },
-        "FunctionDefinitionType": {
-            "name": "$?",
-            "emotion": "$?",
-            "doc": "$?"
-        },
         "FunctionType": {
             "name": "$?",
             "description": "$?",
@@ -836,7 +838,6 @@
         },
         "UnknownType": {
             "name": "$?",
-            "unknown": "$?",
             "connector": "$?",
             "emotion": "$?",
             "doc": "$?"
@@ -915,6 +916,12 @@
             "doc": "$?"
         },
         "UnknownNameType": {
+            "name": "$?",
+            "description": "$?",
+            "emotion": "$?",
+            "doc": "$?"
+        },
+        "NonFunctionType": {
             "name": "$?",
             "description": "$?",
             "emotion": "$?",
@@ -1109,7 +1116,27 @@
                     "names": ["cos", "cosine"],
                     "inputs": []
                 },
-                "sin": { "doc": "$?", "names": ["sin", "sine"], "inputs": [] }
+                "sin": { "doc": "$?", "names": ["sin", "sine"], "inputs": [] },
+                "min": {
+                    "doc": "$?",
+                    "names": "$? min",
+                    "inputs": [
+                        {
+                            "doc": "$?",
+                            "names": "$?"
+                        }
+                    ]
+                },
+                "max": {
+                    "doc": "$?",
+                    "names": "$? max",
+                    "inputs": [
+                        {
+                            "doc": "$?",
+                            "names": "$?"
+                        }
+                    ]
+                }
             },
             "conversion": {
                 "text": "$?",
@@ -1565,21 +1592,12 @@
             "frequency": { "names": ["frecuencia"], "doc": "$?" }
         },
         "Motion": {
-            "names": "$?",
+            "names": "movimiento",
             "doc": "$?",
-            "type": { "doc": "$?", "names": "$?" },
-            "startplace": { "doc": "$?", "names": "$? startplace" },
-            "startvx": { "doc": "$?", "names": "$? startvx" },
-            "startvy": { "doc": "$?", "names": "$? startvy" },
-            "startvz": { "doc": "$?", "names": "$? startvz" },
-            "startvangle": { "doc": "$?", "names": "$? startvangle" },
-            "vx": { "doc": "$?", "names": "$?" },
-            "vy": { "doc": "$?", "names": "$?" },
-            "vz": { "doc": "$?", "names": "$?" },
-            "vangle": { "doc": "$?", "names": "$?" },
-            "mass": { "doc": "$?", "names": "$?" },
-            "bounciness": { "doc": "$?", "names": "$?" },
-            "gravity": { "doc": "$?", "names": "$?" }
+            "place": { "doc": "$?", "names": "$? place" },
+            "velocity": { "doc": "$?", "names": "$? velocity" },
+            "nextplace": { "doc": "$?", "names": "$? nextplace" },
+            "nextvelocity": { "doc": "$?", "names": "$? nextvelocity" }
         },
         "Chat": {
             "doc": ["$?"],
@@ -1621,13 +1639,54 @@
                 "invalid": "$?",
                 "unvailable": "$?",
                 "notHTML": "$?",
-                "noConnection": "$?"
+                "noConnection": "$?",
+                "limit": "$?"
+            }
+        },
+        "Collision": {
+            "names": "$? Collision",
+            "doc": "$?",
+            "subject": {
+                "names": "$? name",
+                "doc": "$?"
+            },
+            "object": {
+                "names": "$? other",
+                "doc": "$?"
+            }
+        },
+        "Rebound": {
+            "names": "$? Rebound",
+            "doc": "$?",
+            "direction": {
+                "names": "$? direction",
+                "doc": "$?"
+            },
+            "subject": {
+                "names": "$? subject",
+                "doc": "$?"
+            },
+            "object": {
+                "names": "$? object",
+                "doc": "$?"
+            }
+        },
+        "Direction": {
+            "names": "$? Direction",
+            "doc": "$?",
+            "x": {
+                "names": "$? x",
+                "doc": "$?"
+            },
+            "y": {
+                "names": "$? y",
+                "doc": "$?"
             }
         }
     },
     "output": {
-        "Type": {
-            "names": "$?",
+        "Output": {
+            "names": "$? Output",
             "doc": "$?"
         },
         "Stage": {
@@ -1675,7 +1734,8 @@
             "moving": { "doc": "$?", "names": "$?" },
             "exiting": { "doc": "$?", "names": "$?" },
             "duration": { "doc": "$?", "names": ["$?"] },
-            "style": { "doc": "$?", "names": "$?" }
+            "style": { "doc": "$?", "names": "$?" },
+            "gravity": { "doc": "$?", "names": "$? gravity" }
         },
         "Group": {
             "names": "$?",
@@ -1683,6 +1743,10 @@
             "description": "$?",
             "content": { "doc": "$?", "names": "$?" },
             "layout": { "doc": "$?", "names": "$?" },
+            "matter": {
+                "doc": "$?",
+                "names": "$? matter"
+            },
             "size": { "doc": "$?", "names": "$?" },
             "face": { "doc": "$?", "names": "$?" },
             "place": { "doc": "$?", "names": "$?" },
@@ -1739,6 +1803,10 @@
             "alignment": {
                 "doc": "$?",
                 "names": "$? alignment"
+            },
+            "matter": {
+                "doc": "$?",
+                "names": "$? matter"
             },
             "name": { "doc": "$?", "names": "$?" },
             "selectable": { "doc": "$?", "names": "$?" },
@@ -1814,14 +1882,56 @@
             "doc": "$?",
             "description": "$?"
         },
-        "Shape": { "names": "$?", "doc": "$?" },
+        "Shape": {
+            "names": "$? shape",
+            "doc": "$?",
+            "form": { "doc": "$?", "names": "$? form" },
+            "name": { "doc": "$?", "names": "$? name" },
+            "selectable": { "doc": "$?", "names": "$? selectable" },
+            "color": {
+                "doc": "$?",
+                "names": "$? color"
+            },
+            "background": { "doc": "$?", "names": "$? background" },
+            "opacity": {
+                "doc": "$?",
+                "names": "$? opacity"
+            },
+            "offset": {
+                "doc": "$?",
+                "names": "$? offset"
+            },
+            "rotation": {
+                "doc": "$?",
+                "names": "$? rotation"
+            },
+            "scale": {
+                "doc": "$?",
+                "names": "$? scale"
+            },
+            "flipx": {
+                "doc": "$?",
+                "names": "$? flipx"
+            },
+            "flipy": {
+                "doc": "$?",
+                "names": "$? flipy"
+            },
+            "entering": { "doc": "$?", "names": "$? entering" },
+            "resting": { "doc": "$?", "names": "$? resting" },
+            "moving": { "doc": "$?", "names": "$? moving" },
+            "exiting": { "doc": "$?", "names": "$? exiting" },
+            "duration": { "doc": "$?", "names": ["$? duration"] },
+            "style": { "doc": "$?", "names": "$? style" }
+        },
         "Rectangle": {
             "names": "$?",
             "doc": "$?",
             "left": { "doc": "$?", "names": "$?" },
             "top": { "doc": "$?", "names": "$?" },
             "right": { "doc": "$?", "names": "$?" },
-            "bottom": { "doc": "$?", "names": "$?" }
+            "bottom": { "doc": "$?", "names": "$?" },
+            "z": { "doc": "$?", "names": "$? z" }
         },
         "Pose": {
             "names": "$?",
@@ -1861,9 +1971,51 @@
         "Place": {
             "names": ["Posición"],
             "doc": "$?",
-            "x": { "doc": "$?", "names": "$?" },
-            "y": { "doc": "$?", "names": "$?" },
-            "z": { "doc": "$?", "names": "$?" }
+            "x": { "doc": "$?", "names": "$? x" },
+            "y": { "doc": "$?", "names": "$? y" },
+            "z": { "doc": "$?", "names": "$? z" },
+            "rotation": { "doc": "$?", "names": "$? rotation" }
+        },
+        "Velocity": {
+            "doc": "$?",
+            "names": "$? Velocity",
+            "x": {
+                "doc": "$?",
+                "names": "$? x"
+            },
+            "y": {
+                "doc": "$?",
+                "names": "$? y"
+            },
+            "angle": {
+                "doc": "$? ",
+                "names": "$? angle"
+            }
+        },
+        "Matter": {
+            "doc": "$?",
+            "names": "$? Matter",
+            "mass": { "doc": "$?", "names": "$? mass" },
+            "bounciness": {
+                "doc": "$?",
+                "names": "$? bounciness"
+            },
+            "friction": {
+                "doc": "$?",
+                "names": "$? friction"
+            },
+            "roundedness": {
+                "doc": "$?",
+                "names": "$? roundedness"
+            },
+            "text": {
+                "doc": "$?",
+                "names": "$? text"
+            },
+            "shapes": {
+                "doc": "$?",
+                "names": "$? shapes"
+            }
         },
         "Easing": {
             "straight": "$?",
@@ -1903,7 +2055,8 @@
             },
             "loading": {
                 "message": "$?"
-            }
+            },
+            "home": "$?"
         },
         "tile": {
             "toggle": {
@@ -1915,6 +2068,12 @@
                     "on": "$?",
                     "off": "$?"
                 }
+            },
+            "label": {
+                "output": "$?",
+                "palette": "$?",
+                "docs": "$?",
+                "source": "$?"
             },
             "button": {
                 "collapse": "$?"
@@ -1944,6 +2103,46 @@
                 }
             },
             "help": "$?"
+        },
+        "gallery": {
+            "untitled": "$?",
+            "subheader": {
+                "curators": {
+                    "header": "$?",
+                    "explanation": "$?"
+                },
+                "creators": {
+                    "header": "$?",
+                    "explanation": "$?"
+                },
+                "delete": {
+                    "header": "$?",
+                    "explanation": "$?"
+                }
+            },
+            "confirm": {
+                "delete": {
+                    "description": "$?",
+                    "prompt": "$?"
+                },
+                "remove": {
+                    "description": "$?",
+                    "prompt": "$?"
+                }
+            },
+            "error": {
+                "unknown": "$?"
+            },
+            "field": {
+                "name": {
+                    "description": "$?",
+                    "placeholder": "$?"
+                },
+                "description": {
+                    "description": "$?",
+                    "placeholder": "$?"
+                }
+            }
         },
         "source": {
             "label": "$?",
@@ -2009,6 +2208,9 @@
                 "insertPrevious": "$?",
                 "insertType": "$?",
                 "insertTable": "$?",
+                "insertTableClose": "$?",
+                "insertBorrow": "$?",
+                "insertShare": "$?",
                 "insertLine": "$?",
                 "backspace": "$?",
                 "cut": "$?",
@@ -2019,7 +2221,8 @@
                 "type": "$?",
                 "undo": "$?",
                 "redo": "$?",
-                "search": "$?"
+                "search": "$?",
+                "tidy": "$?"
             }
         },
         "conflicts": {
@@ -2043,7 +2246,7 @@
             },
             "field": {
                 "key": {
-                    "label": "$?",
+                    "description": "$?",
                     "placeholder": "$?"
                 }
             },
@@ -2095,6 +2298,10 @@
                 "explanation": "$?",
                 "subheader": {
                     "collaborators": {
+                        "header": "$?",
+                        "explanation": "$?"
+                    },
+                    "gallery": {
                         "header": "$?",
                         "explanation": "$?"
                     },
@@ -2157,6 +2364,7 @@
                 },
                 "button": {
                     "show": "$?",
+                    "replace": "$?",
                     "add": "$?",
                     "remove": "$?"
                 }
@@ -2187,6 +2395,9 @@
                 "set": "$?",
                 "addPhrase": "$?",
                 "addGroup": "$?",
+                "addShape": "$?",
+                "addMotion": "$?",
+                "addPlacement": "$?",
                 "remove": "$?",
                 "up": "$?",
                 "down": "$?",
@@ -2232,6 +2443,7 @@
             },
             "landing": {
                 "call": ["$?"],
+                "beta": ["$?"],
                 "link": {
                     "about": "$?",
                     "learn": "$?",
@@ -2250,16 +2462,33 @@
             },
             "projects": {
                 "header": "$?",
-                "prompt": "$?",
+                "projectprompt": "$?",
+                "archiveheader": "$?",
+                "archiveprompt": "$?",
+                "galleriesheader": "$?",
+                "galleryprompt": "$?",
                 "button": {
-                    "create": "$?",
-                    "edit": "$?"
+                    "newproject": "$?",
+                    "editproject": "$?",
+                    "newgallery": "$?",
+                    "unarchive": "$?"
                 },
                 "confirm": {
                     "archive": {
                         "description": "$?",
                         "prompt": "$?"
+                    },
+                    "delete": {
+                        "description": "$?",
+                        "prompt": "$?"
                     }
+                },
+                "error": {
+                    "noaccess": "$?",
+                    "nogalleryedits": "$?",
+                    "newgallery": "$?",
+                    "nodeletes": "$?",
+                    "delete": "$?"
                 }
             },
             "galleries": {
@@ -2273,10 +2502,21 @@
             },
             "login": {
                 "header": "$?",
+                "subheader": {
+                    "email": "$?",
+                    "username": "$?"
+                },
                 "anonymous": "$?",
                 "prompt": {
                     "login": "$?",
+                    "age": {
+                        "label": "$?",
+                        "modes": ["$?", "$?"]
+                    },
                     "enter": "$?",
+                    "emailrules": ["$?"],
+                    "usernamerules": ["$?"],
+                    "passwordreminder": "$?",
                     "play": "$?",
                     "change": "$?",
                     "logout": "$?",
@@ -2284,7 +2524,8 @@
                     "success": "$?",
                     "confirm": "$?",
                     "delete": "$?",
-                    "reallyDelete": "$?"
+                    "reallyDelete": "$?",
+                    "name": "$?"
                 },
                 "error": {
                     "expired": "$?",
@@ -2293,7 +2534,8 @@
                     "offline": "$?",
                     "failure": "$?",
                     "unchanged": "$?",
-                    "delete": "$?"
+                    "delete": "$?",
+                    "wrongPassword": "$?"
                 },
                 "feedback": {
                     "changing": "$?",
@@ -2301,6 +2543,14 @@
                 },
                 "field": {
                     "email": {
+                        "description": "$?",
+                        "placeholder": "$?"
+                    },
+                    "username": {
+                        "description": "$?",
+                        "placeholder": "$?"
+                    },
+                    "password": {
                         "description": "$?",
                         "placeholder": "$?"
                     }
@@ -2326,6 +2576,11 @@
                 "header": "$?",
                 "content": ["$?"],
                 "consequences": ["$?"]
+            },
+            "donate": {
+                "header": "$?",
+                "prompt": "$?",
+                "content": ["$?"]
             }
         },
         "edit": {
@@ -2348,8 +2603,51 @@
             "unparsable": "$?"
         }
     },
-    "rules": {
-        "violence": "$?",
-        "dehumanization": "$?"
+    "moderation": {
+        "warning": { "header": "$?", "explanation": "$?" },
+        "blocked": { "header": "$?", "explanation": "$?" },
+        "unmoderated": { "header": "$?", "explanation": "$?" },
+        "moderate": {
+            "header": "$?",
+            "explanation": "$?"
+        },
+        "flags": {
+            "violence": "$?",
+            "dehumanization": "$?",
+            "disclosure": "$?",
+            "misinformation": "$?"
+        },
+        "button": {
+            "submit": {
+                "tip": "$?",
+                "label": "$?"
+            },
+            "skip": {
+                "tip": "$?",
+                "label": "$?"
+            }
+        }
+    },
+    "gallery": {
+        "games": {
+            "name": "$?",
+            "description": "$?"
+        },
+        "visualizations": {
+            "name": "$?",
+            "description": "$?"
+        },
+        "motion": {
+            "name": "$?",
+            "description": "$?"
+        },
+        "av": {
+            "name": "$?",
+            "description": "$?"
+        },
+        "tools": {
+            "name": "$?",
+            "description": "$?"
+        }
     }
 }

@@ -8,7 +8,7 @@ import NotInstantiable from '@conflicts/NotInstantiable';
 import StructureType from './StructureType';
 import Expression, { ExpressionKind } from './Expression';
 import type Token from './Token';
-import Type from './Type';
+import type Type from './Type';
 import type Evaluator from '@runtime/Evaluator';
 import type Value from '@values/Value';
 import Evaluation from '@runtime/Evaluation';
@@ -39,18 +39,15 @@ import UnexpectedTypeInput from '@conflicts/UnexpectedTypeInput';
 import PropertyReference from './PropertyReference';
 import NeverType from './NeverType';
 import { node, type Grammar, type Replacement, any, none, list } from './Node';
-import type Locale from '@locale/Locale';
 import type Node from './Node';
 import StartEvaluation from '@runtime/StartEvaluation';
 import UnimplementedException from '@values/UnimplementedException';
-import Reference from './Reference';
 import StreamDefinition from './StreamDefinition';
 import StreamDefinitionType from './StreamDefinitionType';
 import StreamDefinitionValue from '../values/StreamDefinitionValue';
 import Glyphs from '../lore/Glyphs';
 import FunctionType from './FunctionType';
 import AnyType from './AnyType';
-import { NotAType } from './NotAType';
 import concretize from '../locale/concretize';
 import Sym from './Sym';
 import Refer from '../edit/Refer';
@@ -59,6 +56,8 @@ import Purpose from '../concepts/Purpose';
 import TypeException from '../values/TypeException';
 import TypeVariable from './TypeVariable';
 import NameType from './NameType';
+import { NonFunctionType } from './NonFunctionType';
+import type Locales from '../locale/Locales';
 
 type Mapping = {
     expected: Bind;
@@ -205,20 +204,20 @@ export default class Evaluate extends Expression {
                         ),
                         new AnyType()
                     ),
-                label: (translation: Locale) =>
-                    translation.node.Evaluate.function,
+                label: (locales: Locales) =>
+                    locales.get((l) => l.node.Evaluate.function),
             },
             { name: 'types', kind: any(node(TypeInputs), none()) },
             { name: 'open', kind: node(Sym.EvalOpen) },
             {
                 name: 'inputs',
                 kind: list(true, node(Expression)),
-                label: (locale: Locale, child: Node, context: Context) => {
+                label: (locales: Locales, child: Node, context: Context) => {
                     // Get the function called
                     const fun = this.getFunction(context);
                     // Didn't find it? Default label.
                     if (fun === undefined || !(child instanceof Expression))
-                        return locale.node.Evaluate.input;
+                        return locales.get((l) => l.node.Evaluate.input);
                     // Get the mapping from inputs to binds
                     const mapping = this.getInputMapping(context);
                     // Find the bind to which this child was mapped and get its translation of this language.
@@ -230,8 +229,8 @@ export default class Evaluate extends Expression {
                                     m.given.includes(child)))
                     );
                     return bind === undefined
-                        ? locale.node.Evaluate.input
-                        : bind.expected.names.getPreferredNameString(locale);
+                        ? locales.get((l) => l.node.Evaluate.input)
+                        : locales.getName(bind.expected.names);
                 },
                 space: true,
                 indent: true,
@@ -340,21 +339,32 @@ export default class Evaluate extends Expression {
         return mappings;
     }
 
+    getInput(
+        bind: Bind,
+        context: Context
+    ): Expression | Expression[] | undefined {
+        const mapping = this.getInputMapping(context);
+        const given = mapping?.inputs.find(
+            (input) => input.expected === bind
+        )?.given;
+        return given instanceof Bind ? given.value : given;
+    }
+
     getLastInput(): Expression | undefined {
         return this.inputs[this.inputs.length - 1];
     }
 
     /**
-     *  Given a name and an expression, create a new evaluate that binds this name to this value instead of its current binding,
+     * Given a bind of the function being evaluated and an expression, create a new evaluate that binds this name to this value instead of its current binding,
      * and if there is no current binding, create one.
      */
     withBindAs(
-        name: string,
+        bind: Bind,
         expression: Expression | undefined,
         context: Context,
         named = true
     ): Evaluate {
-        const mapping = this.getMappingFor(name, context);
+        const mapping = this.getMappingFor(bind, context);
         if (mapping === undefined) return this;
 
         // If we'replacing with nothing
@@ -375,7 +385,7 @@ export default class Evaluate extends Expression {
                 named
                     ? Bind.make(
                           undefined,
-                          Names.make([name]),
+                          Names.make([bind.getNames()[0]]),
                           undefined,
                           expression
                       )
@@ -397,23 +407,12 @@ export default class Evaluate extends Expression {
         );
     }
 
-    getExpressionFor(name: string, context: Context) {
-        const mapping = this.getMappingFor(name, context);
-        return mapping === undefined
-            ? undefined
-            : mapping.given instanceof Bind
-            ? mapping.given.value
-            : mapping.given;
-    }
-
-    getMappingFor(name: string, context: Context) {
+    getMappingFor(bind: Bind, context: Context) {
         // Figure out what the current mapping is.
         const mappings = this.getInputMapping(context);
 
         // Find the bind.
-        return mappings?.inputs.find((input) =>
-            input.expected.names.hasName(name)
-        );
+        return mappings?.inputs.find((input) => input.expected === bind);
     }
 
     computeConflicts(context: Context): Conflict[] {
@@ -440,8 +439,6 @@ export default class Evaluate extends Expression {
                 new IncompatibleInput(
                     this.fun instanceof PropertyReference
                         ? this.fun.name ?? this.fun
-                        : this.fun instanceof Reference
-                        ? this.fun
                         : this.fun,
                     this.fun instanceof PropertyReference
                         ? this.fun.structure.getType(context)
@@ -490,14 +487,16 @@ export default class Evaluate extends Expression {
                 if (given instanceof Bind && !expected.sharesName(given))
                     return [new MisplacedInput(fun, this, expected, given)];
 
+                // Concretize the expected type.
+                const expectedType = getConcreteExpectedType(
+                    fun,
+                    expected,
+                    this,
+                    context
+                );
+
                 // Figure out what type this expected input is. Resolve any type variables to concrete values.
                 if (given instanceof Expression) {
-                    const expectedType = getConcreteExpectedType(
-                        fun,
-                        expected,
-                        this,
-                        context
-                    );
                     const givenType = given.getType(context);
                     if (!expectedType.accepts(givenType, context, given))
                         conflicts.push(
@@ -517,9 +516,9 @@ export default class Evaluate extends Expression {
                         const lastType = given[0].getType(context);
                         if (
                             lastType instanceof ListType &&
-                            expected instanceof ListType &&
+                            expectedType instanceof ListType &&
                             (lastType.type === undefined ||
-                                expected.type?.accepts(lastType.type, context))
+                                expectedType.accepts(lastType.type, context))
                         )
                             isVariableListInput = true;
                     }
@@ -529,14 +528,15 @@ export default class Evaluate extends Expression {
                         for (const item of given) {
                             const givenType = item.getType(context);
                             if (
-                                expected.type instanceof Type &&
-                                !expected.type.accepts(givenType, context)
+                                expectedType instanceof ListType &&
+                                expectedType.type &&
+                                !expectedType.type.accepts(givenType, context)
                             )
                                 conflicts.push(
                                     new IncompatibleInput(
                                         item,
                                         givenType,
-                                        expected.type
+                                        expectedType.type
                                     )
                                 );
                         }
@@ -605,7 +605,7 @@ export default class Evaluate extends Expression {
             : undefined;
     }
 
-    is(def: StructureDefinition, context: Context) {
+    is(def: StructureDefinition | StreamDefinition, context: Context) {
         return this.getFunction(context) === def;
     }
 
@@ -633,12 +633,7 @@ export default class Evaluate extends Expression {
             return fun.output;
         }
         // Otherwise, who knows.
-        else
-            return new NotAType(
-                this,
-                this.fun.getType(context),
-                FunctionType.make(undefined, [], new AnyType())
-            );
+        else return new NonFunctionType(this.fun, this.fun.getType(context));
     }
 
     getDependencies(context: Context): Expression[] {
@@ -665,7 +660,7 @@ export default class Evaluate extends Expression {
         return false;
     }
 
-    compile(context: Context): Step[] {
+    compile(evaluator: Evaluator, context: Context): Step[] {
         // To compile an evaluate, we need to compile all of the given and default values in
         // order of the function's declaration. This requires getting the function/structure definition
         // and finding an expression to compile for each input.
@@ -698,7 +693,7 @@ export default class Evaluate extends Expression {
                 // Is there a default value?
                 return expected.value !== undefined
                     ? // Compile that.
-                      expected.value.compile(context)
+                      expected.value.compile(evaluator, context)
                     : // Otherwise, halt, since a value was expected but not given.
                       [
                           new Halt(
@@ -716,7 +711,7 @@ export default class Evaluate extends Expression {
                         return given.reduce(
                             (prev: Step[], next) => [
                                 ...prev,
-                                ...next.compile(context),
+                                ...next.compile(evaluator, context),
                             ],
                             []
                         );
@@ -743,8 +738,9 @@ export default class Evaluate extends Expression {
                                         TypeVariable
                             ) ||
                         expectedType.accepts(given.getType(context), context);
+
                     return [
-                        ...given.compile(context),
+                        ...given.compile(evaluator, context),
                         // Evaluate, but if the type was not acceptable, halt
                         ...(acceptable
                             ? []
@@ -769,7 +765,7 @@ export default class Evaluate extends Expression {
         return [
             new Start(this),
             ...inputSteps.reduce((steps: Step[], s) => [...steps, ...s], []),
-            ...this.fun.compile(context),
+            ...this.fun.compile(evaluator, context),
             new StartEvaluation(this),
             new Finish(this),
         ];
@@ -882,6 +878,8 @@ export default class Evaluate extends Expression {
         const bindings = new Map<Names, Value>();
         for (let i = 0; i < inputs.length; i++) {
             const bind = inputs[i];
+
+            // Are we missing an input? Throw an excpected value exception.
             if (i >= values.length) return new ValueException(evaluator, this);
 
             // If it's variable length, take the rest of the values and stop.
@@ -901,17 +899,17 @@ export default class Evaluate extends Expression {
         return bindings;
     }
 
-    evaluateTypeSet(
+    evaluateTypeGuards(
         bind: Bind,
         original: TypeSet,
         current: TypeSet,
         context: Context
     ) {
         if (this.fun instanceof Expression)
-            this.fun.evaluateTypeSet(bind, original, current, context);
+            this.fun.evaluateTypeGuards(bind, original, current, context);
         this.inputs.forEach((input) => {
             if (input instanceof Expression)
-                input.evaluateTypeSet(bind, original, current, context);
+                input.evaluateTypeGuards(bind, original, current, context);
         });
         return current;
     }
@@ -924,34 +922,33 @@ export default class Evaluate extends Expression {
         return this.close ?? this.fun;
     }
 
-    getNodeLocale(translation: Locale) {
-        return translation.node.Evaluate;
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.Evaluate);
     }
 
-    getStartExplanations(locale: Locale) {
+    getStartExplanations(locales: Locales) {
         return concretize(
-            locale,
-            locale.node.Evaluate.start,
+            locales,
+            locales.get((l) => l.node.Evaluate.start),
             this.inputs.length > 0
         );
     }
 
     getFinishExplanations(
-        locale: Locale,
+        locales: Locales,
         context: Context,
         evaluator: Evaluator
     ) {
         return concretize(
-            locale,
-            locale.node.Evaluate.finish,
-            this.getValueIfDefined(locale, context, evaluator)
+            locales,
+            locales.get((l) => l.node.Evaluate.finish),
+            this.getValueIfDefined(locales, context, evaluator)
         );
     }
 
-    getDescriptionInputs(locale: Locale, context: Context) {
-        return [
-            this.getFunction(context)?.names.getPreferredNameString(locale),
-        ];
+    getDescriptionInputs(locales: Locales, context: Context) {
+        const names = this.getFunction(context)?.names;
+        return [names ? locales.getName(names) : undefined];
     }
 
     getGlyphs() {

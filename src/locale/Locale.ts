@@ -19,6 +19,10 @@ import FunctionDefinition from '../nodes/FunctionDefinition';
 import parseDoc from '../parser/parseDoc';
 import { toTokens } from '../parser/toTokens';
 import { DOCS_SYMBOL } from '../parser/Symbols';
+import type { FlagDescriptions } from '../models/Moderation';
+import type { ButtonText, DialogText } from './UITexts';
+import type Locales from './Locales';
+import type { GalleryTexts } from './GalleryTexts';
 
 /** A list of locales that are in progress but not supported yet. Only added when developing locally. */
 const EventuallySupportedLocales = ['zh-CN'];
@@ -49,17 +53,39 @@ export type Locale = {
     wordplay: string;
     /** The default Program for a new project */
     newProject: string;
+    /** Common vocabulary that can be used in documentation and descriptions. */
     term: TermTexts;
+    /** Descriptions of all token categories. See Sym.ts for the symbol or symbol category that each represents. */
     token: Record<keyof typeof Sym, string>;
+    /** Names, descriptions, and documentation for all node types, as well as descriptions of start and end of expression evaluations for debugging. */
     node: NodeTexts;
+    /** Documentation for basic types. */
     basis: BasisTexts;
+    /** Documentation for input types. */
     input: InputTexts;
+    /** Documentation for output types. */
     output: OutputTexts;
+    /** User interface strings */
     ui: UITexts;
-    /** Content moderation rules that creators promise to follow’ */
-    rules: {
-        violence: Template;
-        dehumanization: Template;
+    /** Default gallery text  */
+    gallery: GalleryTexts;
+    /** Text related to content moderation */
+    moderation: {
+        /** What to say to warn viewers before showing content with warnings. */
+        warning: DialogText;
+        /** What to say when content is blocked */
+        blocked: DialogText;
+        /** What to sa when content has not yet been moderated */
+        unmoderated: DialogText;
+        /** Moderation view text */
+        moderate: DialogText;
+        /** Content moderation rules that creators promise to follow. See en-US.json for ground truth language. */
+        flags: FlagDescriptions;
+        /** Buttons on the moderation page */
+        button: {
+            submit: ButtonText;
+            skip: ButtonText;
+        };
     };
 };
 
@@ -68,18 +94,21 @@ export default Locale;
 export type Template = string;
 
 export type NameAndDoc = {
+    /** One or more names for this definition. Be careful not to introduce duplicates. */
     names: NameText;
+    /** Documentation for this definition, to appear in the documentation browser. */
     doc: DocText;
 };
 
-export type FunctionText<Inputs extends NameAndDoc[]> = {
-    names: NameText;
-    doc: DocText;
+export type FunctionText<Inputs extends NameAndDoc[]> = NameAndDoc & {
+    /** Bind definitions for the inputs this function takes */
     inputs: Inputs;
 };
 
+/** A single name or a list of names, all valid Wordplay names */
 export type NameText = string | string[];
 
+/** Wordplay markup, a single paragraph or a list of paragraphs. */
 export type DocText = string | string[];
 
 export function toDocString(doc: DocText) {
@@ -155,7 +184,7 @@ export function getBestSupportedLocales(locales: string[]) {
 }
 
 export function createBind(
-    locales: Locale[],
+    locales: Locales,
     nameAndDoc: (locale: Locale) => NameAndDoc,
     type?: Type,
     value?: Expression
@@ -169,7 +198,7 @@ export function createBind(
 }
 
 export function createInputs(
-    locales: Locale[],
+    locales: Locales,
     fun: (locale: Locale) => NameAndDoc[],
     types: (Type | [Type, Expression])[]
 ) {
@@ -184,7 +213,7 @@ export function createInputs(
 }
 
 export function createFunction(
-    locales: Locale[],
+    locales: Locales,
     nameAndDoc: (locale: Locale) => NameAndDoc,
     typeVars: TypeVariables | undefined,
     inputs: Bind[],

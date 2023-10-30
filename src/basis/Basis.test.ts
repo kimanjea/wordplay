@@ -7,13 +7,13 @@ import UnparsableType from '@nodes/UnparsableType';
 import UnparsableExpression from '@nodes/UnparsableExpression';
 import Project from '../models/Project';
 import Example from '../nodes/Example';
-import { DefaultLocale } from '../db/Database';
 import { Basis } from './Basis';
+import DefaultLocale, { DefaultLocales } from '../locale/DefaultLocale';
 
-const basis = Basis.getLocalizedBasis(DefaultLocale);
+const basis = Basis.getLocalizedBasis(DefaultLocales);
 
 const source = new Source('basis', '');
-const project = new Project(null, 'test', source, [], DefaultLocale);
+const project = Project.make(null, 'test', source, [], DefaultLocale);
 const context = new Context(project, source);
 
 function checkBasisNodes(nodes: Node[]) {
@@ -66,7 +66,7 @@ function checkBasisNodes(nodes: Node[]) {
                             )}\nPrimary node: ${conflictingNodes.primary.node.toWordplay()}\n\t${
                             conflict.constructor.name
                         }\n${conflictingNodes.primary.explanation(
-                            basis.locales[0],
+                            basis.locales,
                             context
                         )}`
                     );

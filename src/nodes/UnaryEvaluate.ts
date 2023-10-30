@@ -16,7 +16,6 @@ import getConcreteExpectedType from './Generics';
 import type Value from '@values/Value';
 import UnknownNameType from './UnknownNameType';
 import { node, type Grammar, type Replacement } from './Node';
-import type Locale from '@locale/Locale';
 import StartEvaluation from '@runtime/StartEvaluation';
 import NodeRef from '@locale/NodeRef';
 import Emotion from '../lore/Emotion';
@@ -28,6 +27,7 @@ import concretize from '../locale/concretize';
 import Reference from './Reference';
 import type Node from './Node';
 import Purpose from '../concepts/Purpose';
+import type Locales from '../locale/Locales';
 
 export default class UnaryEvaluate extends Expression {
     readonly fun: Reference;
@@ -133,10 +133,10 @@ export default class UnaryEvaluate extends Expression {
         ];
     }
 
-    compile(context: Context): Step[] {
+    compile(evaluator: Evaluator, context: Context): Step[] {
         return [
             new Start(this),
-            ...this.input.compile(context),
+            ...this.input.compile(evaluator, context),
             new StartEvaluation(this),
             new Finish(this),
         ];
@@ -171,7 +171,7 @@ export default class UnaryEvaluate extends Expression {
     /**
      * Logical negations take the set complement of the current set from the original.
      * */
-    evaluateTypeSet(
+    evaluateTypeGuards(
         bind: Bind,
         original: TypeSet,
         current: TypeSet,
@@ -181,7 +181,7 @@ export default class UnaryEvaluate extends Expression {
         if (this.getOperator() !== NOT_SYMBOL) return current;
 
         // Get the possible types of the operand.
-        const possible = this.input.evaluateTypeSet(
+        const possible = this.input.evaluateTypeGuards(
             bind,
             original,
             current,
@@ -199,27 +199,27 @@ export default class UnaryEvaluate extends Expression {
         return this.fun;
     }
 
-    getNodeLocale(translation: Locale) {
-        return translation.node.UnaryEvaluate;
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.UnaryEvaluate);
     }
 
-    getStartExplanations(locale: Locale, context: Context) {
+    getStartExplanations(locales: Locales, context: Context) {
         return concretize(
-            locale,
-            locale.node.UnaryEvaluate.start,
-            new NodeRef(this.input, locale, context)
+            locales,
+            locales.get((l) => l.node.UnaryEvaluate.start),
+            new NodeRef(this.input, locales, context)
         );
     }
 
     getFinishExplanations(
-        locale: Locale,
+        locales: Locales,
         context: Context,
         evaluator: Evaluator
     ) {
         return concretize(
-            locale,
-            locale.node.UnaryEvaluate.finish,
-            this.getValueIfDefined(locale, context, evaluator)
+            locales,
+            locales.get((l) => l.node.UnaryEvaluate.finish),
+            this.getValueIfDefined(locales, context, evaluator)
         );
     }
 

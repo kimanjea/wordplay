@@ -1,7 +1,7 @@
 import toStructure from '../basis/toStructure';
 import type Value from '@values/Value';
 import type Color from './Color';
-import type TypeOutput from './TypeOutput';
+import type Output from './Output';
 import type RenderContext from './RenderContext';
 import { getBind } from '@locale/getBind';
 import Arrangement from './Arrangement';
@@ -9,11 +9,11 @@ import NumberValue from '@values/NumberValue';
 import Place from './Place';
 import NoneValue from '@values/NoneValue';
 import concretize from '../locale/concretize';
-import type Locale from '../locale/Locale';
-import { getOutputInputs } from './Output';
+import { getOutputInputs } from './Valued';
 import StructureValue from '../values/StructureValue';
+import type Locales from '../locale/Locales';
 
-export function createGridType(locales: Locale[]) {
+export function createGridType(locales: Locales) {
     return toStructure(`
     ${getBind(locales, (locale) => locale.output.Grid, '•')} Arrangement(
         ${getBind(locales, (locale) => locale.output.Grid.rows)}•#|ø:ø
@@ -58,7 +58,7 @@ export class Grid extends Arrangement {
                 : undefined;
     }
 
-    getLayout(outputs: (TypeOutput | null)[], context: RenderContext) {
+    getLayout(outputs: (Output | null)[], context: RenderContext) {
         const layouts = outputs.map((output) =>
             output ? output.getLayout(context) : null
         );
@@ -139,7 +139,7 @@ export class Grid extends Arrangement {
             this.padding * (rows - 1);
 
         // Next, position each child in a cell, iterating through each row from left to right.
-        const places: [TypeOutput, Place][] = [];
+        const places: [Output, Place][] = [];
         for (let row = 0; row < rows; row++) {
             for (let col = 0; col < columns; col++) {
                 // Get the output in this cell.
@@ -184,10 +184,10 @@ export class Grid extends Arrangement {
         return undefined;
     }
 
-    getDescription(_: TypeOutput[], locales: Locale[]) {
+    getDescription(_: Output[], locales: Locales) {
         return concretize(
-            locales[0],
-            locales[0].output.Grid.description,
+            locales,
+            locales.get((l) => l.output.Grid.description),
             this.rows,
             this.columns
         ).toText();

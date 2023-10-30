@@ -29,6 +29,8 @@ import Root from './Root';
 import Markup from './Markup';
 import Purpose from '../concepts/Purpose';
 import Tokens from '../parser/Tokens';
+import type Definition from './Definition';
+import type Locales from '../locale/Locales';
 
 /** A document representing executable Wordplay code and it's various metadata, such as conflicts, tokens, and evaulator. */
 export default class Source extends Expression {
@@ -125,6 +127,11 @@ export default class Source extends Expression {
 
     isEvaluationRoot() {
         return true;
+    }
+
+    /** Only equal if the same source */
+    isEquivalentTo(definition: Definition) {
+        return definition === this;
     }
 
     has(node: Node) {
@@ -416,7 +423,7 @@ export default class Source extends Expression {
                 replace.replacement
                     ? newSource.withSpaces(
                           newSource.spaces.withPreferredSpaceForNode(
-                              newSource,
+                              newSource.root,
                               replace.replacement
                           )
                       )
@@ -520,7 +527,7 @@ export default class Source extends Expression {
 
             // Get rendered space prior to the token.
             const renderedSpace = this.spaces.getPreferredTokenSpace(
-                this,
+                this.root,
                 token
             );
             // Get the physical space prior to the token.
@@ -546,7 +553,7 @@ export default class Source extends Expression {
                 index + 1 === tokens.length ||
                     // Or the next token has a line break before it.
                     this.spaces
-                        .getPreferredTokenSpace(this, tokens[index + 1])
+                        .getPreferredTokenSpace(this.root, tokens[index + 1])
                         .includes('\n')
             );
             if (result !== undefined) return result;
@@ -889,7 +896,7 @@ export default class Source extends Expression {
     getDependencies(): Expression[] {
         return [this.expression];
     }
-    evaluateTypeSet(_: Bind, __: TypeSet, current: TypeSet): TypeSet {
+    evaluateTypeGuards(_: Bind, __: TypeSet, current: TypeSet): TypeSet {
         return current;
     }
 
@@ -912,8 +919,8 @@ export default class Source extends Expression {
         return this;
     }
 
-    getNodeLocale(translation: Locale) {
-        return translation.node.Source;
+    getNodeLocale(locales: Locales) {
+        return locales.get((l) => l.node.Source);
     }
 
     getStartExplanations() {
@@ -929,6 +936,6 @@ export default class Source extends Expression {
     }
 
     getPurpose() {
-        return Purpose.Document;
+        return Purpose.Source;
     }
 }

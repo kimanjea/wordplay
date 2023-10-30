@@ -16,9 +16,9 @@ import {
     EVAL_OPEN_SYMBOL,
 } from '@parser/Symbols';
 import type { BasisTypeName } from '../basis/BasisConstants';
-import type Locale from '@locale/Locale';
 import type Expression from '../nodes/Expression';
 import type Concretizer from '../nodes/Concretizer';
+import type Locales from '../locale/Locales';
 
 export default class StructureValue extends Value {
     readonly type: StructureDefinition;
@@ -29,6 +29,39 @@ export default class StructureValue extends Value {
 
         this.type = context.getDefinition() as StructureDefinition;
         this.context = context;
+    }
+
+    /** Creates an evaluation with the inputs of the given type */
+    static make(
+        evaluator: Evaluator,
+        creator: EvaluationNode,
+        type: StructureDefinition,
+        ...inputs: Value[]
+    ) {
+        const map = new Map<Names, Value>();
+        for (let index = 0; index < type.inputs.length; index++) {
+            const bind = type.inputs[index];
+            const input = inputs[index];
+            if (input === undefined)
+                throw new Error(
+                    `Inputs are missing input # ${index}, ${type.inputs[index]
+                        .getNames()
+                        .join(', ')}`
+                );
+            map.set(bind.names, inputs[index]);
+        }
+
+        const evaluation = new Evaluation(
+            evaluator,
+            creator,
+            type,
+            undefined,
+            map
+        );
+
+        const structure = new StructureValue(creator, evaluation);
+
+        return structure;
     }
 
     /**
@@ -117,20 +150,27 @@ export default class StructureValue extends Value {
         return this.context.getConversion(input, output);
     }
 
-    toWordplay(locales: Locale[]): string {
+    toWordplay(locales?: Locales): string {
         const bindings = this.type.inputs.map(
             (bind) =>
-                `${bind.names.getPreferredNameString(
+                `${
                     locales
-                )}${BIND_SYMBOL} ${this.resolve(bind.getNames()[0])}`
+                        ? locales.getName(bind.names)
+                        : bind.names.getNames()[0]
+                }${BIND_SYMBOL} ${this.resolve(bind.getNames()[0])}`
         );
-        return `${this.type.names.getPreferredNameString(
+        return `${
             locales
-        )}${EVAL_OPEN_SYMBOL}${bindings.join(' ')}${EVAL_CLOSE_SYMBOL}`;
+                ? locales.getName(this.type.names)
+                : this.type.names.getNames()[0]
+        }${EVAL_OPEN_SYMBOL}${bindings.join(' ')}${EVAL_CLOSE_SYMBOL}`;
     }
 
-    getDescription(concretize: Concretizer, locale: Locale) {
-        return concretize(locale, locale.term.structure);
+    getDescription(concretize: Concretizer, locales: Locales) {
+        return concretize(
+            locales,
+            locales.get((l) => l.term.structure)
+        );
     }
 
     /**

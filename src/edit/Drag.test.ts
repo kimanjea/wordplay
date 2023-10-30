@@ -7,9 +7,9 @@ import ExpressionPlaceholder from '@nodes/ExpressionPlaceholder';
 import NumberLiteral from '@nodes/NumberLiteral';
 import ListLiteral from '@nodes/ListLiteral';
 import Token from '@nodes/Token';
-import { DefaultLocale } from '../db/Database';
 import { toTokens } from '../parser/toTokens';
 import parseExpression from '../parser/parseExpression';
+import DefaultLocale from '../locale/DefaultLocale';
 
 test.each([
     // Replace placeholder with rootless expression
@@ -104,7 +104,7 @@ test.each([
         supplementExpected?: string
     ) => {
         const sources = source.map((s) => new Source('test', s));
-        const project = new Project(
+        const project = Project.make(
             null,
             'test',
             sources[0],
@@ -119,9 +119,9 @@ test.each([
         ) ?? [undefined, undefined];
 
         expect(newProject).toBeDefined();
-        expect(newProject?.main.toWordplay()).toBe(mainExpected);
+        expect(newProject?.getMain().toWordplay()).toBe(mainExpected);
         if (supplementExpected)
-            expect(newProject?.supplements[0].toWordplay()).toBe(
+            expect(newProject?.getSupplements()[0].toWordplay()).toBe(
                 supplementExpected
             );
     }

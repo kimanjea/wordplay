@@ -9,7 +9,9 @@ import Evaluator from '@runtime/Evaluator';
 import { testConflict } from '../conflicts/TestUtilities';
 import Reaction from './Reaction';
 import ExpectedStream from '../conflicts/ExpectedStream';
-import { DefaultLocale, DB } from '../db/Database';
+import { DB } from '../db/Database';
+import DefaultLocale from '../locale/DefaultLocale';
+import Locales from '../locale/Locales';
 
 const makeOne = (creator: Expression) => Time.make(creator, 1);
 
@@ -48,8 +50,12 @@ test.each([
     ) => {
         // Make the project
         const source = new Source('test', code);
-        const project = new Project(null, 'test', source, [], DefaultLocale);
-        const evaluator = new Evaluator(project, DB);
+        const project = Project.make(null, 'test', source, [], DefaultLocale);
+        const evaluator = new Evaluator(
+            project,
+            DB,
+            new Locales([DefaultLocale], DefaultLocale)
+        );
 
         evaluator.start();
 

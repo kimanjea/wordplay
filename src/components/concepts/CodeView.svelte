@@ -6,7 +6,7 @@
     import TypeView from './TypeView.svelte';
     import { copyNode } from '../editor/util/Clipboard';
     import type Type from '../../nodes/Type';
-    import type Spaces from '../../parser/Spaces';
+    import Spaces from '../../parser/Spaces';
     import ConceptLinkUI from './ConceptLinkUI.svelte';
 
     export let node: Node;
@@ -29,7 +29,8 @@
     }
 
     function copy() {
-        copyNode(node);
+        // Copy node needs a source to manage spacing, so we make one.
+        copyNode(node, Spaces.withPreferredSpace(node));
     }
 </script>
 
@@ -67,7 +68,7 @@
 
     .node {
         display: inline-block;
-        cursor: pointer;
+        cursor: grab;
         user-select: none;
         display: inline-block;
         vertical-align: middle;
@@ -94,7 +95,7 @@
 
     .node:focus,
     .node:hover {
-        transform: scale(1.1);
+        background: var(--wordplay-hover);
     }
 
     .node:not(.outline) {
