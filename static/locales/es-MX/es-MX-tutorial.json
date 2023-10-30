@@ -505,41 +505,41 @@
                         [
                             "FunctionDefinition",
                             "excited",
-                            "I'm so excited for you to meet @Evaluate. They're really my best friend. We kind of do everything together, in a way. I make the rules, they play them, we're like peanut butter and jelly. But they're so much more… powerful than me. @Evaluate?"
+                            "Estoy muy emocionado de que conozcas a @Evaluate. Son realmente mi mejor amigo. En cierto modo, hacemos todo juntos. Yo hago las reglas, ellos las cumplen, somos como mantequilla de maní y mermelada. Pero son mucho más... poderosos que yo. @¿Evaluar?'"                
                         ],
                         ["Evaluate", "shy", "@FunctionDefinition?"],
                         null,
                         [
                             "FunctionDefinition",
                             "curious",
-                            "Yeah, it's me. Where are you?"
+                            "Si, soy yo. ¿Dónde estás?"
                         ],
                         [
                             "Evaluate",
                             "shy",
-                            "Nowhere. I'm nowhere. I'm nothing. Where have you been?"
+                            "En ningún lugar. No estoy en ninguna parte. No soy nada. ¿Dónde has estado?"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "sad",
-                            "I've been… nowhere too. I've missed you. I couldn't find you."
+                            "Yo tampoco he estado... en ninguna parte. Te he extrañado. No pude encontrarte."
                         ],
                         [
                             "Evaluate",
                             "shy",
-                            "It was so empty. I … tried to do things, but I felt so… aimless."
+                            "Estaba tan vacío. Yo… intenté hacer cosas, pero me sentí tan… sin rumbo."
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "sad",
-                            "I'm so sorry. I know that empty feeling. It hurts so much sometimes, to have no purpose. I tried so hard to make a purpose, but I felt so… detached."
+                            "Lo siento mucho. Conozco ese sentimiento de vacío. A veces duele mucho no tener un propósito. Intenté con todas mis fuerzas establecer un propósito, pero me sentí tan... desapegado."
                         ],
                         [
                             "Evaluate",
                             "sad",
-                            "Don't ever leave me again like that. I can't do that again."
+                            "No vuelvas a dejarme así nunca más. No puedo volver a hacer eso."
                         ],
                         null,
                         [
@@ -549,30 +549,30 @@
                         [
                             "FunctionDefinition",
                             "serious",
-                            "Never. I won't. I can't. I love you."
+                            "Nunca. No lo haré. No puedo. Te amo."
                         ],
                         ["Evaluate", "serious", "I love you…"],
                         null,
                         [
                             "FunctionDefinition",
                             "serious",
-                            "@Evaluate, I want to introduce you to our new director-in-training."
+                            "@Evaluate, quiero presentarles a nuestro nuevo director en formación."
                         ],
                         [
                             "Evaluate",
                             "shy",
-                            "Hi. It's nice to meet you. Welcome to the Verse, we're so pleased to have you here."
+                            "Hola. Encantado de conocerte. Bienvenido a El Verso, estamos muy contentos de tenerte aquí."
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "eager",
-                            "We've been meeting a few folks, @Program, @ExpressionPlaceholder, @UnparsableExpression. We're just getting started. I thought we'd come see you next, just because you're such an incredible part of our community. The most incredible part."
+                            "Hemos estado conociendo a algunas personas, @Program, @ExpressionPlaceholder, @UnparsableExpression. Recién estamos comenzando. Pensé que vendríamos a verte a continuación, sólo porque eres una parte increíble de nuestra comunidad. La parte más increíble."
                         ],
                         [
                             "Evaluate",
                             "shy",
-                            "That's very kind. I'm grateful to be part of this community. And grateful to be so close to @FunctionDefinition. We do a lot of great things together. But as @FunctionDefinition probably told you, we can't do them without inspiration."
+                            "Eso es muy amable. Estoy agradecido de ser parte de esta comunidad. Y agradecido de estar tan cerca de @FunctionDefinition. Hacemos muchas cosas geniales juntos. Pero como probablemente te dijo @FunctionDefinition, no podemos hacerlos sin inspiración."
                         ],
                         null,
                         [
@@ -582,44 +582,44 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "Do you want to say what you do?"
+                            "¿Quieres decir lo que haces?"
                         ],
                         [
                             "Evaluate",
                             "serious",
-                            "Yes. But I can't explain it without explaining a bit about @FunctionDefinition too. They're too modest to share this, but they're probably the most important character in the Verse. They're certainly the most important person in my world. They're at the heart of every performance, and part of every other character's role. They represent the most fundamental idea in our world: the *function*."
-                        ],
-                        null,
-                        [
-                            "Evaluate",
-                            "serious",
-                            "Functions are a kind of alchemy. They take any number of inputs and use those inputs to produce one output. They can have names or be nameless. They can have zero inputs or five or an unknown number. And the alchemy: they're like @Program, and can have any number of expressions to produce a value."
+                            "Sí. Pero no puedo explicarlo sin explicar un poco sobre @FunctionDefinition también. Son demasiado modestos para compartir esto, pero probablemente sean el personaje más importante del Verso. Sin duda son la persona más importante de mi mundo. Están en el centro de cada actuación y son parte del papel de todos los demás personajes. Representan la idea más fundamental de nuestro mundo: la *función*."
                         ],
                         null,
                         [
                             "Evaluate",
                             "serious",
-                            "Here's why that's so powerful: it turns out that everything in @Program is a composition of functions evaluations. All of the dances, all of the games, all of the wondrous stories we tell together — they are all a tapestry of functions being evaluated, one at a time, to compose the values you see on stage.",
-                            "And @FunctionDefinition, here, my sweet, dear @FunctionDefinition, is the one that defines all of them."
+                            "Las funciones son una especie de alquimia. Toman cualquier número de insumos y los utilizan para producir un resultado. Pueden tener nombres o no tener nombre. Pueden tener cero entradas o cinco o un número desconocido. Y la alquimia: son como @Program y pueden tener cualquier cantidad de expresiones para producir un valor."
+                        ],
+                        null,
+                        [
+                            "Evaluate",
+                            "serious",
+                            "He aquí por qué esto es tan poderoso: resulta que todo en @Program es una composición de evaluaciones de funciones. Todos los bailes, todos los juegos, todas las maravillosas historias que contamos juntos son un tapiz de funciones que se evalúan, una a la vez, para componer los valores que se ven en el escenario.",
+                            "Y @FunctionDefinition, aquí, mi dulce y querida @FunctionDefinition, es la que los define a todos."
                         ],
                         null,
                         ["FunctionDefinition", "happy", "… @Evaluate…"],
                         [
                             "Evaluate",
                             "serious",
-                            "Yes, @FunctionDefinition, that is who you are. And I am the lucky one who gets to do this evaluating. I take the inputs that others give me, follow the instructions that @FunctionDefinition defines, and create the output that @FunctionDefinition tells me to create. @FunctionDefinition gives the recipe and I make the meal. And then we feast together.",
-                            "Do you want to see?"
+                            "Sí, @FunctionDefinition, eso es lo que eres. Y soy el afortunado que puede hacer esta evaluación. Tomo las entradas que otros me dan, sigo las instrucciones que @FunctionDefinition define y creo la salida que @FunctionDefinition me dice que cree. @FunctionDefinition da la receta y yo preparo la comida. Y luego festejamos juntos.",
+                            "¿Quieres ver?"
                         ],
                         [
                             "FunctionDefinition",
                             "happy",
-                            "… Yes, let's show them."
+                            "... Sí, vamos a mostrarlos."
                         ],
                         null,
                         [
                             "Evaluate",
                             "serious",
-                            "Every evaluate looks like this @UI/Evaluate: some function, followed by a left and right parenthesis, with any number of inputs between them. Here I just have @ExpressionPlaceholder as the function and three more as placeholder inputs."
+                            "Cada evaluación se ve así @UI/Evaluate: alguna función, seguida de un paréntesis izquierdo y derecho, con cualquier número de entradas entre ellas. Aquí solo tengo @ExpressionPlaceholder como función y tres más como entradas de marcador de posición."
                         ],
                         ["conflict", "_(_ _ _)"],
                         null,
@@ -627,85 +627,85 @@
                         [
                             "Evaluate",
                             "serious",
-                            "Here's one of my favorite functions, @Phrase. They're full of fun buttons, knobs, and sliders. It's a way of showing text on stage, but with style, including different fonts, sizes, colors, and animations.",
-                            "Here's a simple evaluation of @Phrase @UI/Evaluate."
+                            "Esta es una de mis funciones favoritas, @Phrase. Están llenos de botones, perillas y controles deslizantes divertidos. Es una forma de mostrar texto en escena, pero con estilo, incluyendo diferentes fuentes, tamaños, colores y animaciones.",
+                            "Aquí hay una evaluación simple de @Phrase @UI/Evaluate."
                         ],
                         null,
                         [
                             "Evaluate",
                             "serious",
-                            "That's what I look like in @Program: some function, followed by parentheses, with a list of expressions between them that represent the inputs. The function in this case is @Phrase and the single input is \\'hello'\\. When I evaluate this, I make a @Phrase value, which @Program then shows on stage."
+                            "Así es como me veo en @Program: alguna función, seguida de paréntesis, con una lista de expresiones entre ellas que representan las entradas. La función en este caso es @Phrase y la entrada única es \\'hola'\\. Cuando evalúo esto, hago un valor @Phrase, que luego @Program muestra en el escenario."
                         ],
                         null,
                         [
                             "Evaluate",
                             "neutral",
-                            "Let me show you one of the knobs. Can you find the little *palette* toggle button @UI/paletteExpand? Select it to expand the palette, and then select the phrase on stage. Once you do, you'll see the many inputs that @Phrase accepts. For example, try changing its @Phrase/size with the slider."
+                            "Déjame mostrarte una de las perillas. ¿Puedes encontrar el pequeño botón de alternancia de *paleta* @UI/paletteExpand? Selecciónelo para expandir la paleta y luego seleccione la frase en el escenario. Una vez que lo hagas, verás las muchas entradas que acepta @Phrase. Por ejemplo, intente cambiar su @Frase/tamaño con el control deslizante."
                         ],
                         null,
                         [
                             "Evaluate",
                             "serious",
-                            "See how when you do that, now I have a new input in me in the program? It's the @Phrase/size input. Functions have a certain order of inputs, but if a function has a list of optional inputs, you can use their name to specify which one you want to give. We give @Phrase/size here, but not any of the other optional inputs. Try changing another input with the palette, maybe the font face."
+                            "¿Ves cómo cuando haces eso, ahora tengo una nueva entrada en mí en el programa? Es la entrada @Phrase/size. Las funciones tienen un cierto orden de entradas, pero si una función tiene una lista de entradas opcionales, puedes usar su nombre para especificar cuál quieres dar. Damos @Phrase/size aquí, pero no ninguna de las otras entradas opcionales. Intente cambiar otra entrada con la paleta, tal vez la fuente."
                         ],
                         null,
                         ["conflict", "'hi'(1 2)"],
                         [
                             "FunctionDefinition",
                             "happy",
-                            "Yay! @Phrase is so fun. They're my favorite function to play with. We'll see it a lot more. Do you want to say anything about what can go wrong?"
+                            "¡Hurra! @Phrase es muy divertido. Son mi función favorita para jugar. Lo veremos mucho más. ¿Quieres decir algo sobre lo que puede salir mal?"
                         ],
                         [
                             "Evaluate",
                             "serious",
-                            "Oh, yes, that's a good idea. Lots can go wrong. For example, you could give me something that isn't a function. See how I'm given the number \\“hi”\\ here as a function, and given me two inputs, \\1\\ and \\2\\ ? Well, I only know how to evaluate functions, and \\“hi”\\ isn't a function, it's text. So that's very confusing to me, so I basically halt the performance if this happens."
+                            "Oh, sí, es una buena idea. Muchas cosas pueden salir mal. Por ejemplo, podrías darme algo que no sea una función. ¿Ves cómo me dan el número \\“hi”\\ aquí como una función y me dan dos entradas, \\1\\ y \\2\\ ? Bueno, sólo sé evaluar funciones, y \\“hi”\\ no es una función, es texto. Eso es muy confuso para mí, así que básicamente detengo la actuación si esto sucede."
                         ],
                         null,
                         ["conflict", "Phrase()"],
                         [
                             "Evaluate",
                             "eager",
-                            "Here's another one. @Phrase requires some text at the very least, so if you don't give me text, I won't be able to evaluate @Phrase, because I'm missing required inputs."
+                            "Aqui hay otro más. @Phrase requiere algo de texto como mínimo, por lo que si no me proporcionas texto, no podré evaluar @Phrase porque me faltan las entradas requeridas."
                         ],
                         null,
                         ["conflict", "Phrase(1)"],
                         [
                             "Evaluate",
                             "excited",
-                            "Or if you give me an input, but it's not the kind I expect, that would be a problem. Here @Phrase is given the number \\1\\ instead of a text value."
+                            "O si me das un aporte, pero no es el que espero, eso sería un problema. Aquí @Phrase recibe el número \\1\\ en lugar de un valor de texto."
                         ],
                         null,
                         ["fit", "Stage([] background: 🌈(90% 100 0°))"],
                         [
                             "Evaluate",
                             "curious",
-                            "So basically, I get confused any time you give me something other than a function, or an input that isn't something a function expects. So functions are really important. @FunctionDefinition, do you want to say more about how to define functions?"
+                            "Básicamente, me confundo cada vez que me das algo que no sea una función, o una entrada que no es algo que una función espera. Entonces las funciones son realmente importantes. @FunctionDefinition, ¿quieres decir más sobre cómo definir funciones?"
                         ],
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "No, let's do that later. I think it'd be a lot more fun to talk to everyone else first, and put on some mini shows with our new director here. We can talk more about me when it's helpful."
+                            "No, hagámoslo más tarde. Creo que sería mucho más divertido hablar con todos los demás primero y montar algunos mini shows con nuestro nuevo director aquí. Podemos hablar más sobre mí cuando sea útil."
                         ],
                         null,
                         [
                             "Evaluate",
                             "kind",
-                            "I really missed you @FunctionDefinition."
+                            "Realmente te extrañé @FunctionDefinition."
                         ],
                         [
                             "FunctionDefinition",
                             "curious",
-                            "I missed you too. Can we talk later?"
+                            "Yo también te extrañé. ¿Podemos hablar después?"
                         ],
                         [
                             "Evaluate",
                             "kind",
-                            "… Yes. Don't be long. I can't live without you. I need you."
+                            "… Sí. No tardes. No puedo vivir sin ti. Te necesito."
                         ],
                         [
                             "FunctionDefinition",
                             "excited",
-                            "… I know @Evaluate, I will be back soon. Off we go, to meet the rest of the troupe!"
+                            "… Lo sé @Evaluate, volveré pronto. ¡Vamos a encontrarnos con el resto del grupo!"
                         ]
                     ]
                 }
@@ -727,8 +727,8 @@
                         [
                             "FunctionDefinition",
                             "happy",
-                            "I really did miss @Evaluate. I can't imagine the Verse without them.",
-                            "But they can be a bit… needy, sometimes. I wish they would just… I don't know, believe in themselves? They can do so much, but they don't see it. I mean, they transform *values* into other *values*! All I do is provide the recipe. They do the cooking. Sometimes I feel like all I do is give, and all they do is take. It's suffocating."
+                            "Realmente extrañé @Evaluate. No puedo imaginar el Verso sin ellos.",
+                            "Pero a veces pueden estar un poco... necesitados. Desearía que simplemente... no sé, ¿creyeran en sí mismos? Pueden hacer mucho, pero no lo ven. Quiero decir, ¡transforman *valores* en otros *valores*! Todo lo que hago es proporcionar la receta. Ellos cocinan. A veces siento que todo lo que hago es dar y ellos lo único que hacen es recibir. Es asfixiante."
                         ],
                         null,
                         [
@@ -738,7 +738,7 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "… *Values*? Sorry, I know we're supposed to be on this big tour through the *Verse*. I just don't know what to do about @Evaluate. So… *values*. I haven't explained those yet, have I? Hm…, how to explain… You know what 'data' is? Like numbers and text? Values are any of those things. A value could be as small as a number or as big as an entire scene on stage, full of characters dancing and moving. Some values are made of many other values, like big elaborate structures of data values, woven together."
+                            "… *Valores*? Lo siento, sé que se supone que debemos estar en esta gran gira a través del *Verse*. Simplemente no sé qué hacer con @Evaluate. Entonces… *valores*. Aún no los he explicado, ¿verdad? Hm…, cómo explicar… ¿Sabes qué son los 'datos'? ¿Te gustan los números y el texto? Los valores son cualquiera de esas cosas. Un valor puede ser tan pequeño como un número o tan grande como una escena entera en el escenario, llena de personajes bailando y moviéndose. Algunos valores están formados por muchos otros valores, como grandes estructuras elaboradas de valores de datos, entretejidos."
                         ],
                         null,
                         ["fit", "Group(Stack() [Phrase('#') Phrase('\"\"')])"],
