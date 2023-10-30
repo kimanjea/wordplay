@@ -4,11 +4,11 @@
     "region": "MX",
     "acts": [
         {
-            "title": "El Verso",
+            "title": "The Verse",
             "performance": ["use", "fit", "DarkVoid"],
             "scenes": [
                 {
-                    "title": "Silencio",
+                    "title": "Silence",
                     "subtitle": null,
                     "performance": ["use", "fit", "DarkVoid"],
                     "lines": [
@@ -131,9 +131,9 @@
                     ]
                 },
                 {
-                    "title": "¿Quieres un programa?",
-                    "subtitle": "Programa",
-                    "concept": "Programa",
+                    "title": "Would you like a program?",
+                    "subtitle": "Program",
+                    "concept": "Program",
                     "performance": ["use", "fit", "Symbol", "📄"],
                     "lines": [
                         ["fit", "Phrase('📄' resting:Pose(rotation: 10°))"],
