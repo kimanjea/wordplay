@@ -1787,19 +1787,19 @@
                         [
                             "Set",
                             "curious",
-                            "Also like @List, you can work with @SetOrMapAccess to see if a value is contained in the set. You'll either \\⊤\\ if it is or \\⊥\\ if it's not. Let's see if \\3\\ is missing from this set. Yep, not there! Try adding \\3\\ back to the set."
+                            "Tambien como en una @Lista, tu puedes trabajar con @AccessoDeMapaOConjunto para ver si una valor esta adentro de un conjunto. Tu vas a ver \\T\\ si esta o \\⊥\\ si no esta. Miremos si el \\3\\ falta en el conjuton. Sip, no esta! Intenta agregar \\3\\ denuevo al el conjunto"
                         ],
                         ["edit", "{ 1 2 4 5 }{3}"],
                         null,
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "@Set, are there other things you can do with set values?"
+                            "@Conjunto, hay otras cosas que tu puedas hacer con otros conjuntos?"
                         ],
                         [
                             "Set",
                             "eager",
-                            "Why yes, of course, so many, thanks to you. What do you want to see me do? Do you have a performance in mind? How can I help? What can I do?"
+                            "Si por supuesto, muchas cosas, gracias a ti. Que quieres ver? Tienes una actuacion en mente? Como puedo ayudar? Que puedo hacer?"
                         ],
                         null,
                         [
@@ -1807,12 +1807,7 @@
                             "curious",
                             "Maybe, @Set/difference?"
                         ],
-                        [
-                            "Set",
-                            "neutral",
-                            "Yes, @Set/difference.",
-                            "When evaluated on a set, and given another set, it removes all of the items from the given set from the set evaluated on. (Hm, those were some clumsy words, but that was what I meant). Here's an example. See how the result is just the set of \\{3}\\? That's the only value that remains after removing the values in \\{ 1 2 }\\."
-                        ],
+                        ["Set", "neutral", "Yes, @Set/difference.", ""],
                         ["edit", "{ 1 2 3 }.difference({ 1 2 })"],
                         null,
                         [
