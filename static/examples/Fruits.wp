@@ -1,0 +1,14 @@
+Fruits
+===
+messages: [
+  '🍎'
+  '🍌'
+  '🍓'
+  '🍒'
+  '🍑'
+  '🫐'
+  '🍇'
+  '🍋'
+]
+index •#: 1 ... Δ Time(2000ms) ... index = messages.length() ? 1 index + 1
+Phrase(messages[index])
