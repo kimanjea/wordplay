@@ -2352,27 +2352,27 @@
                         [
                             "FunctionDefinition",
                             "curious",
-                            "Did you know that your world and ours are connected? Make some sound and we can hear it..."
+                            "你知道你们的世界和我们的世界是相连接的吗？发出一些声音，我们能听到它…"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "serious",
-                            "You didn't know the Verse existed, but we know that yours does. Because it's your world that makes our world interesting.",
-                            "You probably noticed this as we've wandered and met all of the values, collections, and conversations.",
-                            "What do any of these values /mean/ if there's no person /giving/ them meaning, or providing the values in the first place?"
+                            "你不知道这个诗词的存在，但我们知道你们的存在。因为正是你们的世界使得我们的世界变得有趣。",
+                            "你可能已经注意到了，当我们漫游并遇到所有的价值观、收藏和对话时。",
+                            "如果没有人赋予这些价值/意义/，或者在最初/提供/这些意义，那么这些价值观的意义是什么呢？"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "I want to show you the connection between our worlds, and what they make possible. We call them **input streams**, and they are perhaps the most magical kind of input in the Verse. They're like functions that create a special kind of value that changes as your world changes. They also can't communicate in the ways you might be used to. They're more like heartbeats from another world. So I'll do my best to explain how they work, since they won't be able to explain themselves.",
-                            "Are you ready to meet one?"
+                            "我想向你展示我们的世界之间的连接以及它们所能实现的事情。我们称之为**输入流**，它们可能是诗词Verse中最神奇的输入形式。它们就像创建一种特殊价值的函数，随着你们的世界变化而变化。它们也无法以你可能习惯的方式进行沟通。它们更像是来自另一个世界的心跳。因此，我将尽力解释它们的工作原理，因为它们无法自行解释。",
+                            "你准备好见到一个了吗？"
                         ]
                     ]
                 },
                 {
-                    "title": "Tick, tick, tick...",
+                    "title": "Tick, tick， tick...",
                     "subtitle": "Time",
                     "concept": "Time",
                     "performance": ["use", "fit", "Symbol", "🕦"],
@@ -2380,7 +2380,7 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "Let's start with the most elemental stream of all: @Time. To make a stream, we use @Evaluate, and give the name of the type of stream you want."
+                            "让我们从最基本的输入流开始：@Time。要创建一个输入流，我们使用@Evaluate，并提供您想要的流类型的名称。"
                         ],
                         ["Time", "neutral", "tick tick tick tick tick…"],
                         ["edit", "Time()"],
@@ -2388,14 +2388,14 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "Do you see how time is changing? Streams are a series of values. Every time a stream gets a new value, @Program reevaluates with the new stream value. That's why this program just keeps counting up: we made a time stream that starts at time 0 milliseconds, and then just keeps updating every time its clock ticks. This time is your time, from your world."
+                            "你能看到时间如何变化吗？流是一系列的值。每当流获得一个新值时，@Program会使用新的流值进行重新评估。这就是为什么这个程序一直在计数：我们创建了一个从0毫秒开始的时间流，然后每当时钟滴答作响时就不断更新。这个时间是你们的时间，来自你们的世界。"
                         ],
                         ["Time", "neutral", "tick tick tick tick tick…"],
                         null,
                         [
                             "FunctionDefinition",
                             "curious",
-                            "See that \\1000ms\\? It's a @Time/frequency that tells @Time to tick every 1000 milliseconds instead of the default of every 33 milliseconds, it's default. Now it's like a counter that ticks every second. These inputs that @Time takes are like a configuration: they tell the stream how to behave."
+                            "看到那个 \\1000ms\\ 吗？这是一个@Time/frequency，它告诉@Time每1000毫秒触发一次，而不是默认的33毫秒一次。现在它就像一个每秒滴答一次的计数器。@Time接受的这些输入就像是一种配置：它们告诉流如何行为。"
                         ],
                         ["Time", "neutral", "tick… tick… tick… tick… tick…"],
                         ["edit", "Time(1000ms)"],
@@ -2403,7 +2403,7 @@
                         [
                             "FunctionDefinition",
                             "serious",
-                            "But we can use all of the wonderful characters we've met to transform time further. For example, what if we wanted to know if time was a multiple of \\2\\? We could use @Number/remainder, which gets the remainder of a division. If the remainder is zero, we'll evaluate to \\⊤\\ and \\⊥\\ otherwise. See how it changes back and forth between \\⊤\\ and \\⊥\\? It's so magical."
+                            "但我们可以利用我们遇到的所有美妙字符来进一步转换时间。例如，如果我们想知道时间是否是 \\2\\ 的倍数，我们可以使用@Number/remainder，它得到一个除法的余数。如果余数是零，我们将评估为 \\⊤\\，否则为 \\⊥\\。看它是如何在 \\⊤\\ 和 \\⊥\\ 之间变化的？这真是神奇。"
                         ],
                         ["Time", "neutral", "tick… tick… tick… tick… tick…"],
                         ["edit", "(Time(1000ms) % 5) = 2ms"],
