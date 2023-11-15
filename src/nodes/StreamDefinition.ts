@@ -98,6 +98,15 @@ export default class StreamDefinition extends DefinitionExpression {
         );
     }
 
+    /** Used by Evaluator to get the steps for the evaluation of this stream. */
+    getEvaluationSteps(evaluator: Evaluator, context: Context): Step[] {
+        return this.expression.compile(evaluator, context);
+    }
+
+    getDescriptor() {
+        return 'StreamDefinition';
+    }
+
     getGrammar(): Grammar {
         return [
             { name: 'docs', kind: optional(node(Docs)) },

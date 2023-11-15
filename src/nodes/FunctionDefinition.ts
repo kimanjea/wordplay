@@ -124,6 +124,10 @@ export default class FunctionDefinition extends DefinitionExpression {
         ];
     }
 
+    getDescriptor() {
+        return 'FunctionDefinition';
+    }
+
     /** Create an expression that evaluates this function with typed placeholders for its inputs. */
     getEvaluateTemplate(
         nameOrLocales: Locales | string,
@@ -208,6 +212,11 @@ export default class FunctionDefinition extends DefinitionExpression {
                 getType: (context) => this.getOutputType(context),
             },
         ];
+    }
+
+    /** Used by Evaluator to get the steps for the evaluation of this function. */
+    getEvaluationSteps(evaluator: Evaluator, context: Context): Step[] {
+        return this.expression?.compile(evaluator, context) ?? [];
     }
 
     getPurpose() {

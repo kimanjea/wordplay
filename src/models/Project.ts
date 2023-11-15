@@ -36,6 +36,10 @@ import {
     type SerializedSource,
     upgradeProject,
 } from './ProjectSchemas';
+import {
+    PROJECT_PARAM_EDIT,
+    PROJECT_PARAM_PLAY,
+} from '../routes/project/constants';
 
 /**
  * How we store projects in memory, mirroring the data in the deserialized form.
@@ -186,6 +190,12 @@ export default class Project {
 
     getID() {
         return this.data.id;
+    }
+
+    getLink(fullscreen: boolean) {
+        return `/project/${encodeURI(this.getID())}${
+            fullscreen ? `?${PROJECT_PARAM_PLAY}` : `?${PROJECT_PARAM_EDIT}`
+        }`;
     }
 
     getNodeByID(id: number): Node | undefined {
@@ -848,6 +858,10 @@ export default class Project {
 
     withFlags(flags: Moderation) {
         return new Project({ ...this.data, flags: { ...flags } });
+    }
+
+    withNewTime() {
+        return new Project({ ...this.data, timestamp: Date.now() });
     }
 
     getTimestamp() {
