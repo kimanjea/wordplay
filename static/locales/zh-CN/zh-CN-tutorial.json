@@ -712,518 +712,518 @@
             ]
         },
         {
-            "title": "It's the little things",
-            "performance": ["use", "fit", "SimpleJiggle"],
+            "title": "这些细微之处",
+            "performance": ["use", "适应", "SimpleJiggle"],
             "scenes": [
                 {
-                    "title": "Values",
+                    "title": "价值观",
                     "subtitle": null,
-                    "performance": ["use", "fit", "Symbol", "💡"],
+                    "performance": ["use", "适应", "Symbol", "💡"],
                     "lines": [
                         [
                             "fit",
-                            "Phrase('💔' resting:Sequence({0%: Pose(scale: 1) 50%: Pose(scale: 1.2) 100%: Pose(scale: 1)} duration: 3s))"
+                            "短语('💔' 休息:顺序({0%: 姿势(缩放: 1) 50%: 姿势(缩放: 1.2) 100%: 姿势(缩放: 1)} 时长: 3s))"
                         ],
                         [
                             "FunctionDefinition",
                             "happy",
-                            "I really did miss @Evaluate. I can't imagine the Verse without them.",
-                            "But they can be a bit… needy, sometimes. I wish they would just… I don't know, believe in themselves? They can do so much, but they don't see it. I mean, they transform *values* into other *values*! All I do is provide the recipe. They do the cooking. Sometimes I feel like all I do is give, and all they do is take. It's suffocating."
+                            "我真的很想念 @Evaluate。我无法想象没有他们的Verse。",
+                            "但有时候他们会有点... 需要。我希望他们能... 我不知道，相信自己？他们可以做很多事情，但他们却看不到。我的意思是，他们将价值观转化为其他价值观！我所做的只是提供配方。他们做饭。有时我觉得我所做的只是给予，而他们所做的只是索取。让人窒息。"
                         ],
                         null,
                         [
                             "fit",
-                            "Group(Stack() [Phrase('1') Phrase('\"hello\"')])"
+                            "小组(堆() [短语('1') 短语('\"你好\"')])"
                         ],
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "… *Values*? Sorry, I know we're supposed to be on this big tour through the *Verse*. I just don't know what to do about @Evaluate. So… *values*. I haven't explained those yet, have I? Hm…, how to explain… You know what 'data' is? Like numbers and text? Values are any of those things. A value could be as small as a number or as big as an entire scene on stage, full of characters dancing and moving. Some values are made of many other values, like big elaborate structures of data values, woven together."
+                            "… 价值观？抱歉，我知道我们应该在这个Verse里进行一场大巡演。我只是不知道该如何处理 @Evaluate。所以... 价值观。我还没有解释过这些，对吧？嗯...，如何解释... 你知道什么是'数据'吗？比如数字和文本？价值观是任何这些东西。一个价值观可以小到一个数字，也可以大到一个舞台上充满角色跳舞和移动的整个场景。有些价值观由许多其他价值观组成，就像由数据价值组成的复杂结构，彼此交织在一起。"
                         ],
                         null,
-                        ["fit", "Group(Stack() [Phrase('#') Phrase('\"\"')])"],
+                        ["fit", "小组(堆() [短语('#') 短语('\"\"')])"],
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "Every value has a *type*. For example, \\1\\ is a number type; that's our friend @Number. And \\'hello'\\ is a text type; that's our friend @Text. Types are important because they help us keep track of what kind of value we're creating.",
-                            "That helps us find problems. For example, it doesn't make any sense to add \\'hello' + 1\\, because what would that even mean, to add @Text to @Number?"
+                            "每个价值观都有一个类型。例如，\\1\\ 是一个数字类型；那是我们的朋友 @数字。而 \\'你好'\\ 是一个文本类型；那是我们的朋友 @文字。类型很重要，因为它们帮助我们追踪我们正在创建的是哪种类型的价值观。",
+                            "这有助于我们发现问题。例如，将 \\'你好' + 1\\ 是毫无意义的，因为将 @文字 加到 @数字 上会意味着什么呢？"
                         ],
                         null,
                         [
                             "fit",
-                            "Group(Stack() [Phrase('ƒ → 1') Phrase('ƒ → \"hello\"')])"
+                            "小组(堆() [短语('ƒ → 1') 短语('ƒ → \"你好\"')])"
                         ],
                         [
                             "FunctionDefinition",
                             "curious",
-                            "*Expressions* are how we create values. All expressions are evaluations of functions that I make. The result of evaluating an expression is a value of some type."
+                            "*表达式*是我们创建价值观的方式。所有表达式都是我创建的函数的评估结果。评估表达式的结果是某种类型的价值观。"
                         ],
                         null,
                         ["use", "fit", "Symbol", "🤔"],
                         [
                             "FunctionDefinition",
                             "serious",
-                            "Abstract? Hm, I guess this is all pretty abstract. It feels so… normal to me, I forget how foreign these things can be to new directors! Maybe let's go meet some expressions that make values, and this will make it more concrete? Let's start with one you've already seen: @Text."
+                            "抽象？嗯，我猜这一切对我来说都很抽象。对于新导演来说，这些东西感觉如此... 正常，我忘了这些东西对他们来说有多陌生！也许让我们去见一些可以创建价值观的表达式，这样会更具体一些？让我们从你已经见过的 @文字 开始吧。"
                         ]
                     ]
                 },
                 {
-                    "title": "Quote, unquote",
-                    "subtitle": "Text",
+                    "title": "引号，结束引号",
+                    "subtitle": "文字",
                     "concept": "TextLiteral",
                     "performance": [
                         "fit",
-                        "Phrase('\"\"' resting:Sequence({0%: Pose(scale: 1) 50%: Pose(scale: 0.5 opacity: 0.5) 100%: Pose(scale: 1)} duration: 2s))"
+                        "短语('\"\"' 休息:顺序({0%: 姿势(缩放: 1) 50%: 姿势(缩放: 0.5 不透明度: 0.5) 100%: 姿势(缩放: 1)} 时长: 2s))"
                     ],
                     "lines": [
                         [
                             "fit",
-                            "Phrase('\"\"' resting:Sequence({0%: Pose(scale: 1) 50%: Pose(scale: 2 opacity: 0.5) 100%: Pose(scale: 1)} duration: 2s))"
+                            "短语('\"\"' 休息:顺序({0%: 姿势(缩放: 1) 50%: 姿势(缩放: 2 不透明度: 0.5) 100%: 姿势(缩放: 1)} 时长: 2s))"
                         ],
-                        ["FunctionDefinition", "curious", "@Text?"],
+                        ["FunctionDefinition", "curious", "@文字?"],
                         [
                             "Text",
                             "happy",
-                            "Welcome my dear friend, how long it has been. What have you been doing in this dramatic silence of ours?"
+                            "欢迎我亲爱的朋友，好久不见。 在我们这戏剧性的沉默中你做了什么呢？"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "happy",
-                            "Oh, @Text, it has been a while! I've mostly been dreaming and wondering. I just saw @Evaluate after a long while. I was actually introducing them to our newbie director."
+                            "哦，@文字, 好久不见! 我大部分时间都在做梦和好奇。过了很长时间我才看到@评价。 我其实实际上是想要介绍他们给我们的新导演。"
                         ],
                         [
                             "Text",
                             "eager",
-                            "Oh, how exceptional it is to meet you! I can see that you're a creative, curious person, probably full of intriguing ideas for how we might entertain. I love entertaining. But do you know what I love even more? Words! Glorious words. The short ones, the overwhelming ones, the sticky ones, and the slippery ones. Words are my favorite toys."
+                            "哦, 见到你真的太不一样了! 我看得出你是一个富有创造力、好奇心的人，可能对我们如何娱乐充满了有趣的想法。 我喜欢娱乐。但是你知道我更爱什么么？ 字! 光荣的文字. 短的, 压倒性的, 粘的, 并且滑的. 文字是我最喜欢的玩具."
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "In case you couldn't tell, @Text likes words :) @Text, do you want to explain what you do?"
+                            "如果你无法说出来, @文本 喜欢文字 :) @文本, 你希望解释你是做什么的么?"
                         ],
                         [
                             "Text",
                             "serious",
-                            "I do one simple thing: represent sequences of symbols, and the many things you can do with them. I think you saw me earlier when you wrote the word \\“hello”\\? That was me, and my friends \\“h”\\, \\“e”\\, \\“l”\\, and \\“o”\\. That was @Text, an expression that evaluates to any @Text you like."
+                            "我只做一个简单的事: 表示符号序列，以及可以用它们做的许多事情。 我想你早些时候在写下“你好”这个词时就看到了我？ 那是我，和我的朋友“h”、“e”、“l”和“o”。 那就是@文本，一个计算结果为您喜欢的任何@文本 的表达式。"
                         ],
                         null,
                         [
                             "Text",
                             "serious",
-                            "Why don't you try making a text in this blank @Program?",
-                            "You can use whatever quotes you like — single \\''\\, double \\''\\, angle \\«»\\, brackets \\「」\\, in whatever language you like. The only rule is that if you start some text with an opening quote symbol, you must finish it with a closing one. Everything inside is the text value I will create!"
+                            "为什么不尝试在这个空白处 @项目 制作一段文字呢？",
+                            "你可以使用任何你喜欢的引号 — 单引号 \\''\\，双引号 \\''\\，尖括号 \\«»\\，括号 \\「」\\，使用任何你喜欢的语言。唯一的规则是，如果你以开头的引号符开始某段文字，你必须以结束的引号符结束它。里面的一切都是我将创建的文本值!"
                         ],
                         ["edit", "''"],
                         null,
                         [
                             "Text",
                             "serious",
-                            "You might not be able to type every character you want with the device you're using to communicate with us.",
-                            "If you can't, you can search for characters in the *directory* @UI/directory. That contains every character in the Verse.",
-                            "For example, if you wanted an arrow of some kind, you could type 'arrow', and choose from the many arrows. Alas, they only have English names, so searching only works if you know English words :/"
+                            "你可能无法使用你用于与我们交流的设备输入想要的每个字符。",
+                            "如果你不能，你可以在 目录@UI/目录 中搜索字符。那里包含Verse中的每个字符。",
+                            "例如，如果你想要某种箭头，你可以键入 '箭头'，然后从众多箭头中选择。可惜，它们只有英文名称，所以搜索只有在你知道英文单词时才有效 :/"
                         ],
                         null,
                         [
                             "Text",
                             "serious",
-                            "Excellent. Of course, 'inside' can be tricky. Say you wrote this. See how there's an opening quote but not a closing one? Well, how am I supposed to know when the text ends?"
+                            "很好。当然，'里面 可能有点棘手。比如说你写了这个。看看这里有一个开头的引号但没有结束的引号？那么我应该怎么知道文本何时结束呢？"
                         ],
-                        ["conflict", "'hello"],
+                        ["conflict", "你好"],
                         null,
                         [
                             "Text",
                             "surprised",
-                            "Or, here's another case. You give me opening and closing text, but you place opening and closing text inside it. See how weird that is? I get very perplexed when you try to use the same symbols both inside and outside me. You can fix this by using different symbols for the outside, like a single quote."
+                            "或者，还有另一种情况。你给我开头和结尾的文本，但你把开头和结尾的文本放在其中。看看这是多么奇怪？当你尝试在我内外使用相同的符号时，我会感到非常困惑。你可以通过在外部使用不同的符号，比如一个单引号，来解决这个问题。"
                         ],
-                        ["conflict", "'Hi there 'friend'"],
+                        ["conflict", "你好 '朋友'"],
                         null,
-                        ["edit", "'friends!'/en-US"],
+                        ["edit", "'朋友们!'/en-US"],
                         [
                             "Text",
                             "excited",
-                            "Oh, and did you know you can tell me what language I am in? You just do a little slash and then a special language code, or if you like, a language and region."
+                            "哦，而且你知道吗，你可以告诉我我在哪种语言吗？你只需加上一个斜杠，然后是一个特殊的语言代码，或者如果你愿意，加上一个语言和地区。"
                         ],
                         null,
-                        ["edit", "'amigas'/es'friends!'/en-US"],
+                        ["edit", "'朋友的'/es'朋友们!'/en-US"],
                         [
                             "Text",
                             "excited",
-                            "You can even write multiple translations of me in different languages. I'll evaluate to the closest match for the current language, letting you put on multilingual performances.",
-                            "You might not be able to see it unless you put the cursor inside me. I hide my little languages unless you're editing them. Move the cursor before the English and you'll see a surprise translation...",
-                            "You can try adding another translation. Just don't put any space between them or they'll be two of me!"
+                            "你甚至可以用不同的语言为我写多个翻译。我会评估到最接近当前语言的匹配，让你进行多语言表演",
+                            "你可能除非将光标放在我内部，否则无法看到它。我在不编辑它们时会隐藏我的小语言。将光标移动到英文之前，你会看到一个意外的翻译...",
+                            "你可以尝试添加另一个翻译。只是不要在它们之间留下空格，否则会有两个我！"
                         ],
                         null,
-                        ["edit", "'I have 7 apples'"],
+                        ["edit", "'我有七个苹果'"],
                         [
                             "Text",
                             "neutral",
-                            "I have another secret... you can put /values/ inside me. I know, it's wild!",
-                            "If you do, I'm happy to stitch it together and assemble your beautiful prose into a single value for display, or whatever other purposes you might have."
+                            "我还有一个秘密... 你可以把 /价值/ 放在我里面。我知道，这太疯狂了！",
+                            "如果你这样做，我很高兴把它们组合在一起，将你的美丽散文组合成一个用于显示或其他目的的单一值。"
                         ],
                         null,
                         [
                             "Text",
                             "serious",
-                            "For example, did @FunctionDefinition show you how text knows how to add itself to other text? Like this? This little expression converts \\7\\ to text, then adds it to \\'I have'\\, then adds \\'apples'\\. But it's so untidy, and makes it hard to read what's happening, and the conversion to text feels so unnecessary."
+                            "例如，@函数定义 是否向你展示了文本如何知道如何将自己添加到其他文本中？就像这样？这个小表达式将 \\7\\ 转换为文本，然后添加到 \\'我有'\\，然后添加到 \\'苹果'\\。但这太凌乱了，很难看出发生了什么，而文本转换感觉很多余。"
                         ],
-                        ["edit", "'I have' + (7→'') + 'apples'"],
+                        ["edit", "'我有' + (7→'') + '苹果'"],
                         null,
                         [
                             "Text",
                             "serious",
-                            "What I do is make text like this clean, organic, and simple, even. So that same phrase with me would be something like this."
+                            "我所做的是使文本变得清晰、有机且简单，甚至优雅。因此，同样的短语与我在一起可能是这样的。"
                         ],
                         [
                             "Text",
                             "happy",
-                            "Isn't that so much more elegant? You can put me anywhere inside a @Text, and I'll make your values into text, and work with @Text to make a @Text.",
-                            "This makes it so much easier to write beautiful prose that uses values."
+                            "这不是更加优雅吗？你可以把我放在 @文本 的任何地方，我会把你的值变成文本，并与 @文本一起工作，形成 @文本。",
+                            "这使得编写使用值的美丽散文变得更加容易。"
                         ],
-                        ["edit", "'I have \\7\\ apples'"],
+                        ["edit", "'我有 \\7\\ 苹果'"],
                         null,
                         [
                             "Text",
                             "neutral",
-                            "And when I say any expression, I really do mean any. For example, imagine you wanted to do some arithmetic and created some text with the result. You might do this. This sums several numbers and then makes text with the sum. Truly wondrous, isn't it? And so much more graceful than \\'I have ' + (1 + 2 + 5 + 8) + ' apples'\\, with all those extra additions."
+                            "当我说任何表达式时，我真的是指任何表达式。例如，想象一下，如果你想要进行一些算术运算并创建一些带有结果的文本。你可能会这样做。这个表达式对几个数字求和，然后用和制作文本。真是奇妙，不是吗？比起 \\'我有 ' + (1 + 2 + 5 + 8) + ' 苹果'\\，这样做要优雅得多，没有那些额外的加法。"
                         ],
-                        ["edit", "'I have \\1 + 2 + 5 + 8\\ apples'"],
+                        ["edit", "'我有 \\1 + 2 + 5 + 8\\ 苹果'"],
                         null,
                         [
                             "Text",
                             "curious",
-                            "And so you might be wondering, /What if I want to use @Text in some text?/ ",
-                            "Well, maybe you weren't wondering that, but I'm going to tell you anyway!",
-                            "In any @Text, just give me two in a row! I'll interpret that as just one @Text instead of an empty expression, which wouldn't have any meaning anyway.",
-                            "Try removing the \\\\ and you'll see that the slash regains its meaning."
+                            "所以你可能想知道，/如果我想在某个文本中使用 @文本 呢？/ ",
+                            "嗯，也许你并没有想到，但我无论如何都会告诉你！",
+                            "在任何 @文本 中, 只要给我两次连续的！我会把它解释为只是一个 @文本 而不是一个空表达式，空表达式没有任何意义。",
+                            "尝试删除 \\\\，你会看到斜杠重新获得它的含义"
                         ],
                         [
                             "edit",
-                            "\"I'm just \\\\regular\\\\ text, not a template.\""
+                            "\"我只是 \\\\普通的\\\\ 文本, 不是模版。\""
                         ],
                         null,
-                        ["use", "fit", "DarkVoid"],
+                        ["use", "fit", "黑暗虚空"],
                         [
                             "FunctionDefinition",
                             "excited",
-                            "This is so very graceful, isn't it! @Text, I love how much you appreciate the beauty in expression. It inspires me so much to be graceful myself!"
+                            "这真是太棒了，不是吗！@文本，我喜欢你对表达中美感的欣赏。它让我感到如此振奋，让我自己也变得优雅起来！"
                         ],
                         null,
                         [
                             "Text",
                             "curious",
-                            "And did our friend @FunctionDefinition here tell you about all of the wonderful functions they defined for me? They've allowed me to do all kinds of things. One is pretty simple: it's called @Text/length and all it does is get the length of some text. For example, if we team up with @Evaluate here, and our little friend @PropertyReference, we can evaluate the length function with no inputs and get the length value back. Try changing the text and watch the length that Program shows change as it gets shorter and longer."
+                            "我们的朋友 @函数定义 是否告诉过你，他们为我定义了许多精彩的函数？它们让我能做各种各样的事情。其中一个相当简单：叫做 @文本/长度，它所做的就是获取一些文本的长度。例如，如果我们在这里与 @评估 和我们的小伙伴 @属性参考 搭档，我们就可以评估长度函数而不需要输入，并得到长度值。试着改变文本，看看 项目 显示的长度随着变短和变长而变化。"
                         ],
-                        ["edit", "'hello'.length()"],
+                        ["edit", "'你好'.长度()"],
                         null,
                         [
                             "Text",
                             "happy",
-                            "Here is another grand one. It makes me chuckle. It's called @Text/repeat and when it's evaluated, it takes whatever text it was evaluated on and repeats it however many times you say. Try changing the number and seeing what it evaluates too."
+                            "这里还有另一个很棒的函数。它让我感到发笑。它叫做 @文本/重复，当它被评估时，它获取评估的文本并重复它多少次你说多少次。试着改变数字，看看它评估成什么。"
                         ],
-                        ["edit", "'hello '.repeat(5)"],
+                        ["edit", "'你好 '.重复(5)"],
                         null,
                         [
                             "Text",
                             "eager",
-                            "@FunctionDefinition has made so many more interesting functions for me, but I'll spare you the details. You can always find me in the *reference* @UI/docsExpand. That's where we keep all the information about everyone in the Verse, including how to work with us and what functions we have. I'm happy to share more ways to inspect and create text!"
+                            "@函数定义 为我制作了很多有趣的函数，但我就不细说了。你可以随时在 参考@UI/文本展开 中找到我。那是我们保存有关诗歌中每个人的所有信息的地方，包括如何与我们合作以及我们有哪些函数。我很乐意分享更多检查和创建文本的方法！"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "happy",
-                            "@Text, you're always such a kind and patient teacher! It's always such a joy to work with you. Are you willing to help out as I introduce our friendly neo-director to other expressions?"
+                            "@文本, 你总是那么慈祥和耐心的老师！与你一起合作总是一种乐趣。你愿意在我向其他表达式介绍我们友好的新导演时帮忙吗？"
                         ],
                         [
                             "Text",
                             "neutral",
-                            "Yes, of course. It was splendid meeting you. I can't wait to see how you inspire us on stage!"
+                            "是的，当然。见到你真是太好了。我迫不及待地想看看你在舞台上是如何激励我们的！"
                         ]
                     ]
                 },
                 {
-                    "title": "Symbol in the middle",
-                    "subtitle": "Infix",
+                    "title": "符号在中间",
+                    "subtitle": "中辍",
                     "concept": "BinaryEvaluate",
                     "performance": [
                         "fit",
-                        "Group(Row() [",
-                        "   Phrase('1' resting:Sequence({0%: Pose(offset: Place(0m 1m)) 50%: Pose(offset: Place(0m -1m)) 100%: Pose(offset: Place(0m 1m))} duration: 2s)) ",
-                        "   Phrase('+' resting:Sequence({0%: Pose(offset: Place(0m -1m)) 50%: Pose(offset: Place(0m 1m)) 100%: Pose(offset: Place(0m -1m))} duration: 2s)) ",
-                        "   Phrase('1' resting:Sequence({0%: Pose(offset: Place(0m 1m)) 50%: Pose(offset: Place(0m -1m)) 100%: Pose(offset: Place(0m 1m))} duration: 2s)) ",
+                        "组(行() [",
+                        "   短语('1' 剩余部分:顺序({0%: 姿势(抵消: 位置(0m 1m)) 50%: 姿势(抵消: 位置(0m -1m)) 100%: 姿势(抵消: 位置(0m 1m))} 时长: 2s)) ",
+                        "   短语('+' 剩余部分:顺序({0%: 姿势(抵消: 位置(0m -1m)) 50%: 姿势(抵消: 位置(0m 1m)) 100%: 姿势(抵消: 位置(0m -1m))} 时长: 2s)) ",
+                        "   短语('1' 剩余部分:顺序({0%: 姿势(抵消: 位置(0m 1m)) 50%: 姿势(抵消: 位置(0m -1m)) 100%: 姿势(抵消: 位置(0m 1m))} 时长: 2s)) ",
                         "])"
                     ],
                     "lines": [
-                        ["use", "fit", "Symbol", "🥰"],
+                        ["use", "fit", "符号", "🥰"],
                         [
                             "FunctionDefinition",
                             "happy",
-                            "You know, I keep thinking about @Evaluate, and how we were separated for so long. I missed them, and they obviously missed me, but I was just hoping that some time away would have helped them see how amazing they are."
+                            "你知道吗，我一直在思考 @评估，以及我们分开了那么长时间。我想念他们，他们显然也想念我，但我只是希望一些时间的分开能帮助他们看到他们是多么了不起。"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "For example, did you know they come in another form? You saw them in \\function()\\ form, but they also have this beautiful trick when a single input function is evaluated on a value. @Evaluate calls it @BinaryEvaluate. For example, you know that repeat function that text just showed you? It looked like this."
+                            "例如，你知道他们还有另一种形式吗？你在 \\函数()\\ 形式中看到过他们，但当单输入函数在值上评估时，他们还有这个美丽的技巧。@评估 称之为 @二进制评估。例如，你知道刚才 文本 展示给你的那个重复函数吗？它看起来是这样的。"
                         ],
-                        ["edit", "'hi'.repeat(5)"],
+                        ["edit", "'你好'.重复(5)"],
                         null,
                         [
                             "FunctionDefinition",
                             "eager",
-                            "Instead, you can have @Evaluate evaluate it with a much simpler symbol in the middle, like this. This means 'repeat 'hi' five times'. But it also means 'evaluate the \\·\\ function on the text value \\'hi'\\ with the input \\5\\.' The function \\repeat\\ just has multiple names, one of which is a symbol name \\·\\."
+                            "相反，你可以让 @评估用一个中间的符号来评估它，就像这样。这意味着 '重复 '你好' 五次'。但它还意味着 '评估在文本值 \\'你好'\\ 上具有输入 \\5\\ 的函数 \\·\\'。函数 \\重复\\ 有多个名称之一就是一个符号名称 \\·\\。"
                         ],
-                        ["edit", "'hi' · 5"],
+                        ["edit", "'你好' · 5"],
                         null,
                         [
                             "FunctionDefinition",
                             "serious",
-                            "That reminds me of another of @Text's functions! It's helpful for making one text value from multiple text values. It's called \\combine\\, but also \\+\\, and you can use it to add words together. See how I took a text value then evaluated \\combine\\ on it with \\'verse'\\? That made \\'hello verse'\\."
+                            "这让我想起了 @文本 的另一个函数！它对于从多个文本值创建一个文本值很有帮助。它被称为 \\合并\\，也可以用 \\+\\，你可以用它将单词组合在一起。看看我是如何取一个文本值，然后用 \\'诗歌'\\ 评估 \\合并\\ 的呢？这就产生了 \\'你好诗歌'\\。"
                         ],
-                        ["edit", "'hello '.combine('verse')"],
+                        ["edit", "'你好 '.合并('诗句')"],
                         null,
                         [
                             "FunctionDefinition",
                             "serious",
-                            "But it's so much easier to just use \\+\\ for this."
+                            "但是使用 \\+\\ 就简单多了。"
                         ],
-                        ["edit", "'hello ' + ' verse'"],
+                        ["edit", "'你好 ' + ' 诗句'"],
                         null,
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "You can even string these together in a sequence to combine more than two things."
+                            "你甚至可以将它们串在一起，以组合不止两个东西。"
                         ],
-                        ["edit", "'hello ' + 'verse' + '!'"],
+                        ["edit", "'你好 ' + '诗句' + '!'"],
                         null,
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "This is the same as a series of evaluations of combine, but without all of the parentheses and \\.\\, and a symbolic name instead of a word name."
+                            "这与一系列对 合并 的评估相同，但没有所有的括号和 \\。\\，以及符号名称而不是单词名称。"
                         ],
-                        ["edit", "'hello '.combine('verse').combine('!')"],
+                        ["edit", "'你好 '.合并('诗句').合并('!')"],
                         null,
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "You can also use the symbolic names in this format, but it just ends up looking kind of messy, doesn't it?"
+                            "你也可以在这种格式中使用符号名称，但它看起来有点凌乱，是吗？"
                         ],
-                        ["edit", "'hello '.+('verse').+('!')"],
+                        ["edit", "'你好'.+('诗句').+('!')"],
                         null,
                         [
                             "FunctionDefinition",
                             "happy",
-                            "This is one of the many ways that @Evaluate is amazing ♥ They are so versatile!",
-                            "But they aren't perfect. With any @BinaryEvaluate, you need to always make sure to give a second input. This won't work, for example. One plus what? @UnparsableExpression won't be far away when this happens."
+                            "这是 @评估 令人惊叹的众多方法之一 ♥ 它们如此多才多艺！",
+                            "但它们并不完美。对于任何 @二进制评估，你都需要确保始终提供第二个输入。例如，这是行不通的。1 加什么？当发生这种情况时，@无法解释的表达式 就会出现在不远处。"
                         ],
                         ["conflict", "1 +"],
                         null,
                         [
                             "FunctionDefinition",
                             "curious",
-                            "Anyway, shall we go find find @Boolean? They are two very interesting values…"
+                            "不管怎样，我们是否继续找找 @布尔值？它们是两个非常有趣的值……"
                         ]
                     ]
                 },
                 {
-                    "title": "Yes and no",
-                    "subtitle": "Truth",
+                    "title": "是或否",
+                    "subtitle": "真相",
                     "concept": "Boolean",
                     "performance": [
                         "fit",
-                        "Group(Row() [Phrase('⊤') Phrase('⊥')] resting:Sequence({ 0%: Pose(rotation: 0°) 50%: Pose(rotation: 180°) 100%: Pose(rotation: 360°)} duration: 2s))"
+                        "组(行() [短语('⊤') 短语('⊥')] 剩余部分:顺序({ 0%: 姿势(旋转: 0°) 50%: 姿势(旋转: 180°) 100%: 姿势(旋转: 360°)} 持续时间: 2s))"
                     ],
                     "lines": [
-                        ["fit", "Stage([])"],
+                        ["fit", "舞台([])"],
                         [
                             "FunctionDefinition",
                             "curious",
-                            "\\⊤\\! \\⊥\\! Are you two around? They're usually all over the place, but I don't see them anywhere."
+                            "\\⊤\\! \\⊥\\! 你们在哪里？它们通常无处不在，但我在任何地方都看不到它们。"
                         ],
                         null,
-                        ["⊤", "precise", "Right here."],
-                        ["⊥", "precise", "Not there."],
+                        ["⊤", "precise", "就在这."],
+                        ["⊥", "precise", "不在这."],
                         [
                             "fit",
-                            "multiple: 10",
-                            "Stage([Group(Grid(multiple multiple) ('⊤⊥'.repeat(multiple ^ 2) ÷ '').translate(ƒ(glyph•'') Phrase(glyph color: Color(75% 0 0°))))])"
+                            "倍数: 10",
+                            "舞台([小组(网格(倍数 倍数) ('⊤⊥'.重复(倍数 ^ 2) ÷ '').翻译(ƒ(字形•'') 短语(字形 颜色: 颜色(75% 0 0°))))])"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "scared",
-                            "Oh, you scared me! I knew you two wouldn't be far apart. How have you two been in our long silence?"
+                            "哦，你吓到我了！我知道你们两个不会离得太远。在我们的长时间沉默中，你们两个过得怎么样？"
                         ],
-                        ["⊤", "precise", "Very good!"],
-                        ["⊥", "precise", "Not bad."],
+                        ["⊤", "precise", "非常好!"],
+                        ["⊥", "precise", "还不错。"],
                         null,
                         [
                             "FunctionDefinition",
                             "curious",
-                            "Not lonely? Everyone I've been talking to, @Program, @ExpressionPlaceholder, @Evaluate, they've all felt so isolated. (Except for @UnparsableExpression, they seem to be fine almost anywhere)."
+                            "不寂寞吗？我与之交谈的每个人，@项目，@表示式占位符，@评估，它们都感到如此孤立。 （除了 @无法解释的表达式，他们似乎在任何地方都很好）。"
                         ],
-                        ["⊤", "precise", "We have each other."],
-                        ["⊥", "precise", "We're not alone."],
+                        ["⊤", "precise", "我们互相有对方。"],
+                        ["⊥", "precise", "我们不是孤单的。"],
                         null,
                         [
                             "FunctionDefinition",
                             "happy",
-                            "Well that's great to hear. It's good to be with you again. I wanted to introduce you to our new maybe-director. They've been meeting everyone, learning about how to put on performances with us. Do you want to tell them what you do?"
+                            "好吧，听到这真是太好了。能再次与你们在一起真是太好了。我想向你们介绍我们的新导演。他们一直在与每个人见面，了解如何与我们一起表演。你们想告诉他们你们做什么吗？"
                         ],
-                        ["⊤", "precise", "I am true."],
-                        ["⊥", "precise", "I am false."],
+                        ["⊤", "precise", "我是真的。"],
+                        ["⊥", "precise", "我是假的。"],
                         null,
                         [
                             "FunctionDefinition",
                             "sad",
-                            "Yeah, but what do you do?"
+                            "是的，但你们做些什么呢？"
                         ],
-                        ["⊤", "precise", "I am just true."],
-                        ["⊥", "precise", "And I am not true."],
+                        ["⊤", "precise", "我是真的。"],
+                        ["⊥", "precise", "而我是不真的"],
                         null,
                         [
                             "FunctionDefinition",
                             "sad",
-                            "Hm. I guess that's true. But you do some things, right? I thought I made some functions for you."
+                            "嗯。我想那是真的。但你也做了一些事情，对吗？我想我为你做了一些功能。"
                         ],
-                        ["⊤", "precise", "Ah yes, three."],
-                        ["⊥", "precise", "Not more, not less."],
+                        ["⊤", "precise", "哦对, 三个。"],
+                        ["⊥", "precise", "不多也不少。"],
                         null,
                         ["edit", "(⊤ & ⊤) = ⊤"],
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "One was @Boolean/and, right? It takes one of you and one other input? And evaluates to \\⊤\\ if both are \\⊤\\?"
+                            "其中之一是 @布尔值/和，对吗？它接受你们之一和另一个输入？并在两者都为 \\⊤\\ 时评估为 \\⊤\\？"
                         ],
                         [
                             "⊤",
                             "precise",
-                            "Correct. \\⊤ & ⊤ = ⊤\\, but \\⊥\\ otherwise."
+                            "对的。 \\⊤ & ⊤ = ⊤\\, 但否则为 \\⊥\\。"
                         ],
                         [
                             "⊥",
                             "precise",
-                            "Not wrong. \\⊤ & ⊥ = ⊥\\, \\⊥ & ⊤ = ⊥\\, \\⊥ & ⊥ = ⊥\\, but \\⊤\\ otherwise."
+                            "没错。 \\⊤ & ⊥ = ⊥\\, \\⊥ & ⊤ = ⊥\\, \\⊥ & ⊥ = ⊥\\, 但否则为 \\⊤\\。"
                         ],
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "(This is really helpful when trying to determine if multiple expressions are all true, because it's only true when everything is true)."
+                            "(当尝试确定多个表达式是否都为真时，这确实很有帮助，因为只有当一切都为真时，它才为真)。"
                         ],
                         null,
                         ["edit", "(⊤ | ⊤) = ⊥"],
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "And the other one was @Boolean/or, right? It also takes one input? But it evaluates to \\⊤\\ if either is true?"
+                            "另一个是@布尔值/或者，对吧？ 也需要一个输入？ 但如果其中一个为真，它的计算结果为 \\⊤\\ ？"
                         ],
                         [
                             "⊤",
                             "precise",
-                            "Correct. \\⊤ | ⊤ = ⊤\\, \\⊤ | ⊥ = ⊤\\, \\⊥ | ⊤ = ⊤\\, but \\⊥\\ otherwise."
+                            "正确。 \\⊤ | ⊤ = ⊤\\, \\⊤ | ⊥ = ⊤\\, \\⊥ | ⊤ = ⊤\\, 但否则是 \\⊥\\。"
                         ],
                         [
                             "⊥",
                             "precise",
-                            "Not wrong. \\⊥ & ⊥ = ⊥\\, but \\⊤\\ otherwise."
+                            "没错。 \\⊥ & ⊥ = ⊥\\, 但否则是 \\⊤\\。"
                         ],
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "(This is really helpful when trying to determine if any expressions are true, because it's true when even just one is true)."
+                            "(当尝试确定任何表达式是否为真时，这确实很有帮助，因为即使只有一个表达式为真，它也是真的)。"
                         ],
                         null,
                         ["edit", "~⊤ = ⊥"],
                         [
                             "FunctionDefinition",
                             "excited",
-                            "But the other was @Boolean/not?"
+                            "但另一个是@布尔值/不是？"
                         ],
-                        ["⊤", "precise", "Correct. \\~⊤ = ⊥\\."],
-                        ["⊥", "precise", "Not wrong. \\~⊥ = ⊤\\."],
+                        ["⊤", "precise", "正确. \\~⊤ = ⊥\\."],
+                        ["⊥", "precise", "没错. \\~⊥ = ⊤\\."],
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "(This just reverses a truth value)."
+                            "(这只是反转了正确的值)。"
                         ],
                         null,
                         [
                             "fit",
-                            "multiple:10",
-                            "                        Stage([Group(Grid(multiple multiple) ('⊤⊥'.repeat(multiple ^ 2) ÷ '').translate(ƒ(glyph•'') Phrase(glyph color: Color(75% 0 0°))))])"
+                            "倍数:10",
+                            "                        舞台([组(网格(倍数 倍数) ('⊤⊥'.重复(倍数 ^ 2) ÷ '').翻译(ƒ(字形•'') 短语(字形颜色: 颜色(75% 0 0°))))])"
                         ],
                         [
                             "FunctionDefinition",
                             "curious",
-                            "And what are you useful for, in our performances?"
+                            "你在我们的表演中有什么用？"
                         ],
-                        ["⊤", "precise", "Ask @Conditional."],
-                        ["⊥", "precise", "Don't ask us."],
+                        ["⊤", "precise", "询问 @有条件的。"],
+                        ["⊥", "precise", "别问我们。"],
                         null,
                         [
                             "FunctionDefinition",
                             "sad",
-                            "You two… okay, we'll talk to @Conditional later. (They were supposed to say that they're useful for making decisions with values, but I guess they want @Conditional to tell you about that. We'll talk to @Conditional later.)."
+                            "你们两个……好吧，我们稍后再和@有条件的 谈谈。 （他们应该说它们对于用价值观做出决策很有用，但我猜他们希望 @有条件的 告诉你这一点。我们稍后会与 @有条件的 讨论。）。"
                         ],
                         null,
                         [
                             "fit",
-                            "multiple:10",
-                            "                        Stage([Group(Grid(multiple multiple) ('⊤⊥'.repeat(multiple ^ 2) ÷ '').translate(ƒ(glyph•'') Phrase(glyph color: Color(75% 0 0°) rotation: 90°)))])"
+                            "倍数:10",
+                            "                        舞台([组(网格(倍数 倍数) ('⊤⊥'.重复(倍数 ^ 2) ÷ '').翻译(ƒ(字形•'') 短语(字形颜色: 颜色(75% 0 0°) 旋转: 90°)))])"
                         ],
                         [
                             "FunctionDefinition",
                             "curious",
-                            "Oh! I was wondering. You two represent two really different extremes: true and false. But what about things that are … fuzzier? Like things that are kind of true, or somewhat false, or maybe even true and false at the same time? Kind of like Earth looks flat, but isn't, or the sky is blue, but color is actually just an illusion that our minds create? What should our director do if they want to express something like that?"
+                            "哦！ 我想知道。 你们两个代表了两个截然不同的极端：真与假。 但是那些……更加模糊的事情又如何呢？ 就像有些真实、有些虚假、甚至可能同时真实和虚假的事物？ 有点像地球看起来是平的，但其实不然，或者天空是蓝色的，但颜色实际上只是我们的大脑创造的幻觉？ 如果他们想表达这样的东西，我们导演该怎么办？"
                         ],
                         ["⊤", "precise", "…"],
                         ["⊥", "precise", "…"],
                         null,
                         [
                             "fit",
-                            "multiple:10",
-                            "                        Stage(",
+                            "倍数:10",
+                            "                        舞台(",
                             "                        [",
-                            "                        Group(",
-                            "                        Grid(multiple multiple) ",
-                            "                        ('⊤⊥'.repeat(multiple ^ 2) ÷ '').translate(",
-                            "                        ƒ(glyph•'') ",
-                            "                        Phrase(glyph resting:Pose(",
-                            "                            color: Color(75% 0 0°) ",
-                            "                            rotation: 90° ",
-                            "                            offset:Place(0m (Time() ^ 2) · -0.000025m/ms^2))",
+                            "                        组(",
+                            "                        网格(倍数 倍数) ",
+                            "                        ('⊤⊥'.重复(倍数 ^ 2) ÷ '').翻译(",
+                            "                        ƒ(字形•'') ",
+                            "                        短语(字形 剩余部分:姿势(",
+                            "                            颜色: 颜色(75% 0 0°) ",
+                            "                            旋转: 90° ",
+                            "                            抵消:位置(0m (时间() ^ 2) · -0.000025m/ms^2))",
                             "                        )))])"
                         ],
-                        ["⊤", "precise", "… no."],
-                        ["⊥", "precise", "… no."],
+                        ["⊤", "precise", "… 错。"],
+                        ["⊥", "precise", "… 错。"],
                         null,
-                        ["fit", "Stage([])"],
+                        ["fit", "舞台([])"],
                         [
                             "FunctionDefinition",
                             "serious",
-                            "Hm, okay. It was worth a try! Maybe there are other ways to express these ideas I haven't thought of. Or maybe there are just limits to what data can represent… Will you two be okay if we go off and meet other expressions?"
+                            "嗯，好吧。 值得一试！ 也许还有其他我没有想到的方式来表达这些想法。 或者也许数据所能代表的内容是有限的……如果我们去见其他的表达方式，你们两个可以吗？"
                         ],
-                        ["⊤", "precise", "We are okay."],
-                        ["⊥", "precise", "Not a problem."],
+                        ["⊤", "precise", "我们可以的。"],
+                        ["⊥", "precise", "不成问题。"],
                         [
                             "FunctionDefinition",
                             "happy",
-                            "Okay, bye, and see you soon!"
+                            "好的，再见，很快再见！"
                         ]
                     ]
                 },
                 {
-                    "title": "Let me count the ways",
-                    "subtitle": "Numbers",
+                    "title": "让我数一数方式",
+                    "subtitle": "数字",
                     "concept": "Number",
                     "performance": [
                         "fit",
-                        "numbers•[#]: 25 → []",
-                        "Group(Grid(5 5) numbers.translate(",
+                        "数字•[#]: 25 → []",
+                        "组(网格(5 5) 数字.翻译(",
                         "    ƒ (n•#) ",
                         "        (",
-                        "            Phrase(",
+                        "            短语(",
                         "                n → ''    ",
                         "            )",
                         "        )",
@@ -1231,26 +1231,26 @@
                         ")"
                     ],
                     "lines": [
-                        ["use", "fit", "Symbol", "😞"],
+                        ["fit", "适合", "符豪", "😞"],
                         [
                             "FunctionDefinition",
                             "confused",
-                            "Those two are always so… terse! They really are inseparable though: just two of the closest friends, always complementing each other, completing each other's thoughts. I wish @Evaluate and I were like that. With us, it's always so… imbalanced."
+                            "这两个总是那么…简洁！他们真的是形影不离的两位亲密朋友，总是互补彼此，相互补足思维。我希望我和 @评估 也能这样。对我们来说，总是这么…不平衡。"
                         ],
                         null,
                         [
                             "fit",
-                            "numbers•[#]:25 → []",
-                            "                        Group(Grid(5 5) numbers.translate(",
+                            "数字•[#]:25 → []",
+                            "                       组(网格(5 5) 数字.翻译(",
                             "                            ƒ (n•#) ",
                             "                                (",
-                            "                                    off:Random(-3 3) · 1m",
-                            "                                    Phrase(",
+                            "                                    离开:随机(-3 3) · 1m",
+                            "                                    短语(",
                             "                                        n → '' ",
-                            "                                        resting:Sequence({",
-                            "                                                    0%:Pose(offset: Place(z: 0m)) ",
-                            "                                                    50%:Pose(offset: Place(z: off)) ",
-                            "                                                    100%:Pose(offset: Place(z:0m))",
+                            "                                        剩余部分:顺序({",
+                            "                                                    0%:姿势(抵消: 位置(z: 0m)) ",
+                            "                                                    50%:姿势(抵消: 位置(z: off)) ",
+                            "                                                    100%:姿势(抵消: 位置(z:0m))",
                             "                                                } 1s)",
                             "                                    ))",
                             "                                )",
@@ -1259,267 +1259,266 @@
                         [
                             "FunctionDefinition",
                             "eager",
-                            "We should meet @Number next. They always have such interesting things to share. Hey @Number, are you around?"
+                            "我们接下来要见 @数字。他们总是有趣的东西要分享。嘿 @数字，你在吗？"
                         ],
-                        ["Number", "kind", "Just 3 steps away!"],
+                        ["Number", "kind", "距离只有3步远！"],
                         null,
                         [
                             "FunctionDefinition",
                             "scared",
-                            "Ack, you scared me!!"
+                            "啊，你吓到我了！！"
                         ],
                         [
                             "Number",
                             "kind",
-                            "The 78,238nd time. It's my 4th favorite hobby!"
+                            "第78,238次。这是我的第4个最喜欢的爱好！"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "happy",
-                            "I'm glad you're having a good time. (Deep breaths). It's been some time, hasn't it?"
+                            "很高兴你玩得开心。（深呼吸）。好一阵子没见了，对吧？"
                         ],
                         [
                             "Number",
                             "kind",
-                            "Incalculably long. I was just passing the time here, counting seconds, and then minutes, and then hours, and then weeks, and then months, and then years, and then…"
+                            "难以置信的长。我只是在这里打发时间，数秒，然后是分钟，然后是小时，然后是周，然后是月，然后是年，然后…"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "serious",
-                            "Don't say decades. I can't have been that long. Anyway, I wanted to introduce you to someone who might be our new director. They just showed up and bumped into me, and it turns out they're a person and interested in putting on shows with us. We just met @BooleanLiteral, but also @Text, @Evaluate, @UnparsableExpression, @ExpressionPlaceholder, and @Program. We've talked about evaluating functions and given a few examples.",
-                            "Do you want to say what you do?"
+                            "别说十年。我不可能等了那么久。无论如何，我想介绍你给一个可能成为我们新导演的人。他们刚刚出现，撞到了我，原来他们是个人，对与我们一起制作表演感兴趣。我们刚刚见到了 @布尔值文字，还有 @文本，@评估，@无法解释的表达式，@表达式占位符 和 @项目。我们已经讨论了如何评估函数，并给出了一些示例。你想说你做什么吗？"
                         ],
                         [
                             "Number",
                             "excited",
-                            "I count things! I can be any number you like. Just type me in and I'll make the value you want. Like this."
+                            "我数东西！我可以是你喜欢的任何数字。只需键入我，我就会给出你想要的值。就像这样。"
                         ],
                         ["edit", "1"],
                         null,
-                        ["Number", "excited", "Or this."],
+                        ["Number", "excited", "或者这样。"],
                         ["edit", "1.0"],
                         null,
-                        ["Number", "excited", "Or this."],
+                        ["Number", "excited", "或者这样。"],
                         ["edit", "1.01"],
                         null,
-                        ["Number", "excited", "Or this."],
+                        ["Number", "excited", "或者这样。"],
                         ["edit", "∞"],
                         null,
-                        ["Number", "excited", "Or this."],
+                        ["Number", "excited", "或者这样。"],
                         ["edit", "π"],
                         null,
-                        ["Number", "excited", "Or this."],
+                        ["Number", "excited", "或者这样。"],
                         ["edit", "Ⅶ"],
                         null,
-                        ["Number", "excited", "Or this."],
+                        ["Number", "excited", "或者这样。"],
                         ["edit", "万十一"],
                         null,
-                        ["Number", "excited", "Or…"],
+                        ["Number", "excited", "或者…"],
                         [
                             "FunctionDefinition",
                             "kind",
-                            "Okay, okay @Number, we get it! But you also do something else special, right? Units?"
+                            "好了，好了 @数字，我们知道了！但你还有另外一项特殊的功能，对吧？单位？"
                         ],
                         null,
                         [
                             "Number",
                             "excited",
-                            "Oh yes, *units*! Just put some symbols after a number and I'll keep track of what's being counted. Like this."
+                            "哦是的，*单位*！只需在数字后面加上一些符号，我就会记录正在计数的东西。就像这样。"
                         ],
-                        ["edit", "1dolphin"],
+                        ["edit", "1海豚"],
                         null,
-                        ["Number", "excited", "Or this."],
-                        ["edit", "1.0thunderstorm"],
+                        ["Number", "excited", "或者怎样。"],
+                        ["edit", "1.0雷雨"],
                         null,
-                        ["Number", "excited", "Or this."],
-                        ["edit", "∞kittens"],
+                        ["Number", "excited", "或者怎样。"],
+                        ["edit", "∞小猫"],
                         null,
-                        ["Number", "excited", "Or this."],
-                        ["edit", "1.01toes"],
+                        ["Number", "excited", "或者怎样。"],
+                        ["edit", "1.01脚趾"],
                         null,
-                        ["Number", "excited", "Or…"],
+                        ["Number", "excited", "或者…"],
                         [
                             "FunctionDefinition",
                             "kind",
-                            "Um, \\1.01toe\\s? Yes, thank you @Number, these are … interesting examples. And they are oh so useful when you're doing math on numbers, right?"
+                            "嗯，\\1.01脚趾\\s？是的，谢谢 @数字，这些是…有趣的例子。当你在数字上进行数学运算时，它们真的很有用，对吧？"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "kind",
-                            "And they are oh so useful when you're doing math on numbers, right?"
+                            "当你在数字上进行数学运算时，它们真的很有用，对吧？"
                         ],
                         [
                             "Number",
                             "excited",
-                            "Oh yes, the maths! @FunctionDefinition gave me so many neat kinds of arithmetic. Like this."
+                            "是的，数学！@函数定义 给了我许多很棒的算术种类。就像这样。"
                         ],
                         ["edit", "1 + 1"],
                         null,
-                        ["Number", "excited", "Or this."],
+                        ["Number", "excited", "或者这样。"],
                         ["edit", "1000 + 9999"],
                         null,
-                        ["Number", "excited", "Or this."],
-                        ["edit", "1kitty + 2kitty"],
+                        ["Number", "excited", "或者这样。"],
+                        ["edit", "1小猫 + 2小猫"],
                         null,
-                        ["Number", "excited", "Or this."],
-                        ["edit", "-5s + 5s"],
+                        ["Number", "excited", "或者这样。"],
+                        ["edit", "-5秒 + 5秒"],
                         null,
-                        ["Number", "excited", "Or this."],
-                        ["conflict", "2apple + 5orange"],
+                        ["Number", "excited", "或者这样。"],
+                        ["conflict", "2苹果 + 5橘子"],
                         null,
                         [
                             "FunctionDefinition",
                             "confused",
-                            "Oops. Can you add apples and oranges?"
+                            "哎呀。你能加苹果和橙子吗？"
                         ],
                         [
                             "Number",
                             "angry",
-                            "No. That's why I underlined the conflict. I don't like adding incompatible things. I can only add compatible numbers. That applies to multiplication, division, and all of my other functions. Do you want to fix it? Change apples to oranges or oranges to apples and the conflict will go away. Make sure there's no space between the number and the unit, otherwise I don't know it's a unit. And make sure the units are /exactly/ the same. I don't know anything about people units; they mean nothing to me. I just compare the unit names and if they don't match, BOOM!"
+                            "不行。这就是为什么我划了下划线。我不喜欢加入不兼容的东西。我只能加入兼容的数字。这也适用于乘法，除法以及我其他所有的功能。你想修复吗？将苹果更改为橙子或橙子更改为苹果，冲突就会消失。确保数字和单位之间没有空格，否则我不知道它是单位。并确保单位完全相同。我对人的单位一无所知；它们对我毫无意义。我只比较单位名称，如果它们不匹配，BOOM！"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "That's so cool. @Number, you're so good with numbers! I see @Number show up in a lot of performances where placement matters, and a lot of games where we're keeping track of scores or lives or other countable things. @Number, is there anything else you want to share with our new director?"
+                            "太酷了。@数字，你对数字真的很擅长！我看到 @数字 在很多需要考虑位置的表演中出现，以及在我们追踪分数、生命或其他可计数事物的游戏中出现。@数字，如果我们想了解更多，你还在吗？"
                         ],
-                        ["Number", "serious", "192 other neat tricks."],
+                        ["Number", "serious", "还有192个有趣的把戏。"],
                         null,
                         [
                             "FunctionDefinition",
                             "happy",
-                            "I think we'll have to wait. You'll be around if we want to learn more?"
+                            "我想我们得等等。如果我们想了解更多，你会在这里吗？"
                         ],
                         [
                             "Number",
                             "happy",
-                            "Yes, you can find me and my functions any time!"
+                            "是的，你可以随时找到我和我的功能！"
                         ]
                     ]
                 },
                 {
-                    "title": "Opening (re)marks",
-                    "subtitle": "Prefix",
+                    "title": "开场白（再次）",
+                    "subtitle": "前缀",
                     "concept": "UnaryEvaluate",
-                    "performance": ["use", "fit", "Symbol", "~"],
+                    "performance": ["use", "适合", "符号", "~"],
                     "lines": [
                         [
                             "FunctionDefinition",
                             "curious",
-                            "Sometimes I'm just overwhelmed by how clever everyone is here. Text, truth, numbers — these are such powerful ideas!"
+                            "有时候我真的会被这里的每个人有多聪明而感到不知所措。文本，真理，数字 —— 这些都是如此强大的思想！"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "kind",
-                            "… You know how I was telling you that they can evaluate any function with parentheses \\1.add(1)\\, but also two input functions with infix operators \\1 + 1\\? Well they have one more trick for functions with only one input: the unary format."
+                            "… 你知道我告诉过你，他们可以评估任何带括号的函数 \\1.add(1)\\，还有带中缀运算符的两个输入函数 \\1 + 1\\ 吗？嗯，他们还有一个技巧，用于只有一个输入的函数：一元格式。"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "serious",
-                            "There are only a few of these, but they are powerful. One is really relevant to @Number: negation. You can just put a \\-\\ in front of any number value and get its negative."
+                            "这种形式很少，但很强大。其中一个与 @数字 非常相关：否定。你只需在任何数字值前加上 \\-\\，就可以得到它的负值。"
                         ],
                         ["edit", "-(1 + 3)"],
                         null,
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "That little minus sign is the same as saying \\(1 + 3).negate()\\ but so much more elegant."
+                            "那个小减号和说 \\(1 + 3).否定()\\ 是一样的，但更加优雅。"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "kind",
-                            "The other one is similar, but for negating \\⊤\\ and \\⊥\\: it's like a little squiggle minus, \\~\\ that just flips true to false and false to true. For example, this little expression evaluates \\⊤ | ⊥\\, which is \\⊤\\, then flips the \\⊤\\ to \\⊥\\. This is the same as saying \\(⊤ | ⊥).not()\\, but so much more sleek."
+                            "另一个类似的是，用于否定 \\⊤\\ 和 \\⊥\\：就像一个小小的波浪线减号，\\~\\，它只是将真变为假，假变为真。例如，这个小表达式评估 \\⊤ | ⊥\\，结果是 \\⊤\\，然后将 \\⊤\\ 变为 \\⊥\\。这与说 \\(⊤ | ⊥).不是()\\ 是一样的，但更加流畅。"
                         ],
                         ["edit", "~(⊤ | ⊥)"],
                         null,
                         [
                             "FunctionDefinition",
                             "happy",
-                            "Isn't that just beautiful? The way that @Evaluate can take so many different forms, but really all be the same idea? They don't even see it…"
+                            "那不是很美吗？@评估 的这种多种形式，实际上都是相同的想法？他们甚至都没注意到…"
                         ]
                     ]
                 },
                 {
-                    "title": "Emptiness",
-                    "subtitle": "Nothing",
+                    "title": "空虚",
+                    "subtitle": "无",
                     "concept": "None",
                     "performance": [
                         "fix",
-                        "Phrase('ø' size: 5m place: Motion(velocity: Velocity(y: 5m/s)))"
+                        "短语('ø' 尺寸: 5m 位置: 动作(速度: 速度(y: 5m/s)))"
                     ],
                     "lines": [
                         [
                             "FunctionDefinition",
                             "curious",
-                            "Do you think you're okay meeting just one more value? Let's go find @None next. They are a bit more chill than @Number. @None? Are you out there?"
+                            "你觉得只见一个值是否没问题？让我们找找 @无 吧。他们比 @数字 更冷静一些。@无？你在吗？"
                         ],
                         ["None", "bored", "…"],
                         null,
                         [
                             "FunctionDefinition",
                             "excited",
-                            "We found you! You seem well. How have you been, with all the silence?"
+                            "我们找到你了！你看起来很好。在这段寂静中你一直怎么样？"
                         ],
                         ["None", "excited", "…"],
                         null,
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "That makes sense. I can see why you'd like the quiet. It's certainly peaceful. I wanted to introduce you to my new friend and potential director. They're interested in inspiring us."
+                            "有道理。我能理解为什么你喜欢宁静。这确实很宁静。我想介绍你给我的新朋友和潜在的导演。他们对激发我们很感兴趣。"
                         ],
                         ["None", "eager", "…"],
                         null,
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "Yes, I think they have all kinds of ideas. We haven't talked about them yet, but there's plenty of time. We're just learning right now. Do you want to share what you do? (I can translate)."
+                            "是的，我认为他们有各种各样的想法。我们还没有谈论过它们，但时间还很充裕。现在我们只是在学习。你想分享一下你的工作吗？（我可以翻译）。"
                         ],
                         ["None", "serious", "…"],
                         null,
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "They represent nothing. Different from zero in that you can't add anything to it, or subtract from it. Just… nothing."
+                            "它们代表的是空无。与零不同的是，你不能给它加什么，或者从中减去什么。只是… 不存在。"
                         ],
                         ["None", "serious", "…"],
                         null,
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "They said that they like to take up space where something might be. Sometimes they represent the lack of a choice in a game, sometimes they represent some default input in a function. In that sense, they might represent the absence of anything."
+                            "它们说它们喜欢占据可能有东西的空间。有时候它们在游戏中表示没有选择，有时候它们表示函数中的某个默认输入。从这个意义上说，它们可能代表了不存在的东西。"
                         ],
                         ["None", "neutral", "…"],
                         null,
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "They wanted you to know that they don't really do anything. They just are. All they really do is say whether they are themselves. If they are, they evaluate to \\⊤\\, and \\⊥\\ otherwise."
+                            "它们希望你知道它们实际上并没有做什么。它们只是存在。它们真正做的就是判断它们是否是它们自己。如果是，它们就评估为 \\⊤\\，否则为 \\⊥\\。"
                         ],
                         ["edit", "ø = ø"],
                         null,
-                        ["edit", "Phrase('hi' face: ø)"],
+                        ["edit", "短语('你好' 脸: ø)"],
                         [
                             "FunctionDefinition",
                             "excited",
-                            "Do you remember @Phrase? @Phrase actually works with @None a lot. Most of the inputs that @Evaluate mentioned are \\ø\\ by default, which for @Phrase, means that no size, font, color, etc. are specified."
+                            "你还记得 @短语 吗？@短语 实际上与 @无 一起工作得很多。@评估 提到的大多数输入默认情况下都是 \\ø\\，对于 @短语 来说，这意味着没有指定大小、字体、颜色等。"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "curious",
-                            "Anything else you want to share with our budding director?"
+                            "你还想与我们的新导演分享些什么吗？"
                         ],
                         ["None", "eager", "…"],
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "They think you're doing great! And I think you're doing great too. You've already met so many of our wonderful players. And there are so many more to meet…"
+                            "它们认为你做得很棒！我也觉得你做得很棒。你已经遇到了我们众多出色的玩家。还有很多人等着与你见面…"
                         ]
                     ]
                 }
@@ -1705,7 +1704,7 @@
                         [
                             "List",
                             "happy",
-                            "Interesting huh? Give me a place in the list that doesn't exist and I'm going to give you @NoneLiteral. Because there's nothing there. Make sense?"
+                            "Interesting huh? Give me a place in the list and I will wrap around. For example, \\-1\\ is the last item in the last, and if the list has five items, then index \\6\\ is the first item. If you give me index \\0\\, then I'll give you @NoneLiteral, because there's nothing there. Make sense?"
                         ],
                         null,
                         [

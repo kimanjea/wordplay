@@ -1707,7 +1707,7 @@
                         [
                             "List",
                             "happy",
-                            "Interesting huh? Give me a place in the list that doesn't exist and I'm going to give you @NoneLiteral. Because there's nothing there. Make sense?"
+                            "Interesting huh? Give me a place in the list and I will wrap around. For example, \\-1\\ is the last item in the last, and if the list has five items, then index \\6\\ is the first item. If you give me index \\0\\, then I'll give you @NoneLiteral, because there's nothing there. Make sense?"
                         ],
                         null,
                         [
@@ -1985,6 +1985,27 @@
                         [
                             "edit",
                             "{ 'ben': 2points 'joe': 5points 'kate': 12points }{'ben'}"
+                        ],
+                        null,
+                        [
+                            "Map",
+                            "neutral",
+                            "And if I don't have a key, I'll give you @None."
+                        ],
+                        [
+                            "edit",
+                            "{ 'ben': 2points 'joe': 5points 'kate': 12points }{'anna'}"
+                        ],
+                        null,
+                        [
+                            "Map",
+                            "neutral",
+                            "You might want to use our friend @NoneOr if you'd rather treat a @None as something else.",
+                            "Here, for example, we default to \\0points\\ if there's no value."
+                        ],
+                        [
+                            "edit",
+                            "map: { 'ben': 2points 'joe': 5points 'kate': 12points }\nmap{'anna'} ?? 0points"
                         ],
                         null,
                         ["use", "fit", "DarkVoid"],
