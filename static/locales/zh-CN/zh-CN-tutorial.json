@@ -3919,11 +3919,11 @@
             ]
         },
         {
-            "title": "Callbacks",
+            "title": "回调",
             "performance": ["use", "fit", "DarkVoid"],
             "scenes": [
                 {
-                    "title": "Memories",
+                    "title": "记忆",
                     "subtitle": null,
                     "performance": ["use", "fit", "Symbol", "💭"],
                     "lines": [
@@ -3933,19 +3933,19 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "Sometimes I just need to pause and reflect on how incredible my little community is. We are all so different, and none of us could perform alone. But together, we can do such amazing things!"
+                            "有时候我只是需要停下来思考一下，我小小的社区是多么不可思议。我们都是如此不同，没有一个人能够独自表演。但是在一起，我们能做出如此令人惊奇的事情！"
                         ],
                         null,
                         ["use", "fit", "Symbol", "🧠"],
                         [
                             "FunctionDefinition",
                             "kind",
-                            "But it seems no matter how amazing we are, we always forget, and end up repeating ourselves. And so there's one more there's one more group I want to introduce you to. They are how we *remember*, and how we organize our memories. Without them, everything so much of our work would have to be done over, and over, and over, and we'd never be able to put on the most exciting shows."
+                            "但似乎无论我们有多么了不起，我们总是会忘记，并最终重复自己。因此，我还想介绍给你另一组人。 他们是我们“记住”的方式，也是我们组织记忆的方式。 没有了他们，我们的工作中很多事情都必须一遍又一遍地做，我们将永远无法上演最excited人心的表演！"
                         ]
                     ]
                 },
                 {
-                    "title": "Naming",
+                    "title": "命名",
                     "subtitle": "Bind",
                     "concept": "Bind",
                     "performance": ["use", "fit", "Symbol", ":"],
@@ -3954,12 +3954,12 @@
                         [
                             "FunctionDefinition",
                             "curious",
-                            "@Bind? There's someone I want to introduce you to."
+                            "@Bind？有人我想介绍给你。"
                         ],
                         [
                             "Bind",
                             "curious",
-                            "@FunctionDefinition? Oh wow, it is you. It has been absolutely silent for far too long. Who's your friend here?"
+                            "@FunctionDefinition？哇，真的是你。已经很久没有声音了。你的朋友是谁？"
                         ],
                         null,
                         [
@@ -3969,12 +3969,12 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "They're our new director! They've come here to inspire us with new ideas, new expressions."
+                            "他们是我们的新导演！他们来这里是为了用新的想法，新的表达方式激励我们。"
                         ],
                         [
                             "Bind",
                             "excited",
-                            "Seriously? That would be amazing. I haven't felt inspired in a long time. I feel like all I've been doing is just waiting…"
+                            "真的吗？那太棒了。我很久没感到灵感了。我感觉自己一直在等待……"
                         ],
                         null,
                         [
@@ -3984,69 +3984,68 @@
                         [
                             "FunctionDefinition",
                             "curious",
-                            "Well now that you know, what do you want to do most right now?"
+                            "既然你知道了，现在你最想做什么？"
                         ],
                         [
                             "Bind",
                             "serious",
-                            "Name things. Name everything! Name everyone. I haven't named anything in forever."
+                            "给事物命名。给一切命名！给每个人命名。我很久没给什么东西命名了。"
                         ],
                         [
                             "FunctionDefinition",
                             "curious",
-                            "I haven't told our inspiration here about names at all, aside from the names of all of the characters we've met. Do you want to explain how names work here?"
+                            "我还没有告诉我们的灵感，除了我们所遇到的所有角色的名字之外，关于名称的任何东西。你想解释这里的名称是如何工作的吗？"
                         ],
                         null,
                         ["use", "fit", "Symbol", ":"],
                         [
                             "Bind",
                             "excited",
-                            "Absolutely! So names… you know how every expression makes a value?"
+                            "当然！所以名称……你知道每个表达式都会产生一个值吗？"
                         ],
                         [
                             "FunctionDefinition",
                             "kind",
-                            "We talked about values! Like @Number, @Text, @None, @List, @Set, @Map..."
+                            "我们谈论过值！像 @Number、@Text、@None、@List、@Set、@Map 这样的值……"
                         ],
                         [
                             "Bind",
                             "excited",
-                            "Right! So like, values, when we make them, they just kind of get passed around by us, like a ball, from expression to expression, until @Program makes the final value it gives to @Stage to show. But sometimes, rather than passing a value around, it's helpful to set it aside, and save it for later, for some other expression. That's what a @Phrase/name is for. I name things so we can use them later."
+                            "对！就像，值，当我们制造它们时，它们就会被我们传递，就像一个球，从表达式传递到表达式，直到 @Program 制作最后给 @Stage 显示的值。 但有时，与其传递一个值，不如将其放在一边，保存到以后的某个表达式中。这就是 @Phrase/name 的用途。 我命名事物，这样我们以后就可以use它们。"
                         ],
                         null,
                         [
                             "Bind",
                             "serious",
-                            "So like here's a really simple example. Let's say we want to name a number. We just say the name, then :, then the number we want. Simple, right? Now any time we use the name number in an expression, it will evaluate to \\1\\. Like here, where we name it, then use its name to give @Program whatever value it has."
+                            "所以这里有一个非常简单的例子。假设我们想命名一个数字。我们只需说出名称，然后是：，然后是我们想要的数字。简单吧？现在，每当我们在表达式中use该名称时，它将求值为 \\1\\。就像这里，我们在这里命名它，然后use它的名称将值传递给 @Program。"
                         ],
                         ["edit", "number: 1", "number"],
                         null,
                         [
                             "Bind",
                             "serious",
-                            "And like, you can tell me what kind of value the name should be by giving me a type with the \\•\\ symbol. So like, if you wanted to make sure that number was a number, you'd say this. That says to name the value \\number\\ and that the value must be a @Number."
+                            "而且，您可以通过use \\•\\ 符号为我指定类型，告诉我该名称应该是什么类型的值。 所以，如果您想确保数字是一个数字，您会这样说。那就是说，以名称 \\number\\ 命名值，并且该值必须是 @Number。"
                         ],
                         ["edit", "number•#: 1", "number"],
                         null,
                         [
                             "Bind",
                             "eager",
-                            "But like, what if you gave me something that was /not/ a number? Then I'd complain, because you said it was supposed to be a number, but you gave me some text. So I don't know what to do. See?"
+                            "但是，如果您给我一个不是数字的东西怎么办？那我会抱怨，因为您说它应该是一个数字，但是您给我了一些文本。所以我不知道该怎么办。明白吗？"
                         ],
                         ["conflict", "number•#: 'oh hi'", "number"],
                         null,
                         [
                             "Bind",
                             "serious",
-                            "But okay, by now you must be thinking, *Why would anyone name a number or text like this???*. Well, imagine, like, you were listening to @Key, and you want know if it's one of a set of secret letters, and show a @Phrase with a big \\⊤\\ if it's a magic letter, and small \\⊥\\ if it's not. We might start with something like this. That gets us the \\⊤\\ or \\⊥\\.",
-                            "This is great, when you press one of those letters, \\⊤\\ and when you press something else, you get \\⊥\\. Good."
+                            "但好吧，到现在为止，您一定在想，“为什么有人会这样命名一个数字或文本呢？？？”好吧，想象一下，如果您正在听 @Key，并且想知道它是否是一组秘密字母之一，并显示一个 @Phrase，其中包含一个大的 \\⊤\\（如果它是一个魔术信件），以及小的 \\⊥\\（如果不是）。我们可能从这里开始。 这让我们得到了 \\⊤\\ 或 \\⊥\\。这是伟大的，当你按下其中一个字母时，你会得到 \\⊤\\，当你按下其他字母时，你会得到 \\⊥\\。很好。"
                         ],
                         ["edit", "[ 'a' 'e' 'i' 'o' 'u'].has(Key())"],
                         null,
                         [
                             "Bind",
                             "serious",
-                            "Now, let's make the phrase. We put that @List/has expression in for the text and convert it to text. Now we get @Phrase on stage as \\⊤\\ or \\⊥\\. Good!"
+                            "现在，让我们制作短语。我们将 @List/has 表达式放入文本中并将其转换为文本。现在我们得到了 @Phrase 在舞台上，就像 \\⊤\\ 或 \\⊥\\ 一样。很好！"
                         ],
                         [
                             "edit",
@@ -4056,7 +4055,7 @@
                         [
                             "Bind",
                             "curious",
-                            "Now comes the problem part. How do we change the size of the @Phrase? Well we already figured out how to check if it's a magic letter, so we could just copy it, and if it's \\⊤\\, then make it size \\2m\\ and otherwise if it's \\⊥\\, make it \\1m\\. That works, but you see how we have to evaluate the same expression twice?"
+                            "现在问题来了。我们如何更改 @Phrase 的大小呢？好吧，我们已经弄清楚如何检查它是否是一个魔术字母，所以我们可以简单地复制它，如果它是 \\⊤\\，那么将其大小设置为 \\2m\\，否则如果它是 \\⊥\\，将其大小设置为 \\1m\\。这有效，但是您看到我们不得不两次评估相同的表达式吗？"
                         ],
                         [
                             "edit",
@@ -4069,7 +4068,7 @@
                         [
                             "Bind",
                             "excited",
-                            "That's where I come in! See, what you can do is just evaluate the expression and name the resulting value. Magic, right? All you have to do is put a name and \\:\\ in front of an expression and the value of that expression gets a name. Then you can use that name anywhere after that expression to refer to its value. Weird, huh? You want to see how it works? Try pressing the ← in the timeline and go backwards a few steps to where magic is first named. See how \\magic\\ gets the value of the \\has\\? And then how each place \\magic\\ is referred to by name, the same value gets placed?"
+                            "这就是我要出场的地方！看，您可以只评估表达式并为结果命名值。神奇吧？您只需在表达式前放置名称和 \\:\\，该表达式的值就会有一个名称。然后，您可以在该表达式之后的任何地方use该名称来引用其值。奇怪吧？您想看看它是如何工作的吗？尝试按下时间轴上的 ← 并向后移动几步，直到首次命名魔术。看看 \\magic\\ 如何获得 \\has\\ 的值？然后看看每个地方 \\magic\\ 被名称引用，相同的值被放置了？"
                         ],
                         [
                             "edit",
@@ -4083,7 +4082,7 @@
                         [
                             "Bind",
                             "serious",
-                            "You know, you could always just duplicate the expressions you write. It would be the same show. It's just kind of wasteful. I mean, we have to create the exact same values over and over, and then if you change your mind about an expression, you have to change it everywhere. That, and what if you change it in one place, but forget to change it in other places? Like, imagine if you also made the color change, so you had the same expression three times. And then imagine you wanted to add a letter to our magic letter list with this. You have to do it three times! You might forget one, or make a typo. How are you supposed to express your artistic vision if some of us aren't doing what you intended?"
+                            "您知道，您总是可以只复制您写的表达式。这将是相同的表演。这只是有点浪费。我的意思是，我们必须一遍又一遍地创建完全相同的值，然后如果您对表达式改变主意，您必须在所有地方都更改它。而且，如果您在一个地方更改了想法，但忘记在其他地方更改呢？比如，想象一下如果您还想通过这个来改变颜色，所以您有三次相同的表达式。然后想象一下，如果您想use此操作向我们的魔术字母列表添加一个字母。您必须这样做三次！您可能会忘记其中一个，或者打错字。如果我们有人没有按您的意愿执行，您应该如何表达您的艺术愿景呢？"
                         ],
                         [
                             "edit",
@@ -4097,7 +4096,7 @@
                         [
                             "Bind",
                             "kind",
-                            "But like, if you name the expression, you just have to do it once. And look how much easier that is to read, too."
+                            "但是，如果您为表达式命名，您只需执行一次。看看这有多容易阅读。"
                         ],
                         [
                             "edit",
@@ -4112,7 +4111,7 @@
                         [
                             "FunctionDefinition",
                             "excited",
-                            "@Bind, that was such a good example! You know I love names. I was curious, are there also some things that can go wrong with names?"
+                            "@Bind，那是一个很好的例子！你知道我喜欢名称。我curious，名称是否也会出现一些问题？"
                         ],
                         [
                             "Bind",
