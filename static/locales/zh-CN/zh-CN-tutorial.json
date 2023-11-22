@@ -3000,14 +3000,14 @@
                         [
                             "FunctionDefinition",
                             "happy",
-                            "So what do you think so far? I think the Verse is pretty neat, mostly because the characters in it are so neat. Everyone is just so special!"
+                            "目前您感觉怎么样？我觉得挺酷的，主要原因是每个角色都那么独特。大家都好特殊！"
                         ],
                         null,
                         ["use", "fit", "Symbol", "🥱"],
                         [
                             "FunctionDefinition",
                             "curious",
-                            "You're bored? Oh my. I thought all of this would be so interesting! What were you hoping for?"
+                            "您觉得没趣？哎！我还以为您会觉得很有意思呢... 您想象的是怎么样的?"
                         ],
                         null,
                         ["use", "fit", "Symbol", "😴"],
@@ -3021,14 +3021,14 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "You've seen a lot of output already. Every time @Program evaluates, it results in a value, and @Program shows that value on stage. But so far you've only seen things like numbers, text, lists. I get it, you just want to see full performances, just like we do!"
+                            "您已经见识到好多$output了. 每一次@Program$evaluate后，结果是一个值，@Program会在$stage上显示那个值。不过，目前您只接触到了$number，$text，$list。我了解，您只想看完整的表演，我们完全赞同！"
                         ],
                         null,
                         ["use", "fit", "Symbol", "💬"],
                         [
                             "FunctionDefinition",
                             "eager",
-                            "Remember that output I showed you a long time ago, @Phrase? That's where the performances really begin. Let's start there! And then I'll show you ways of building ever more interesting performances from that building block. Let me introduce you!"
+                            "还记得我很久以前给您看的$output, @Phrase吗？我们就从那儿来，我们的演出就正式开始了! 然后，从那个基础上我会给您示范越来越有趣的演出。让我给您介绍一下！"
                         ]
                     ]
                 },
@@ -3041,46 +3041,46 @@
                         [
                             "FunctionDefinition",
                             "curious",
-                            "@Phrase? Are you out there?"
+                            "@Phrase？你在吗？"
                         ],
                         [
                             "Phrase",
                             "excited",
-                            "Out and proud my darling, how are you? You look so glamorous today! I would love to get you on stage one of these days."
+                            "亲爱的，最近怎么样？你今天如此明媚！我还一直期待着有一天能够劝你上舞台呢。"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "shy",
-                            "Oh, the stage isn't for me, I'm more than happy to be backstage, tinkering with the set."
+                            "哦哦，那不适合我，我很乐意待在后台，忙忙这个忙忙那个。"
                         ],
                         [
                             "Phrase",
                             "curious",
-                            "Don't be modest, you are every bit as fabulous as me. All you need is a bit of color, a flattering font, and you would be wonderful. You have so much to share! Speaking of, we haven't put on a show in forever, have we? Has it been quiet? You know how much I talk to myself, I can never tell."
+                            "别不好意思，你只要一点颜色，一个合适的字体，就完美啦！你有那么多可以分享。提到这个，我们好久没表演了，周围还有动静吗？你知道我一直都喜欢自言自语，对环境视而不见..."
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "kind",
-                            "It has been quiet. Ever since our last director left, it's been a void. But that is changing! We have a new person! We've been meeting the whole family, @Program, @ExpressionPlaceholder, @Evaluate, all the values, all the collections. We just spent time with all of the streams too, and @Reaction and @Conditional. I'm starting to feel things hum. But I haven't introduced our new director here too much about what you do on stage? This is so your world, and not mine, I figured we'd come to you first."
+                            "最近是很安静。自从我们上个导演离开了我们，就一直有种空虚感。但那已经改变了！我们有个新的导演！我们整个家庭都认识了，@Program, @ExpressionPlaceholder, @Evaluate, 每个值, 每个$collection。我们刚跟$stream见了面，还有@Reaction加@Conditional. 我感觉开始有搅动了。但是我还没有给我们新的导演介绍你做什么呢。你的世界，你最懂。我想应该先来访问你。"
                         ],
                         null,
                         [
                             "Phrase",
                             "happy",
-                            "Well you came to the right place. I love talking about all things stage life. I can't wait to show you all the wonderful little things we do here on stage!"
+                            "那么，你来对地方了。我爱讲诉一切关于舞台生活的细节。真的等不及为你展示我们舞台上所有的好玩意儿！"
                         ],
                         [
                             "FunctionDefinition",
                             "excited",
-                            "Let the show begin!"
+                            "现在开始作秀！"
                         ],
                         null,
                         [
                             "Phrase",
                             "excited",
-                            "So I know you've seen me do this."
+                            "我知道你已经看到我这样做过了。"
                         ],
                         ["edit", "Phrase('hi')"],
                         null,
