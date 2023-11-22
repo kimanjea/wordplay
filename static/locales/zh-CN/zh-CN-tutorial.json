@@ -1528,7 +1528,7 @@
             "title": "Ensembles",
             "performance": [
                 "fit",
-                "Group(Row(0 (Time() ÷ 500).sin() · 1m) [Phrase('[]') Phrase('{}') Phrase('{:}')])"
+                "Group(Row('|' (Time() ÷ 500).sin() · 1m) [Phrase('[]') Phrase('{}') Phrase('{:}')])"
             ],
             "scenes": [
                 {
@@ -2030,21 +2030,21 @@
                         [
                             "FunctionDefinition",
                             "surprised",
-                            "I can't believe how many characters we've met so far. Does it feel like a lot? It also feels like we've barely made any progress.",
-                            "I haven't even gotten to show you the most exciting parts of putting on shows!"
+                            "我不敢相信到目前为止我们遇到了这么多角色. 感觉上是不是有很多? 而且感觉上我们没有什么进展.",
+                            "我还没给你们展示表演中最激动人心的部分呢!"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "serious",
-                            "Would you mind if we just stopped by to meet two others before we get to the truly exciting parts? These two characters are just so integral to working with values, and particularly text, we just have to talk about them before we get to the more spectacular things."
+                            "你介意在我们进入到真正令人激动的环节之前顺带见一下其他两个角色吗? 这两个角色在和参数打交道时是不可或缺的, 尤其是文本, 我们就得在进入到激动的事情之前和他们聊一聊."
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "curious",
-                            "What are they?",
-                            "Conversions. They are the alchemy of this world, that help change one type of value to another. Let's go meet them."
+                            "他们是什么?",
+                            "转换. 他们是世界上的炼金术师, 他们可以帮助改变一个参数的属性. 让我们去见见他们."
                         ]
                     ]
                 },
@@ -2058,98 +2058,98 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "Hey @Convert! You there?"
+                            "嘿 @Convert! 你在那里吗?"
                         ],
                         [
                             "Convert",
                             "happy",
-                            "Duuuuude, @FunctionDefinition, it's been epochs! You're looking stylish. It's been super quiet lately, hasn't it? You have a new friend?"
+                            "兄弟, @FunctionDefinition, 这已经是新时代了! 你看起来很时髦. 最近特别安静, 对吧? 你有一个新朋友?"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "Yes, this person here is interested in directing. We're on the grand tour — we've met @Program, @ExpressionPlaceholder, @UnparsableExpression, @Evaluate, and all the values and collections. I figured that meeting you next would be perfect, since you work so closely with values."
+                            "是的, 这个人在这里有兴趣做指引. 我们正在进行一次大旅行 — 我们已经遇到了@Program, @ExpressionPlaceholder, @UnparsableExpression, @Evaluate, 还有所有的参数和对象. 我觉得下一个见你会很完美, 因为你和参数紧密合."
                         ],
                         [
                             "Convert",
                             "kind",
-                            "Heck yeah, values are my best buds. We like to do parkour on the weekends — or shows, or whatever."
+                            "是的呢, 参数是我最好的伙伴. 我们喜欢在周末跑酷，或者参加表演，或者其他什么."
                         ],
                         null,
                         ["FunctionDefinition", "curious", "Parkour?"],
                         [
                             "Convert",
                             "serious",
-                            "Yeah, you know, like gymnastics on the streets, leaping over things, spanning buildings, like high wire stuff but without wires. Courageous leaps!"
+                            "是的, 你知道的, 比如街上的体操, 跳过东西, 跨越建筑物, 就像高空走钢丝一样, 但是没有电线. 勇敢的飞跃!"
                         ],
                         [
                             "FunctionDefinition",
                             "serious",
-                            "Ohhh, I see what you mean. Yes, I guess what you do is kind of like parkour. I'm not sure our new director friend here follows though. Could you explain without the metaphors?"
+                            "噢, 我懂你的意思了. 是的, 我猜你做的事情就像跑酷差不多. 我不确定我们的新导演朋友能跟上. 你可以不用比喻解释一下吗?"
                         ],
                         null,
                         [
                             "Convert",
                             "kind",
-                            "Happy to bro. So like, imagine you had a number."
+                            "乐意至极兄弟. 所以就像, 想象你有一个数字."
                         ],
                         ["edit", "1"],
                         null,
                         [
                             "Convert",
                             "kind",
-                            "And imagine you wanted it to be text. Throw me in there with @Text and BAM, you've got text!"
+                            "并且想象你希望它成为文本. 把我, @Text 和 BAM 一起扔进去吧, 你已经得到文本了!"
                         ],
                         ["edit", "1 → ''"],
                         null,
                         [
                             "Convert",
                             "serious",
-                            "Or like, imagine you had text and wanted a number. Throw me in there with @Number and POP, you've got a number!"
+                            "或者就像, 想象你有文本并且想要一个数字. 把我, @Number 和POP一起扔进去吧, 你已经得到数字了!"
                         ],
                         ["edit", "'1'→#"],
                         null,
                         [
                             "Convert",
                             "surprised",
-                            "But you want to see some, like, serious mojo? Say you've got some text and you want its characters in a list. Throw me in there with @List and HAAAAAA, you've got a list of letters."
+                            "但是你想见识一下真正的魔力吗? 假设你有一些文本, 你希望它的字符在一个列表中. 把我,@List, HAAAAAA一起扔到那里, 你已经得到一个有单词的列表了."
                         ],
                         ["edit", "'halloween'→[]"],
                         null,
                         [
                             "Convert",
                             "serious",
-                            "But me and @Number? We have been practicing some seriously sick tricks. Say you've got some time in days and you want seconds? We got you."
+                            "但是我和@Number? 我们一直在练习一些非常恶心的把戏. 比如说你有几天的时间, 你想要几秒钟? 我们会照顾你的."
                         ],
                         ["edit", "5day → #s"],
                         null,
                         [
                             "Convert",
                             "excited",
-                            "But the real wicked tricks? Chaining. Like multiple conversions in a row. Check this one out. Days to seconds to text to list, all in one chain. Now we've got a list of digits. Sweet!"
+                            "但真正邪恶的把戏? 链接. 就像在一行里面有很多转换. 看看这个. 从天到秒到文本到列表, 所有都只在一个链接里. 现在我们已经得到一个列表的字节. 不错!"
                         ],
                         ["edit", "1day → #s → '' → []"],
                         null,
                         [
                             "Convert",
                             "neutral",
-                            "So like, my deal is that everything should be everything, no boundaries. Anything can be anything. (Like, not anything, but you know, as much as I can).",
-                            "But like, why should anything ever be trapped in one identity, you know? Liberation, man."
+                            "所以就像, 我的交易是每件事物就应该是每件事物, 没有边界. 任何事物可以成为任何事物. (就像, 不是任何事物, 但你知道的, 尽我所能).",
+                            "但是就像, 为什么任何东西都要被困在一个身份里呢, 你懂的? 解放, 兄弟."
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "kind",
-                            "That is amazing, @Convert, and so inspiring. But anything, really?"
+                            "太神奇了, @Convert, 但是很鼓舞人心. 但是任何事物, 真的吗?"
                         ],
                         [
                             "Convert",
                             "sad",
-                            "Well, not like, anything. I mean, if you give me seconds and ask for a @Set, like, what does that even mean?",
-                            "I'll do my best to find a way... like, here, I know how to turn numbers into @Text and @Text into a @Set, so I'll give you the set of symbols in the text form of this number.",
-                            "But that's probably not what you wanted...",
-                            "And, if I don't know how to give you what you asked for, I'm basically going to shut things down."
+                            "好吧, 并不像所有的事情. 我指的是, 如果你给我秒然后想要@Set, 就像, 这到底是什么意思?",
+                            "我会尽我所能去找到一个方式... 就像, 在这里, 我知道如何将数字转换成@Tex并且将@Text 转换成 @Set, 所以我就给你以这个数字文本形式的符号的指令.",
+                            "但这可能不是你想要的...",
+                            "并且, 如果我不知道如何满足你的要求, 我基本上就要将这个事情关掉了."
                         ],
                         ["edit", "10s → {}"],
                         null,
@@ -2157,25 +2157,25 @@
                         [
                             "FunctionDefinition",
                             "serious",
-                            "Right, that makes sense. So there are only some conversions, not all possible conversions."
+                            "是的, 这说得通. 所以这里只有一些转换, 并不是所有可能的转换."
                         ],
                         [
                             "Convert",
                             "sad",
-                            "Yeahhh… you can always check a type of value and see what types of conversions they support."
+                            "是的… 你可以随时检查一个值的类型并且看看他们支持什么类型的转换."
                         ],
                         null,
                         ["use", "fit", "Symbol", "🧐"],
                         [
                             "FunctionDefinition",
                             "curious",
-                            "Did you know that @Convert and @Evaluate are related? They're like cousins. @Evaluate will evaluate any function, but @Convert will evaluate any conversion. In a way, @Evaluate does conversion too, from inputs to outputs."
+                            "你知道@Convert 和 @Evaluate 是有关联的吗? 他们就像表兄弟. @Evaluate 会给任何方法估值, 但是 @Convert 会给任何转换估值. 某种程度上来说, @Evaluate 也会转换, 从输入到输出."
                         ],
                         [
                             "Convert",
                             "scared",
-                            "Whoa. I never thought of it that way. Like, /I/ convert inputs to outputs, and @Evaluate converts inputs to outputs. And like, @FunctionDefinition, you *tell us* how to convert inputs to outputs. Is that like, the secret of the Verse?",
-                            "Like everything is about converting inputs to outputs?"
+                            "哇. 我从没有用那种方式思考过它. 像, /I/ 把输入转换成输出, 还有 @Evaluate 把输入转换成输出. 还有就像, @FunctionDefinition, 你 *tell us* 如何将输入转换成输出. 那就像, 诗歌的秘密吗?",
+                            "就像一切都是关于将输入转化为输出?"
                         ],
                         null,
                         ["FunctionDefinition", "serious", "I guess so?"],
@@ -2186,24 +2186,24 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "@Convert, how should our new director find out what kinds of conversions are possible?"
+                            "@Convert, 我们的新主管应该如何发现有哪些转换是可能的?"
                         ],
                         [
                             "Convert",
                             "scared",
-                            "Sorry bro, I'm still a bit shaken. Uhhh, they can check out any of the value types in the reference @UI/docsExpand.",
-                            "There should be a list of the other types I can change them into… Everything is conversion…"
+                            "不好意思兄弟, 我还是有点发抖. 呃, 他们可以在参考里面检查任何参数的种类 @UI/docsExpand.",
+                            "这里应该有其他种类的列表, 我可以把他们变成… 所有都可以转换…"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "happy",
-                            "It was so great to see you @Convert! We're going to head out and meet others. See you soon?"
+                            "很高兴见到你 @Convert! 我们要出去见见其他人. 下次见?"
                         ],
                         [
                             "Convert",
                             "surprised",
-                            "Soon. Yeah… Yes! Totally, yes."
+                            "很快. 是的… 是的! 完全是的."
                         ]
                     ]
                 },
@@ -3086,22 +3086,22 @@
                         [
                             "Phrase",
                             "kind",
-                            "That, my darling, is the simplest way to get a word on stage. But there's so much more! For example, did you know that you can style the text you give me by working with @FormattedTranslation? You haven't met them yet, but all you have to do is put special symbols around your text? Behold: bold!"
+                            "这个嘛，亲爱的，就是将一个词放上舞台最简单的方式。可是还有好多还没看到的！比如，您知道你可以改字体的风格用@FormattedTranslation么？虽然您还不认识他，在字的两边输入特殊标志就可。瞧：粗体！"
                         ],
                         ["edit", "Phrase(`*hi*`)"],
                         null,
                         [
                             "Phrase",
                             "kind",
-                            "Not enough sass for you? How about underline, italics, light text, and extra bold text, *all at once*?"
+                            "还不够夸张吗？加下划线、斜体、浅色体、和特粗体，全部一起上，*怎么样*？"
                         ],
                         ["edit", "Phrase(`/I/ _am_ ^the^ /fabulous/ 💬!`)"],
                         null,
                         [
                             "Phrase",
                             "kind",
-                            "Still not impressed?",
-                            "Mix them all together!"
+                            "还不佩服？",
+                            "那他们全部混到一起！"
                         ],
                         ["edit", "Phrase(`/_*I am the fabulous*_/ 💬!`)"],
                         null,
@@ -3608,7 +3608,7 @@
                         [
                             "edit",
                             "Group(",
-                            "    Stack(0 2m) ",
+                            "    Stack('|' 2m) ",
                             "    [",
                             "        Phrase('one')",
                             "        Phrase('two')",
@@ -3625,7 +3625,7 @@
                         [
                             "edit",
                             "Group(",
-                            "    Stack(0 Time(100ms) · 0.001m/ms) ",
+                            "    Stack('|' Time(100ms) · 0.001m/ms) ",
                             "    [",
                             "        Phrase('one')",
                             "        Phrase('two')",
@@ -3642,7 +3642,7 @@
                         [
                             "edit",
                             "Group(",
-                            "    Row(0 Time(100ms) · 0.001m/ms) [",
+                            "    Row('|' Time(100ms) · 0.001m/ms) [",
                             "        Phrase('one')",
                             "        Phrase('two')",
                             "        Phrase('three')",
@@ -4564,7 +4564,7 @@
                             "",
                             "index•#: 1 … ∆ Time(2000ms) … index = messages.length() ? 1 index + 1",
                             "",
-                            "Group(Stack(0 0m) [",
+                            "Group(Stack('|' 0m) [",
                             "  Phrase(messages[index])",
                             "  Phrase(messages[index] resting:Pose(flipy: ⊤ opacity: 25%))",
                             "])"
@@ -4591,7 +4591,7 @@
                             "  'Lap cat'",
                             "]) … ∆ Time(2000ms) … marquee.next()",
                             "",
-                            "Group(Stack(0 0.5m) [",
+                            "Group(Stack('|' 0.5m) [",
                             "  Phrase(marquee.now())",
                             "  Phrase(marquee.now() resting:Pose(flipy: ⊤ opacity: 25%))",
                             "])"
@@ -4625,7 +4625,7 @@
                             "  'Lap cat'",
                             "]) … ∆ Time(2000ms) … marquee.next()",
                             "",
-                            "Group(Stack(0 0.5m) [",
+                            "Group(Stack('|' 0.5m) [",
                             "  Phrase(marquee.now())",
                             "  Phrase(marquee.now() resting:Pose(flipy: ⊤ opacity: 25%))",
                             "])"
