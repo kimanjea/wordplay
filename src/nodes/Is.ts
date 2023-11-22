@@ -27,6 +27,7 @@ import ExpressionPlaceholder from './ExpressionPlaceholder';
 import TypePlaceholder from './TypePlaceholder';
 import type Node from './Node';
 import type Locales from '../locale/Locales';
+import type Conflict from '@conflicts/Conflict';
 
 export default class Is extends Expression {
     readonly expression: Expression;
@@ -60,6 +61,10 @@ export default class Is extends Expression {
         ];
     }
 
+    getDescriptor() {
+        return 'Is';
+    }
+
     getGrammar(): Grammar {
         return [
             { name: 'expression', kind: node(Expression) },
@@ -83,7 +88,8 @@ export default class Is extends Expression {
     computeType() {
         return BooleanType.make();
     }
-    computeConflicts(context: Context) {
+
+    computeConflicts(context: Context): Conflict[] {
         // Is the type of the expression compatible with the specified type? If not, warn.
         const type = this.expression.getType(context);
 
@@ -93,6 +99,7 @@ export default class Is extends Expression {
             (!(type instanceof UnionType) && !this.type.accepts(type, context))
         )
             return [new ImpossibleType(this, type)];
+        else return [];
     }
 
     getDependencies(): Expression[] {

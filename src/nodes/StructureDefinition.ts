@@ -120,6 +120,18 @@ export default class StructureDefinition extends DefinitionExpression {
         ];
     }
 
+    /**
+     * Used by Evaluator to get the steps for the evaluation of this structure definition.
+     * Asks the block for it's steps.
+     */
+    getEvaluationSteps(evaluator: Evaluator, context: Context): Step[] {
+        return this.expression?.getEvaluationSteps(evaluator, context) ?? [];
+    }
+
+    getDescriptor() {
+        return 'StructureDefinition';
+    }
+
     getGrammar(): Grammar {
         return [
             { name: 'docs', kind: optional(node(Docs)) },

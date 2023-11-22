@@ -31,6 +31,7 @@ import Purpose from '../concepts/Purpose';
 import Tokens from '../parser/Tokens';
 import type Definition from './Definition';
 import type Locales from '../locale/Locales';
+import type Evaluator from '@runtime/Evaluator';
 
 /** A document representing executable Wordplay code and it's various metadata, such as conflicts, tokens, and evaulator. */
 export default class Source extends Expression {
@@ -104,6 +105,15 @@ export default class Source extends Expression {
 
     static make(mainName: string) {
         return new Source(Names.make([mainName]), '');
+    }
+
+    /** Used by Evaluator to get the steps for the evaluation of this source file. */
+    getEvaluationSteps(evaluator: Evaluator, context: Context): Step[] {
+        return this.expression.compile(evaluator, context);
+    }
+
+    getDescriptor() {
+        return 'Source';
     }
 
     getGrammar(): Grammar {
@@ -367,7 +377,7 @@ export default class Source extends Expression {
             // else {
             //     console.log(
             //         `Couldn't find match for ${
-            //             newNode.constructor.name
+            //             newNode.getDescriptor()
             //         } ${newNode.toWordplay()}`
             //     );
             // }
@@ -388,7 +398,7 @@ export default class Source extends Expression {
         // const news = revised.filter((n) => !original.includes(n));
         // console.log(`${news.length} new nodes`);
         // for (const node of news)
-        //     console.log(node.constructor.name + ' ' + node.toWordplay());
+        //     console.log(node.getDescriptor() + ' ' + node.toWordplay());
 
         // Otherwise, reparse the program with the reused tokens and return a new source file
         return new Source(this.names, [newProgram, newSpaces]);
