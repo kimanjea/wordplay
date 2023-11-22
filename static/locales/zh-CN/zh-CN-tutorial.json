@@ -3086,22 +3086,22 @@
                         [
                             "Phrase",
                             "kind",
-                            "That, my darling, is the simplest way to get a word on stage. But there's so much more! For example, did you know that you can style the text you give me by working with @FormattedTranslation? You haven't met them yet, but all you have to do is put special symbols around your text? Behold: bold!"
+                            "这个嘛，亲爱的，就是将一个词放上舞台最简单的方式。可是还有好多还没看到的！比如，您知道你可以改字体的风格用@FormattedTranslation么？虽然您还不认识他，在字的两边输入特殊标志就可。瞧：粗体！"
                         ],
                         ["edit", "Phrase(`*hi*`)"],
                         null,
                         [
                             "Phrase",
                             "kind",
-                            "Not enough sass for you? How about underline, italics, light text, and extra bold text, *all at once*?"
+                            "还不够夸张吗？加下划线、斜体、浅色体、和特粗体，全部一起上，*怎么样*？"
                         ],
                         ["edit", "Phrase(`/I/ _am_ ^the^ /fabulous/ 💬!`)"],
                         null,
                         [
                             "Phrase",
                             "kind",
-                            "Still not impressed?",
-                            "Mix them all together!"
+                            "还不佩服？",
+                            "那他们全部混到一起！"
                         ],
                         ["edit", "Phrase(`/_*I am the fabulous*_/ 💬!`)"],
                         null,
