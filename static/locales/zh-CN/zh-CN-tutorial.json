@@ -2351,22 +2351,22 @@
                         [
                             "FunctionDefinition",
                             "curious",
-                            "Did you know that your world and ours are connected? Make some sound and we can hear it..."
+                            "你知道你们的世界和我们的世界是相连接的吗？发出一些声音，我们能听到它…"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "serious",
-                            "You didn't know the Verse existed, but we know that yours does. Because it's your world that makes our world interesting.",
-                            "You probably noticed this as we've wandered and met all of the values, collections, and conversations.",
-                            "What do any of these values /mean/ if there's no person /giving/ them meaning, or providing the values in the first place?"
+                            "你不知道这个诗歌存在，但我们知道你们的存在。因为正是你们的世界使得我们的世界变得有趣。",
+                            "你可能已经注意到了，当我们漫游并遇到所有的价值观、收藏和对话时。",
+                            "如果没有人赋予这些价值观 /意义/，或者在最初提供这些价值观，那么这些价值观的意义是什么呢？"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "I want to show you the connection between our worlds, and what they make possible. We call them **input streams**, and they are perhaps the most magical kind of input in the Verse. They're like functions that create a special kind of value that changes as your world changes. They also can't communicate in the ways you might be used to. They're more like heartbeats from another world. So I'll do my best to explain how they work, since they won't be able to explain themselves.",
-                            "Are you ready to meet one?"
+                            "我想向你展示我们的世界之间的连接以及它们所能实现的事情。我们称之为**输入流**，它们可能是Verse中最神奇的输入形式。它们就像创建一种特殊价值的函数，随着你们的世界变化而变化。它们也无法以你可能习惯的方式进行沟通。它们更像是来自另一个世界的心跳。因此，我将尽力解释它们的工作原理，因为它们无法自行解释。",
+                            "你准备好见到一个了吗？"
                         ]
                     ]
                 },
@@ -2379,7 +2379,7 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "Let's start with the most elemental stream of all: @Time. To make a stream, we use @Evaluate, and give the name of the type of stream you want."
+                            "让我们从最基本的流开始：@Time。要创建一个流，我们使用@Evaluate，并提供您想要的流类型的名称。"
                         ],
                         ["Time", "neutral", "tick tick tick tick tick…"],
                         ["edit", "Time()"],
@@ -2387,14 +2387,14 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "Do you see how time is changing? Streams are a series of values. Every time a stream gets a new value, @Program reevaluates with the new stream value. That's why this program just keeps counting up: we made a time stream that starts at time 0 milliseconds, and then just keeps updating every time its clock ticks. This time is your time, from your world."
+                            "你能看到时间如何变化吗？流是一系列的值。每当流获得一个新值时，@Program会使用新的流值进行重新评估。这就是为什么这个程序一直在计数：我们创建了一个从0毫秒开始的时间流，然后每当时钟滴答作响时就不断更新。这个时间是你们的时间，来自你们的世界。"
                         ],
                         ["Time", "neutral", "tick tick tick tick tick…"],
                         null,
                         [
                             "FunctionDefinition",
                             "curious",
-                            "See that \\1000ms\\? It's a @Time/frequency that tells @Time to tick every 1000 milliseconds instead of the default of every 33 milliseconds, it's default. Now it's like a counter that ticks every second. These inputs that @Time takes are like a configuration: they tell the stream how to behave."
+                            "看到那个 \\1000ms\\ 吗？这是一个@Time/frequency，它告诉@Time每1000毫秒触发一次，而不是默认的33毫秒一次。现在它就像一个每秒滴答一次的计数器。@Time接受的这些输入就像是一种配置：它们告诉流如何行为。"
                         ],
                         ["Time", "neutral", "tick… tick… tick… tick… tick…"],
                         ["edit", "Time(1000ms)"],
@@ -2402,7 +2402,7 @@
                         [
                             "FunctionDefinition",
                             "serious",
-                            "But we can use all of the wonderful characters we've met to transform time further. For example, what if we wanted to know if time was a multiple of \\2\\? We could use @Number/remainder, which gets the remainder of a division. If the remainder is zero, we'll evaluate to \\⊤\\ and \\⊥\\ otherwise. See how it changes back and forth between \\⊤\\ and \\⊥\\? It's so magical."
+                            "但我们可以利用我们遇到的所有美妙字符来进一步转换时间。例如，如果我们想知道时间是否是 \\2\\ 的倍数，我们可以使用@Number/remainder，它得到一个除法的余数。如果余数是零，我们将评估为 \\⊤\\，否则为 \\⊥\\。看它是如何在 \\⊤\\ 和 \\⊥\\ 之间变化的？这真是神奇。"
                         ],
                         ["Time", "neutral", "tick… tick… tick… tick… tick…"],
                         ["edit", "(Time(1000ms) % 5) = 2ms"],
@@ -2410,14 +2410,14 @@
                         [
                             "FunctionDefinition",
                             "curious",
-                            "There's another thing you might have noticed: there's an area below the output that is a timeline. It updates each time the program reevaluates, which is each time a stream changes. It's showing every time @Time ticks."
+                            "有另一件事你可能已经注意到了：在输出下面有一个时间轴。每次程序重新评估时，也就是每次流发生变化时，它都会更新。它显示了@Time每次滴答的时间。"
                         ],
                         ["Time", "neutral", "tick… tick… tick… tick… tick…"],
                         null,
                         [
                             "FunctionDefinition",
                             "curious",
-                            "Try dragging on the timeline @UI/timeline, using the timeline buttons, using the arrow keys with the timeline focused, or pressing the ⏸️ and ▶️ @UI/playToggle buttons. You can go backwards in time, to see previous evaluations. The dashed arrows step to previous and future stream inputs. The solid ones step between different steps of the program. Try navigating time, and seeing what the program shows. This is how you can see all of the beautiful expressions you've learned about being evaluated by @Evaluate, one step at a time, resulting in the final value that @Program displays on stage."
+                            "尝试拖动@UI/timeline上的时间轴，使用时间轴按钮，使用时间轴聚焦的箭头键，或按下⏸️和▶️ @UI/playToggle按钮。你可以倒退时间，查看以前的评估。虚线箭头会跳到过去和未来的流输入。实线箭头会在程序的不同步骤之间跳转。尝试导航时间，看看程序显示了什么。这就是你可以逐步查看@Evaluate评估的所有美丽表达式的方式，最终得出@Program在舞台上显示的最终值。"
                         ],
                         ["Time", "neutral", "tick… tick… tick… tick… tick…"],
                         ["edit", "Time(1000ms)"],
@@ -2425,7 +2425,7 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "@Time is an interesting stream because it can be used for many different things: keeping track of how long a performance has been happening, timing some event, animating a word. It's one of the most flexible streams, but also one of the most abstract."
+                            "@Time 是一个有趣的流，因为它可以用于许多不同的事情：跟踪表演已经进行了多长时间，计时某个事件，给单词添加动画。它是最灵活的流之一，但也是最抽象的之一。"
                         ]
                     ]
                 },
@@ -2442,13 +2442,13 @@
                         [
                             "FunctionDefinition",
                             "serious",
-                            "If I'm not mistaken, there's a thing in your world called a “keyboard”? It's a way of selecting which one of us you want to appear in your documents, right? Well in the Verse, we receive these requests as a stream of text, each text value representing the key that was pressed. We use these to listen to what people in your world are typing. This stream is called @Key."
+                            "如果我没弄错的话，你们的世界里有一种东西叫做“键盘”吧？这是一种选择你想要出现在你的文档中的方式，对吧？在Verse中，我们将这些请求视为文本流，每个文本值代表被按下的按键。我们使用这些来监听你们的世界里的人在输入什么。这个流称为@Key。"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "Here's a simple example. Click the stage or focus it with the keyboard and then press any keyboard key. You'll see the key you've typed appear by name. That's because each time the key stream changes, @Program evaluates the key stream as its latest value, and then shows it on stage."
+                            "这里有一个简单的例子。点击舞台或用键盘对其进行焦点，并然后按下键盘上的任意键。你会看到你按下的键以名称的形式出现。这是因为每当键流发生变化时，@Program会将键流作为其最新值进行评估，然后在舞台上显示出来。"
                         ],
                         ["Key", "neutral", "clickety clickety clickety"],
                         ["edit", "Key()"],
@@ -2456,7 +2456,7 @@
                         [
                             "FunctionDefinition",
                             "serious",
-                            "This stream will change any time any key is pressed. But you can tell a key stream to just change when a particular key is pressed. See how the stream changes to \\a\\ the first time, but then doesn't change after? That's because this stream only changes when \\a\\ is pressed, so it's always showing \\a\\. But you'll always see the new key value appear in the timeline."
+                            "这个流会在按下任意键时发生变化。但是，你可以告诉键流仅在按下特定键时发生变化。看看流在第一次改变时变成 \\a\\，但之后就不再改变了吗？这是因为这个流只有在按下 \\a\\ 时才会改变，所以它总是显示 \\a\\。但你将总是在时间轴上看到新的键值出现。"
                         ],
                         ["Key", "neutral", "clickety 'a'…"],
                         ["edit", "Key('a')"],
@@ -2464,7 +2464,7 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "Sometimes it's helpful to know when a key is released, instead of pressed. Just pass \\⊥\\ to tell the @Key stream that you to know when a key is released instead of pressed. Now, press and hold the 'a' key and then when you release, you'll see the 'a' appear on stage. Didn't catch it? Press the ↻ button to reset the performance and try it again."
+                            "有时候知道一个键何时被释放而不是按下是有帮助的。只需传递 \\⊥\\，告诉@Key流你想知道何时释放一个键而不是按下它。现在，按住'a'键，然后释放时，你会在舞台上看到'a'出现。没看到吗？按下↻按钮重置表演，然后再试一次。"
                         ],
                         ["Key", "neutral", "clickety 'a'…"],
                         ["edit", "Key('a' ⊥)"],
@@ -2472,7 +2472,7 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "@Key streams are really helpful when you want a performance to react to keys that the audience presses. For example, you could check if a key has the word 'Arrow' in it to decide if an arrow key was pressed. Press an arrow key and you'll see \\'move'\\, press something else and you'll see \\'stay'\\"
+                            "@Key流在你想让表演对观众按下的键做出反应时非常有帮助。例如，你可以检查一个键中是否含有'Arrow'一词，以确定是否按下了箭头键。按下箭头键，你会看到 \\'move'\\，按下其他键，你会看到 \\'stay'\\。"
                         ],
                         ["Key", "neutral", "clickety 'Arrow'…"],
                         ["edit", "Key().has('Arrow') ? 'move' 'stay'"]
@@ -2491,13 +2491,13 @@
                         [
                             "FunctionDefinition",
                             "curious",
-                            "You also have something called a 'mouse' in your world, and 'trackpads', and 'touchscreens'? These appear in our world as streams @Pointer, which is a stream of places on stage."
+                            "在你们的世界中还有一种叫做'鼠标'的东西，还有'触控板'和'触摸屏'吧？在我们的世界中，它们表现为@Pointer流，这是一个舞台上位置的流。"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "curious",
-                            "Move your pointer around the stage and you'll see the stream of @Place change on stage."
+                            "在舞台上移动你的指针，你会看到@Place流在舞台上发生变化。"
                         ],
                         ["fix", "Pointer()"],
                         ["Pointer", "neutral", "wzzzzzzzzz…"],
@@ -2505,7 +2505,7 @@
                         [
                             "FunctionDefinition",
                             "excited",
-                            "Now let's see it on stage!"
+                            "现在让我们在舞台上看一下！"
                         ],
                         ["Pointer", "neutral", "wzzzzzzzzz…"],
                         ["fix", "Phrase(Pointer()→'' place: Pointer())"],
@@ -2513,7 +2513,7 @@
                         [
                             "FunctionDefinition",
                             "excited",
-                            "@Pointer can be fun if you want to link the @Place of a @Phrase to where the pointer is."
+                            "如果你想将@Phrase的@Place与指针的位置关联起来，@Pointer就会很有趣。"
                         ],
                         ["fix", "Phrase('🐪' size: 4m place: Pointer())"],
                         ["Pointer", "neutral", "wzzzzzzzz…"]
@@ -2528,7 +2528,7 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "@Button is like @Key, but corresponds to the primary pointer button, like a click or tap. It's just a stream of \\⊤\\, indicating when the pointer button is pressed down. Press that button and watch the events appear on the timeline."
+                            "@Button类似于@Key，但对应于主指针按钮，比如点击或轻触。它只是一个 \\⊤\\ 的流，表示指针按钮何时被按下。按下该按钮，观察事件出现在时间轴上。"
                         ],
                         ["Button", "neutral", "click… click… click…"],
                         ["edit", "Button()"],
@@ -2536,7 +2536,7 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "You can configure it to only change to up or down by passing it a \\⊤\\ or \\⊥\\."
+                            "你可以通过传递 \\⊤\\ 或 \\⊥\\ 来配置它仅在上下之间改变。"
                         ],
                         ["Button", "neutral", "down… down… down…"],
                         ["edit", "Button(ø)"],
@@ -2544,7 +2544,7 @@
                         [
                             "FunctionDefinition",
                             "excited",
-                            "Using a @Button stream is one way to advance through stages of a performance, or to trigger some change in a performance. This little program lists to button presses, and starts off showing sad, but when the @Button stream changes to true, @Conditional evaluates to \\'happy'\\ instead."
+                            "使用@Button流是推进表演阶段或触发表演中某些变化的一种方法。这个小程序监听按钮按下，一开始显示悲伤，但当@Button流变为true时，@Conditional会评估为 \\'happy'\\。"
                         ],
                         ["edit", "Phrase(Button(ø) ? 'sad' 'happy')"]
                     ]
@@ -2558,7 +2558,7 @@
                         [
                             "FunctionDefinition",
                             "excited",
-                            "Your world and our world also has sound. Did you know we can hear you, with your consent? We listen with a stream called @Volume, which provides a low-level sequence of amplitudes. Your mic might ask for permission to be shared with us. Once you do, you'll see a number that corresponds to amplitude, between \\0\\ and \\100\\."
+                            "你们的世界和我们的世界也有声音。你知道我们可以在得到你的同意时听到你吗？我们使用一个叫做@Volume的流进行监听，它提供了一个振幅的低级序列。你的麦克风可能会请求与我们分享权限。一旦你同意，你会看到一个在 \\0\\ 和 \\100\\ 之间对应振幅的数字。"
                         ],
                         ["Volume", "neutral", "bzzzZZZZZzzzzzZZZZ…"],
                         ["edit", "Volume()"],
@@ -2566,7 +2566,7 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "@Volume can be used to make performances respond to sound from the audience. For example, here we could make a little amplitude visualization by converting the amplitude number from the stream to a certain number of \\'o'\\ characters. See how when you make noise, there are more \\'o'\\s? The @Volume amplitude is divided by \\10\\, putting it in the \\0\\ to \\10\\ range. Then that value is given to @Text/repeat function, which repeats the \\'o'\\ the given number of times."
+                            "@Volume可以用于使表演对来自观众的声音做出响应。例如，在这里，我们可以通过将流中的振幅数字转换为一定数量的 \\'o'\\ 字符来制作一个小型振幅可视化。看看当你发出噪音时，有更多的 \\'o'\\ 吗？@Volume振幅被除以 \\10\\，将其放在 \\0\\ 到 \\10\\ 的范围内。然后，该值被传递给@Text/repeat函数，该函数重复 \\'o'\\ 给定的次数。"
                         ],
                         ["Volume", "neutral", "bzzzZZZZZzzzzzZZZZ…"],
                         ["edit", "'o'.repeat(Volume() · 10)"]
@@ -2584,7 +2584,7 @@
                         [
                             "FunctionDefinition",
                             "curious",
-                            "There's one other source of input I want to show you. Remember \\[].random()\\ from earlier, from @List?",
+                            "有一种输入来源我想要向你展示。还记得之前在@List中提到的 \\[].random()\\ 吗？",
                             "Inside it uses a @FunctionDefinition called @Random, which provides an infinite sequence of random numbers. It's kind of a stream, since it generates input from your world, not ours. But it's a bit different from the other streams in that it doesn't cause a @Program to reevaluate.",
                             "Instead, each time it's evaluated, it gives a different random number.",
                             "See that little ↻ @UI/resetEvaluator button by the timeline? Press that to reevaluate the program manually, and you'll see a new number between \\0\\ and \\1\\ each time."
