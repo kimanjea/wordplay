@@ -4115,7 +4115,7 @@
                         [
                             "Bind",
                             "sad",
-                            "Yeah, hm. There are. Like, suppose we did this. See the problem? I highlighted it. This program defines \\veggies\\ after it's used, which really confuses me. Because things are evaluated in reading order, so like, we're reading this program and we get to the word \\veggies\\, and we're like, who's \\veggies\\? And only after the \\total\\ is \\veggies\\ like, “here I am!” and then the whole production falls apart."
+                            "是啊 有的 比如，假设我们这么做 看到问题了吗？我强调过了 这个程序在使用了这个词之后才定义它 这让我很困惑 因为事情是按照阅读顺序来评估的 所以就像，我们在读这个程序 然后我们读到了这个词 我们就会想，谁是 \\veggie\\？而只有在这个词出现之后 我们才会想 然后整个节目就崩塌了"
                         ],
                         [
                             "conflict",
