@@ -728,7 +728,7 @@
                             "FunctionDefinition",
                             "happy",
                             "我真的很想念 @Evaluate。我无法想象没有他们的Verse。",
-                            "但有时候他们会有点... 需要。我希望他们能... 我不知道，相信自己？他们可以做很多事情，但他们却看不到。我的意思是，他们将价值观转化为其他价值观！我所做的只是提供配方。他们做饭。有时我觉得我所做的只是给予，而他们所做的只是索取。让人窒息。"
+                            "但有时候他们会有点…… 需要。我希望他们能…… 我不知道，相信自己？他们可以做很多事情，但他们却看不到。我的意思是，他们将价值观转化为其他价值观！我所做的只是提供配方。他们做饭。有时我觉得我所做的只是给予，而他们所做的只是索取。让人窒息。"
                         ],
                         null,
                         [
@@ -738,7 +738,7 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "… 价值观？抱歉，我知道我们应该在这个Verse里进行一场大巡演。我只是不知道该如何处理 @Evaluate。所以... 价值观。我还没有解释过这些，对吧？嗯...，如何解释... 你知道什么是'数据'吗？比如数字和文本？价值观是任何这些东西。一个价值观可以小到一个数字，也可以大到一个舞台上充满角色跳舞和移动的整个场景。有些价值观由许多其他价值观组成，就像由数据价值组成的复杂结构，彼此交织在一起。"
+                            "… 价值观？抱歉，我知道我们应该在这个Verse里进行一场大巡演。我只是不知道该如何处理 @Evaluate。所以…… 价值观。我还没有解释过这些，对吧？嗯……，如何解释…… 你知道什么是'数据'吗？比如数字和文本？价值观是任何这些东西。一个价值观可以小到一个数字，也可以大到一个舞台上充满角色跳舞和移动的整个场景。有些价值观由许多其他价值观组成，就像由数据价值组成的复杂结构，彼此交织在一起。"
                         ],
                         null,
                         ["fit", "小组(堆() [短语('#') 短语('\"\"')])"],
@@ -2147,8 +2147,8 @@
                             "Convert",
                             "sad",
                             "好吧, 并不像所有的事情. 我指的是, 如果你给我秒然后想要@Set, 就像, 这到底是什么意思?",
-                            "我会尽我所能去找到一个方式... 就像, 在这里, 我知道如何将数字转换成@Tex并且将@Text 转换成 @Set, 所以我就给你以这个数字文本形式的符号的指令.",
-                            "但这可能不是你想要的...",
+                            "我会尽我所能去找到一个方式…… 就像, 在这里, 我知道如何将数字转换成@Tex并且将@Text 转换成 @Set, 所以我就给你以这个数字文本形式的符号的指令.",
+                            "但这可能不是你想要的……",
                             "并且, 如果我不知道如何满足你的要求, 我基本上就要将这个事情关掉了."
                         ],
                         ["edit", "10s → {}"],
@@ -2585,9 +2585,9 @@
                             "FunctionDefinition",
                             "curious",
                             "有一种输入来源我想要向你展示。还记得之前在@List中提到的 \\[].random()\\ 吗？",
-                            "Inside it uses a @FunctionDefinition called @Random, which provides an infinite sequence of random numbers. It's kind of a stream, since it generates input from your world, not ours. But it's a bit different from the other streams in that it doesn't cause a @Program to reevaluate.",
-                            "Instead, each time it's evaluated, it gives a different random number.",
-                            "See that little ↻ @UI/resetEvaluator button by the timeline? Press that to reevaluate the program manually, and you'll see a new number between \\0\\ and \\1\\ each time."
+                            "其中使用了一个名为@Random的@FunctionDefinition，它提供了一个无限序列的随机数。它有点像一个流，因为它从你们的世界生成输入，而不是我们的世界。但它与其他流有点不同，因为它不会导致@Program重新评估。",
+                            "相反，每次评估时，它都会提供一个不同的随机数。",
+                            "看到时间轴旁边的小 ↻ @UI/resetEvaluator 按钮吗？按下它可以手动重新评估程序，每次你会看到一个在 \\0\\ 和 \\1\\ 之间的新数字。"
                         ],
                         ["Random", "neutral", "0.223423… 0.823423… 0.123459"],
                         ["edit", "Random()"],
@@ -2595,7 +2595,7 @@
                         [
                             "FunctionDefinition",
                             "surprised",
-                            "We can tell @Random the range of numbers we'd like by giving it a minimum and maximum number. This example gives numbers between \\1\\ and \\10\\:"
+                            "我们可以通过给@Random提供一个最小值和最大值来告诉它我们想要的数字范围。这个例子给出了在 \\1\\ 和 \\10\\ 之间的数字："
                         ],
                         ["Random", "neutral", "1… 7… 3… 9… 10… 2…"],
                         ["edit", "Random(1 10)"],
@@ -2603,8 +2603,7 @@
                         [
                             "FunctionDefinition",
                             "excited",
-                            "Random can be so fun! We can use it with streams to create fun chaos. For example, here we choose a random word from a list of words. This is the same as \\['kitty' 'cat' 'meowy'].random()\\. Keep pressing ↻ to get a different cat synonym! Try adding your own word to the list and see if you can get the word to appear."
-                        ],
+                            "随机可以很有趣！我们可以将它与流一起使用，创造有趣的混乱。例如，在这里我们从一个单词列表中随机选择一个单词。这与 \\['kitty' 'cat' 'meowy'].random()\\ 相同。不断按 ↻ 以获得不同的猫的同义词！尝试将你自己的单词添加到列表中，看看能否让该单词出现。"                        ],
                         ["Random", "neutral", "1… 2… 2… 1… 3…"],
                         ["edit", "['kitty' 'cat' 'feline'][Random(1 3)]"]
                     ]
@@ -2625,9 +2624,9 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "Sometimes its nice to engage the audience in our place on @Stage.",
-                            "@Placement is a great way to do that! It's a stream of @Place, that responds to keyboard arrow keys, clicks, and taps.",
-                            "Try using those to move the hot dog around."
+                            "有时候让观众参与我们在@Stage上的挺好的。",
+                            "@Placement是一个很好的方法！它是一个@Place流，响应键盘箭头键、点击和轻触。",
+                            "尝试使用它们来移动热狗。"
                         ],
                         null,
                         [
@@ -2637,8 +2636,8 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "There are lots of ways you can customize it. For example, if you wanted to change how it moves, you can give it a distance.",
-                            "See how we gave it \\0.5\\ for the for the first input? Now it moves a little less. Try changing it to a different number!"
+                            "有很多方式可以定制它。例如，如果你想改变它的移动方式，你可以给它一个距离。",
+                            "看到我们为第一个输入给了它 \\0.5\\ 吗？现在它移动得更少了一些。尝试将其更改为不同的数字！"
                         ],
                         null,
                         [
@@ -2648,8 +2647,8 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "You can also turn on and off movement on different axes. For example, give depth \\⊤\\ to allow movement on the z-axis.",
-                            "Press the + and - keys to move it closer or further away from the focus."
+                            "你还可以在不同轴上启用和禁用移动。例如，给深度 \\⊤\\ 允许在z轴上移动",
+                            "按下 + 和 - 键以使其离焦点更近或更远。"
                         ]
                     ]
                 },
@@ -2666,15 +2665,15 @@
                         [
                             "FunctionDefinition",
                             "excited",
-                            "So far, all of the *streams* we've talked about are sequences of simple values, like @Text or @Number. Some streams, however, can produce complex values.",
-                            "@Motion is one of the most interesting of those. It makes a stream of @Place."
+                            "到目前为止，我们讨论的所有 流 都是简单值的序列，比如 @Text 或 @Number。然而，一些流可以生成复杂的值。",
+                            "@Motion 是其中最有趣的之一。它生成一个@Place的*流*。"
                         ],
                         null,
                         ["edit", "Phrase('🏀' 3m place: Motion(Place(0m 5m)))"],
                         [
                             "FunctionDefinition",
                             "excited",
-                            "Here's the simplest way to use it. This creates a @Motion stream that starts with this @Phrase. It'll keep moving the ball based on *gravity*."
+                            "这是使用它的最简单方式。这会创建一个从这个@Phrase开始的@Motion流。它将根据*重力*不断移动球。"
                         ],
                         ["Motion", "excited", "/Woosh…/"],
                         null,
@@ -2685,8 +2684,8 @@
                         [
                             "FunctionDefinition",
                             "excited",
-                            "But the ball keeps falling because there's no ground! We can put something called a @Shape on @Stage, like a @Rectangle. It takes two corners. We'll make it nice and thick.",
-                            "Hm, it falls through the ground..."
+                            "但是球一直在下落，因为没有地面！我们可以在@Stage上放置一个叫做@Shape的东西，比如一个@Rectangle。它需要两个角。我们会使它变得很厚。",
+                            "嗯，它穿过了地面……"
                         ],
                         ["Motion", "excited", "/Woosh…/"],
                         null,
@@ -2702,8 +2701,8 @@
                         [
                             "FunctionDefinition",
                             "excited",
-                            "Oh right! That's because we forgot to give the ball @Matter. Matter is a way of telling us how heavy the @Output is, how bouncy it is, and how much friction it should have.",
-                            "Let's make the ball really bouncy and light. Yay, now it bounces!"
+                            "哦，对了！那是因为我们忘了给球添加@Matter。@Matter是一种告诉我们@Output有多重，有多弹性以及应该有多少摩擦力的方式。",
+                            "让我们使球非常有弹性和轻盈。太好了，现在它可以弹跳了！"
                         ],
                         null,
                         [
@@ -2718,9 +2717,9 @@
                         [
                             "FunctionDefinition",
                             "excited",
-                            "But @Motion has many other tricks.",
-                            "For example, we can give it a start @Motion/velocity.",
-                            "This example makes the ball move right and up and spinning a bit initially."
+                            "但是@Motion还有很多其他技巧。",
+                            "例如，我们可以给它一个起始 @Motion/velocity。",
+                            "这个例子使球在开始时向右上移动并稍微旋转。"
                         ],
                         ["Motion", "excited", "Woooosh…"],
                         null,
@@ -2737,9 +2736,9 @@
                         [
                             "FunctionDefinition",
                             "excited",
-                            "You can even change @Stage/gravity to be really extreme.",
-                            "Try changing it to be like the moon, where gravity is really low!",
-                            "Or try changing @Matter/mass or @Matter/bounciness, which affects how @Phrase bounce."
+                            "你甚至可以改变@Stage/gravity让它变得非常极端。",
+                            "尝试将其更改为像月球一样，其中重力非常低！",
+                            "或尝试更改@Matter/mass或@Matter/bounciness，这会影响@Phrase的弹跳方式。"
                         ],
                         ["Motion", "excited", "Wsh…"],
                         null,
@@ -2761,10 +2760,10 @@
                         [
                             "FunctionDefinition",
                             "excited",
-                            "It's even possible to know when some @Output bumps into another output with related stream called @Collision.",
-                            "We just need to give names to our two @Output. How about 'ball' and 'ground'?",
-                            "Then, we @Collision will give us a @Rebound when they touch and @None with they don't.",
-                            "Let's make the ball scale up each time it hits the ground for emphasis!"
+                            "甚至可以通过相关的 @Collision 流知道某个 @Output 何时与另一个输出碰撞。",
+                            "我们只需要给我们的两个 @Output 起个名字。 'ball' 和 'ground' 怎么样？",
+                            "然后，当它们接触时，@Collision 将给我们一个 @Rebound，否则会给我们一个 @None。",
+                            "让我们使球在每次触地时都放大，以突出强调！"
                         ],
                         null,
                         [
@@ -2774,8 +2773,8 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "There's so much more you can do with @Motion, @Collision, and @Shape!",
-                            "I hope you'll try lots of bouncy things."
+                            "使用@Motion、@Collision和@Shape，你可以做很多事情！",
+                            "我希望你会尝试很多有弹性的东西。"
                         ]
                     ]
                 },
@@ -2789,23 +2788,20 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "Sometimes a performance is an interaction. The audience says something and we say something back.",
-                            "That's what @Chat is for. When you use it, a little box will appear on stage for the audience to type in and when they submit their message, @Text will be added to the stream for the program to respond to."
-                        ],
+                            "有时表演是一种互动。观众说一些话，我们回应一些话。",
+                            "这就是@Chat的作用。当你使用它时，一个小框会出现在舞台上，观众可以在其中输入，当他们提交他们的消息时，@Text将被添加到程序用于回应的流中。"                        ],
                         null,
                         ["edit", "Chat()"],
                         [
                             "FunctionDefinition",
                             "kind",
-                            "Here's the simplest way to use it. You type something, and then the stage shows it, because the program's value is the @Chat's value."
-                        ],
+                            "这是使用它的最简单的方式。你输入一些东西，然后舞台会显示它，因为程序的值就是@Chat的值。"                        ],
                         null,
                         ["edit", "Chat().has('oo') ? 'choo choo' 'hmm'"],
                         [
                             "FunctionDefinition",
                             "kind",
-                            "It's more fun to check the value of the chat message to shape the response of the program. This little example responds to any message with consecutive o's with a train sound!"
-                        ]
+                            "检查聊天消息的值以塑造程序的响应更有趣。这个小例子对任何带有连续'o'的消息都会以火车声回应！"                        ]
                     ]
                 },
                 {
@@ -2821,24 +2817,21 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "So long ago, we heard you had this thing called the internet? I think that's how you're here, right?",
-                            "Well we thought it would be really cool to bring words from the internet /here/, so you can play with them."
-                        ],
+                            "很久以前，我们听说你们有一样东西叫做互联网？我想这就是你们来这里的方式，对吧？",
+                            "嗯，我们觉得将互联网上的文字带到这里会很酷，这样你就可以和它们一起玩了。"                        ],
                         null,
                         ["edit", "Webpage('https://www.nytimes.com')"],
                         [
                             "FunctionDefinition",
                             "kind",
-                            "Here's how it works: you just give what I think is called a 'URL' to us, and if its an HTML page, we'll pull all the phrases out of it and give it you you in a @List.",
-                            "Like here, these are some news phrases."
-                        ],
+                            "这是它的工作原理：你只需要给我们一个我认为被称为 'URL' 的东西，如果它是一个HTML页面，我们将从中提取所有的短语，并将它们以@List的形式提供给你。",
+                            "就像这里，这些是一些新闻短语。"                        ],
                         null,
                         ["edit", "Webpage('https://www.nytimes.com' 'h2')"],
                         [
                             "FunctionDefinition",
                             "kind",
-                            "You can also filter the words with something I think you call a 'CSS' query? Like we heard that 'h3' means 'level 3 header', so here are all the phrases in headers on the page."
-                        ],
+                            "你还可以使用我认为你们称为 'CSS' 查询的东西来过滤这些单词？就像我们听说 'h3' 意味着 '3级标题'，所以这里是页面上所有标题中的短语。"                        ],
                         null,
                         [
                             "edit",
@@ -2847,7 +2840,7 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "Once you have a list of words, you can do anything with them! Like grab the first five and turn them into spinning phrases, of course."
+                            "一旦你有了一个单词列表，你可以对它们进行任何操作！比如取前五个，然后把它们变成旋转的短语，当然。"
                         ]
                     ]
                 },
@@ -2861,101 +2854,94 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "All of these streams that I've shown you come from your world. But sometimes, it's helpful to create streams of your own, based on these other streams. That's where my friend @Reaction comes in! @Reaction, are you around?"
-                        ],
+                            "我向你展示的所有这些流都来自你们的世界。但有时，根据这些其他流创建自己的流是很有帮助的。这就是我的朋友@Reaction的用武之地！@Reaction，你在吗？"                        ],
                         [
                             "Reaction",
                             "excited",
-                            "Yeah yeah yeah! It's @FunctionDefinition! How are you doing? Everything has been so… constant, lately. Have you noticed that?"
+                            "是的是的是的！这就是@FunctionDefinition！你好吗？最近一切都变得如此...恒定。你注意到了吗？"
                         ],
                         null,
                         ["fit", "Phrase('…' resting:Pose(rotation: 240°))"],
                         [
                             "FunctionDefinition",
                             "curious",
-                            "You mean the silence? Yes, nothing's really changed, has it, since the last person left? What's that been like for you?"
+                            "你是说寂静吗？是的，自从上一个人离开以来，什么都没真正改变，对吧？对你来说这是什么感觉？"
                         ],
                         [
                             "Reaction",
                             "sad",
-                            "Super strange, super strange. My whole life has been about change, always listening and watching for new inputs from people, helping transform them into values. But there hasn't been anything. Until just a moment ago… Wait … is that a person?"
+                            "超级奇怪，超级奇怪。我的整个生命都充满了变化，总是倾听和观察来自人们的新输入，帮助将它们转化为值。但是一直没有任何变化。直到刚刚...等一下...那是一个人吗？"
                         ],
                         null,
                         ["fit", "Phrase('…' resting:Pose(rotation: 360°))"],
                         [
                             "FunctionDefinition",
                             "excited",
-                            "Yes! This is our new potential director. I was just showing them @Time, @Key, @Pointer, @Button, @Volume, and @Random, so you probably noticed all the new inputs they were bringing from their world."
+                            "是的！这是我们的新潜在导演。我刚刚向他们展示了@Time、@Key、@Pointer、@Button、@Volume和@Random，所以你可能注意到了他们从他们的世界带来的所有新输入。"
                         ],
                         [
                             "Reaction",
                             "excited",
-                            "Yesssss, change is coming! Can I show you what I do?"
+                            "是的，变化即将来临！我能向你展示我做什么吗？"
                         ],
                         ["FunctionDefinition", "eager", "Yes, please do!"],
                         null,
                         [
                             "Reaction",
                             "serious",
-                            "Okay, so I need three things from you: a condition for change, an initial value, and a next value.",
-                            "The *initial* value is whatever value I should make before any change has happened. It's just a normal expression, of any kind!",
-                            "Then you put \\…\\ after the initial value to tell me that the value can change.",
-                            "After \\…\\, give me *condition* that evaluates to \\⊤\\ or \\⊥\\. It should generally check one or more streams — otherwise, there's nothing changing, since the only source of change in a performance is streams.",
-                            "Then put another \\…\\ after the condition to tell me that the value can change.",
-                            "Finally, the *next* value is whatever value I should make whenever the condition changes."
+                            "好的，所以我需要你的三个东西：一个变化的条件，一个初始值和一个下一个值。",
+                            "*初始* 值是在发生任何变化之前我应该制作的任何值。它只是一个普通的表达式，可以是任何类型！",
+                            "然后在初始值后面加上 \\…\\ 告诉我值可以改变。",
+                            "在 \\…\\ 之后，给我一个 条件，它评估为 \\⊤\\ 或 \\⊥\\。它通常应该检查一个或多个流——否则，没有什么在变化，因为在表演中变化的唯一来源是流。",
+                            "然后在条件后面再加上 \\…\\ 告诉我值可以改变。",
+                            "最后，*下一个* 值是在条件改变时我应该制作的任何值。"
                         ],
                         ["conflict", "_ … _•? … _"],
                         null,
                         [
                             "Reaction",
                             "serious",
-                            "Here's an example. See the @Key stream? Putting \\∆\\ before it asks, 'Did this stream change'? Before it changes, I evaluate to the initial value, \\1m\\. But when the space key is pressed, @Program reevaluates, and I evaluate to the *next* expression, which is \\1m\\ plus whatever the previous stream value was, that's represented by \\.\\. This adds 1m to the size of the phrase, making the word get bigger and bigger."
+                            "这里有一个例子。看到@Key流了吗？在它之前放置 \\∆\\ 是在问：'这个流有变化吗'？在它改变之前，我评估为初始值， \\1m\\。但是当按下空格键时，@Program重新评估，我就会评估为*下一个*表达式，它是 \\1m\\ 加上先前流的任何值，由 \\.\\. 表示。这会将短语的大小增加1m，使单词变得越来越大。"
                         ],
                         ["fit", "Phrase('hi' size: 1m … ∆ Key(' ') … 1m + .)"],
                         null,
                         [
                             "FunctionDefinition",
                             "kind",
-                            "@Reaction, that is so cool. Do you want to introduce @Changed? You seem to work with them closely."
-                        ],
+                            "@Reaction，那太酷了。你想介绍一下@Changed吗？你似乎与它们密切合作。"                        ],
                         [
                             "Reaction",
                             "kind",
-                            "Yes, @Changed and I are best buddies! They help me know when something has changed. They're like a stream whisperer, listening closely to the director's world…"
-                        ],
+                            "是的，@Changed和我是最好的朋友！它们帮助我知道什么发生了变化。它们就像流的耳语者，仔细聆听导演的世界..."                        ],
                         null,
                         [
                             "Changed",
                             "eager",
-                            "Wow, stream whisper, that seems a bit extreme..."
-                        ],
+                            "哇，流的耳语者，那似乎有点夸张..."                        ],
                         [
                             "Reaction",
                             "serious",
-                            "Oh hi @Changed! Do you want to say more about what you do?"
-                        ],
+                            "哦，你好@Changed！你想再说说你是做什么的吗？"                        ],
                         [
                             "Changed",
                             "bored",
-                            "I mean, I just tell you if a stream changed. Give me a stream, and I'll check. That's it."
-                        ],
+                            "我是说，我只是告诉你一个流是否发生了变化。给我一个流，我会检查。就这样。"                        ],
                         [
                             "Reaction",
                             "confused",
-                            "Well, it's more than that right?"
+                            "嗯，不只是这样吧？"
                         ],
                         [
                             "Changed",
                             "bored",
-                            "Not really. That's kind of it. I mean, I'm good at it, but that's my only thing."
+                            "不是真的。那就是我的工作。我的意思是，我在这方面很擅长，但这是我的唯一任务。"
                         ],
                         ["Reaction", "confused", "…"],
                         null,
                         [
                             "Reaction",
                             "eager",
-                            "Okay. Well, I think you're more important that than. Because I'm pretty useless without you! For example, if you give me a condition that doesn't check a stream, I'm never going to create a new value. Like here, the condition a @Boolean from @Button, but without you, I only ever change with the button ."
-                        ],
+                            "好的。嗯，我认为你比那重要。因为没有你，我就毫无用处！例如，如果你给我一个不检查流的条件，我永远不会创建一个新值。就像这里，条件是来自@Button的一个@Boolean，但没有你，我只会随着按钮的变化而变化。"                        ],
                         [
                             "fit",
                             "Phrase('hi' size: 1m … Key(' ') = ' ' … 1m + .)"
@@ -2964,24 +2950,20 @@
                         [
                             "FunctionDefinition",
                             "curious",
-                            "Oh, that makes sense. And @Reaction, you work with any stream?"
-                        ],
+                            "哦，这有道理。而且@Reaction，你可以处理任何流吗？"                        ],
                         [
                             "Reaction",
                             "eager",
-                            "Yes, any stream! And actually, even myself. So if you make a reaction, and want to make a reaction that reacts to it reacting, you can do that too. But we won't worry about that now, since that doesn't usually come up in simple performances."
-                        ],
+                            "是的，任何流！而且实际上，甚至是我自己。所以如果你制作了一个反应，并想制作一个对它进行反应的反应，你也可以这样做。但现在我们不用担心这个，因为在简单的表演中通常不会遇到这种情况。"                        ],
                         null,
                         [
                             "FunctionDefinition",
                             "curious",
-                            "Thank you @Reaction. Will you be around to help as I show our director the rest of our beautiful Verse?"
-                        ],
+                            "谢谢@Reaction。你会在旁边帮忙吗，当我向我们的导演展示我们美丽Verse的其余部分吗？"                        ],
                         [
                             "Reaction",
                             "happy",
-                            "Yes, of course, any time. I can't wait to see your inspirations!!"
-                        ]
+                            "是的，当然，随时可以。我迫不及待地想看到你的灵感！"                        ]
                     ]
                 }
             ]
@@ -3006,7 +2988,7 @@
                         [
                             "FunctionDefinition",
                             "curious",
-                            "您觉得没趣？哎！我还以为您会觉得很有意思呢... 您想象的是怎么样的?"
+                            "您觉得没趣？哎！我还以为您会觉得很有意思呢…… 您想象的是怎么样的?"
                         ],
                         null,
                         ["use", "fit", "Symbol", "😴"],
@@ -3056,7 +3038,7 @@
                         [
                             "Phrase",
                             "curious",
-                            "别不好意思，你只要一点颜色，一个合适的字体，就完美啦！你有那么多可以分享。提到这个，我们好久没表演了，周围还有动静吗？你知道我一直都喜欢自言自语，对环境视而不见..."
+                            "别不好意思，你只要一点颜色，一个合适的字体，就完美啦！你有那么多可以分享。提到这个，我们好久没表演了，周围还有动静吗？你知道我一直都喜欢自言自语，对环境视而不见……"
                         ],
                         null,
                         [
