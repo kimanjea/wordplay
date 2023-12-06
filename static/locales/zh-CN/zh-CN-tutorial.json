@@ -4097,47 +4097,47 @@
                         [
                             "Bind",
                             "sad",
-                            "Yeah, hm. There are. Like, suppose we did this. See the problem? I highlighted it. This program defines \\veggies\\ after it's used, which really confuses me. Because things are evaluated in reading order, so like, we're reading this program and we get to the word \\veggies\\, and we're like, who's \\veggies\\? And only after the \\total\\ is \\veggies\\ like, “here I am!” and then the whole production falls apart."
+                            "是啊 有的 比如，假设我们这么做 看到问题了吗？我强调过了 这个程序在使用了这个词之后才定义它 这让我很困惑 因为事情是按照阅读顺序来评估的 所以就像，我们在读这个程序 然后我们读到了这个词 我们就会想，谁是 \\veggie\\？而只有在这个词出现之后 我们才会想 然后整个节目就崩塌了"
                         ],
                         [
                             "conflict",
-                            "fruits: 5",
-                            "total: fruits + veggies",
-                            "veggies: 3",
-                            "total"
+                            "水果: 5",
+                            "总计: 水果 + 蔬菜",
+                            "蔬菜: 3",
+                            "总计"
                         ],
                         null,
                         [
                             "Bind",
                             "serious",
-                            "Or, like here's an example where we give two different values the same name. And so we evaluate \\5\\, and name it \\fruits\\, and then we evaluate \\10\\… and then we name it \\fruits\\?? Like, there's already a \\fruits\\, so which \\fruits\\ are you talking about? Because see, once you name a value, you can't give it a new value. That name and value are bound together, until @Program is done evaluating. We don't want anyone getting confused about who is who."
+                            "或者，就像这里的一个例子，我们给两个不同的值起了相同的名字。所以我们评估 \\5\\，并将其命名为 \\fruits\\，然后我们评估 \\10\\…然后我们将其命名为 \\fruits\\?? 就像，已经有一个 \\fruits\\，所以你说的是哪个 \\fruits\\？因为一旦你给一个值起了名字，你就不能给它一个新的值。那个名字和值将在 @Program 完成评估之前绑定在一起。我们不希望有人对谁是谁感到困惑。"
                         ],
                         [
                             "conflict",
-                            "fruits: 5",
-                            "fruits: 10",
-                            "total: fruits + fruits",
-                            "total"
+                            "水果: 5",
+                            "水果: 10",
+                            "总计: 水果 + 水果",
+                            "总计"
                         ],
                         null,
                         [
                             "Bind",
                             "kind",
-                            "I guess there's one last one. Say you have this. See what happened here? We named \\veggies\\, but then we never used it. That's usually a bad sign that you're leaving someone out, or didn't use the right name. Like, maybe you're just not using it, but then why is it there?"
+                            "我想最后还有一个。假设你有这个。看这里发生了什么？我们命名了 \\veggies\\，但是我们从未使用过它。这通常是一个坏迹象，表明你漏掉了某个人，或者没有使用正确的名字。比如，也许你只是没有使用它，但是为什么它在这里呢？"
                         ],
-                        ["conflict", "fruits: 5", "veggies: 10", "fruits + 3"],
+                        ["conflict", "水果: 5", "蔬菜: 10", "水果 + 3"],
                         null,
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "This is so helpful @Bind, this is so great. Are you sure there's nothing else?"
+                            "这对 @Bind 非常有帮助，太好了。你确定没有其他事吗？"
                         ],
                         [
                             "Bind",
                             "eager",
-                            "Oh! Yes, something really important. So like, one name is good, right? But sometimes, multiple names is better? Like if you wanted to name something in multiple person languages, so everyone can read it? So like, say you wanted to say fruit in multiple languages.",
-                            "Put the text cursor on the name \\fruit\\. See how there are actually three names in there, and they each have a two letter tag like \\/en\\? Names hide if they're in a language that you haven't chosen.",
-                            "Go down to the ⚙ and choose Spanish, for example, and you'll see the English and Spanish names. So like, one value, but three names, and you can use any of them to get that value. If you tell us what languages you want, we'll show whichever ones are available. The more languages the better though, since there are a lot of people in the world who read a lot of different languages!"
+                            "噢！是的，有一件非常重要的事情。就像，一个名字很好，对吧？但有时，多个名字更好？比如，如果你想用多种语言命名某样东西，这样每个人都能读懂？就像，比如你想用多种语言说水果。",
+                            "将文本光标放在 \\fruit\\ 的名称上。看到里面实际上有三个名称，它们每个都有一个类似于 \\/en\\ 的两个字母的标签？如果名称处于你没有选择的语言中，名称将隐藏。",
+                            "转到⚙，选择例如西班牙语，然后你会看到英语和西班牙语的名称。就像，一个值，但有三个名称，你可以使用其中任何一个来获取该值。如果告诉我们你想要的语言，我们会显示可用的语言。语言越多越好，因为世界上有很多人阅读很多不同的语言！"
                         ],
                         ["conflict", "fruit/en,fruta/es,水果/zh: 5"],
                         null,
@@ -4145,12 +4145,12 @@
                         [
                             "FunctionDefinition",
                             "curious",
-                            "You know, @Bind works with a lot of other characters, including @Evaluate — you saw them when you name a @FunctionDefinition input, as in \\Pose(color: _)\\ — and we're going to meet a few of these other folks. @Bind, will you be around to demo?"
+                            "你知道，@Bind 与许多其他字符一起使用，包括 @Evaluate —— 当你给 @FunctionDefinition 输入一个 @Pose(color: _) 时就会看到它们 —— 我们将要遇到其他一些人。@Bind，你会在这里进行演示吗？"
                         ],
                         [
                             "Bind",
                             "excited",
-                            "Um, yeah! Now that the silence is breaking, let's name values all day!"
+                            "嗯，是的！现在沉默被打破了，让我们整天都给值命名吧！"
                         ]
                     ]
                 },
@@ -4164,61 +4164,61 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "So there's a character that's been here all along that you haven't met yet, But they've been hiding… They work super closely with @Bind and many other folks, so I thought we should talk to them next. @Block, would you come out?"
+                            "所以有一个角色一直在这里，但你还没有见过，但他们一直在躲藏……他们与 @Bind 和许多其他人密切合作，所以我想我们应该接下来与他们交谈。@Block，你能出来吗？"
                         ],
-                        ["Block", "shy", "… hi"],
+                        ["Block", "shy", "… 你好"],
                         null,
                         ["fix", "Phrase('()' 2m)"],
                         [
                             "FunctionDefinition",
                             "kind",
-                            "Hi @Block! How are you?"
+                            "嗨 @Block！ 你好吗？"
                         ],
-                        ["Block", "shy", "… mmm, good?"],
+                        ["Block", "shy", "… 嗯，好？"],
                         null,
                         ["fix", "Phrase('()' 3m)"],
                         [
                             "FunctionDefinition",
                             "kind",
-                            "I have a new friend for you to meet. They might be our next director."
+                            "我有一个新朋友要让你见见。 他们可能是我们的下一位导演。"
                         ],
-                        ["Block", "shy", "… hi …"],
+                        ["Block", "shy", "… 嗨 …"],
                         null,
                         ["fix", "Phrase('()' 4m)"],
                         [
                             "FunctionDefinition",
                             "kind",
-                            "We were just meeting @Bind and we didn't get a chance to talk about how you two are best of friends!"
+                            "我们刚刚见到了 @Bind，我们没有机会谈谈你们两个是最好的朋友！"
                         ],
-                        ["Block", "shy", "… yeah, @Bind!"],
+                        ["Block", "shy", "… 是的，@Bind！"],
                         null,
                         ["fix", "Phrase('()' 1m)"],
                         [
                             "FunctionDefinition",
                             "curious",
-                            "Do you want to share what you do together?"
+                            "你想分享一下你们一起做什么吗？"
                         ],
-                        ["Block", "shy", "… can you?"],
+                        ["Block", "shy", "… 你能吗？"],
                         null,
                         [
                             "FunctionDefinition",
                             "kind",
-                            "Yes, of course! So, it turns out that @Program is mostly just a @Block. It's just @Block without parentheses. But you can put @Block with parentheses anywhere in a program. For example, you can use @Block to clarify the order of evaluating math. Here, @BinaryEvaluate evaluates \\1\\, then evaluates @Block, then they are added together. @Block, did I get that right?"
+                            "是的，当然可以！原来 @Program 主要就是一个 @Block。 它就是没有括号的 @Block。 但是你可以在程序的任何地方使用带有括号的 @Block。 例如，你可以使用 @Block 来澄清数学计算的顺序。 这里，@BinaryEvaluate 评估 \\1\\，然后评估 @Block，然后它们相加。 @Block，我说得对吗？"
                         ],
                         ["edit", "1 + (2 · 3)"],
-                        ["Block", "shy", "… yeah!"],
+                        ["Block", "shy", "… 是的！"],
                         null,
                         [
                             "FunctionDefinition",
                             "kind",
-                            "And so another thing @Block can do is something you've already seen. @Block let's you name things with @Bind. But any names defined in the @Block are only defined between the parentheses. Not before, and not after. For example, check this out. \\a\\ is defined as \\1\\, then a block starts, and \\b\\ is defined as \\2\\, then \\c\\ is defined as their sum. What @Block evaluates to whatever value is last in its list of expressions. That's @Bind, which evaluates to whatever \\c\\ is, which is \\3\\. Right?"
+                            "@Block 还可以做另一件你已经看过的事情。 @Block 允许你用 @Bind 命名事物。 但是在 @Block 中定义的任何名称只在括号之间定义。 不在之前，也不在之后。 例如，看看这个。 \\a\\ 被定义为 \\1\\，然后开始一个块，\\b\\ 被定义为 \\2\\，然后 \\c\\ 被定义为它们的总和。 @Block 评估为其表达式列表中最后一个值。 那就是 @Bind，它评估为 \\c\\ 是什么，就是 \\3\\。 对吧？"
                         ],
                         ["conflict", "a: 1", "(", "  b: 2", "  c: a + b", ")"],
                         null,
                         [
                             "FunctionDefinition",
                             "serious",
-                            "But what if we wanted to access \\c\\ outside the @Block? You can't. \\c\\ is only defined inside the @Block, but not outside it. Is that right @Block?"
+                            "但是如果我们想在 @Block 外部访问 \\c\\ 怎么办？不行。 \\c\\ 只在 @Block 内部定义，而不在外部定义。 @Block，对吗？"
                         ],
                         [
                             "conflict",
@@ -4231,18 +4231,18 @@
                         [
                             "Block",
                             "shy",
-                            "… yeah, nothing outside me can see the names inside me. \\c\\ only exists insideeeee"
+                            "… 是的，我外面什么都看不到。 \\c\\ 只在我的内部存在"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "And one more thing, I think? Since @Block is a list of expressions, and it only evaluates to the last expression in the list, any expressions in the list that aren't a @Bind are basically ignored. For example, here, all of the arithmetic before the last one is ignored. The \\3\\, the \\5\\, the \\7\\, all ignored, and @Block just evaluates to the last one, \\9\\. Did I get that right, @Block?"
+                            "还有一件事，我想？由于 @Block 是一个表达式列表，它只评估为列表中最后一个表达式，列表中的任何不是 @Bind 的表达式基本上都会被忽略。 例如，在这里，最后一个之前的所有算术都被忽略。 \\3\\、\\5\\、\\7\\，全部被忽略，@Block 只评估为最后一个 \\9\\。 我说的对吗，@Block？"
                         ],
                         [
                             "Block",
                             "shy",
-                            "… mhm. Just the last one. The others… I don't know what they're for!!"
+                            "… 嗯。只有最后一个。其他的… 我不知道它们是做什么用的！！"
                         ],
                         [
                             "conflict",
@@ -4261,121 +4261,20 @@
                         [
                             "FunctionDefinition",
                             "curious",
-                            "Is there anything else you wanted to share, @Block?"
+                            "还有其他你想分享的吗，@Block？"
                         ],
                         [
                             "Block",
                             "curious",
-                            "… can we make something? Can I help?"
+                            "… 我们可以做点什么吗？我能帮忙吗？"
                         ],
                         [
                             "FunctionDefinition",
                             "kind",
-                            "I'm so curious too! But I'm sure our director will decide on their own time. Inspiration comes at the most unexpected of times!"
+                            "我也很好奇！但我相信我们的导演会在适当的时候决定。 灵感总是在最意想不到的时候出现！"
                         ]
                     ]
-                },
-                {
-                    "title": "Stage directions",
-                    "subtitle": "Functions",
-                    "concept": "FunctionDefinition",
-                    "performance": ["use", "fit", "Symbol", "ƒ"],
-                    "lines": [
-                        ["use", "fit", "Symbol", "☺️"],
-                        [
-                            "FunctionDefinition",
-                            "happy",
-                            "I'm so happy we've found everyone, and that you've been able to meet all of them. Everyone is so different, aren't they? But also so interesting? I feel like we're a family, where everyone is unique in their own way, but that our differences together is what makes us strong. What do you think of everyone?"
-                        ],
-                        null,
-                        ["use", "fit", "Symbol", "🙈"],
-                        [
-                            "FunctionDefinition",
-                            "curious",
-                            "Me? Well, I'm nothing special. I just like being behind the scenes, helping out, showing everyone how they're special. I guess I hadn't even thought about talking about myself. I guess we can talk a bit about me."
-                        ],
-                        null,
-                        ["use", "fit", "Symbol", "ƒ"],
-                        [
-                            "FunctionDefinition",
-                            "serious",
-                            "I guess let's start with what you've already seen. You know how every value has different functions that you can evaluate on them? Like numbers know how to @Number/add, and a text value knows how to check if it @Text/has some text, or @Set knows how to check if it has a certain value? Well, I'm the one that defines those functions. I mean, I don't have the inspiration to create them myself — that's what directors like you do — but I define the inputs a function accepts, the names it has, and the expression that uses the inputs to evaluate to an output value."
-                        ],
-                        null,
-                        [
-                            "FunctionDefinition",
-                            "excited",
-                            "Here's a super simple example. The simplest, actually! This defines a function that always evaluates to the number \\1\\. That's it. It's not very useful, is it? It has no name, it takes no inputs, and it always evaluates to \\1\\.",
-                            "You can also see that @Program evaluated to one of me, a @FunctionDefinition. That's right, @FunctionDefinition are values too! I don't know why anyone would ever make such a useless function, but as I said, I'm not the one with inspiration, you are."
-                        ],
-                        ["edit", "ƒ() 1"],
-                        null,
-                        [
-                            "FunctionDefinition",
-                            "serious",
-                            "So here's a more useful example. You know odd and even numbers? I once had a director that wanted to check if a number was even (divisible by 2, I think that means?), and so they wrote this. This is a function called \\even\\ that takes a single number called… \\number\\. You need to tell me what kind of value each input is, so @Evaluate can make sure that anything evaluating the function is sending the right kind of value. Then, it takes the number, divides it by two, gets the remainder (with the @Number/remainder), and then checks if the remainder is equal to \\0\\, with @Number/equal. So the whole function ends up either evaluating to \\⊤\\ or \\⊥\\. For example, this evaluation of even evaluated to \\⊥\\ because \\3\\ is odd. Try using the rewind buttons to see how it works."
-                        ],
-                        [
-                            "edit",
-                            "ƒ even(number•#) (number % 2) = 0",
-                            "even(3)"
-                        ],
-                        null,
-                        [
-                            "FunctionDefinition",
-                            "eager",
-                            "You can also tell me what kind of value I should evaluate to. See how we added \\•\\? after the list of inputs? That says “the function's expression should evaluate to a \\⊤\\ or \\⊥\\.” But see how we complain about it? We don't know if the function should be a \\⊤\\ or \\⊥\\ or whatever kind of value you returned, so the show ends."
-                        ],
-                        ["conflict", "ƒ even(number•#)•? (number % 2) + 0"],
-                        null,
-                        [
-                            "FunctionDefinition",
-                            "serious",
-                            "Functions can be as complex as you want. You can use simple expressions or @Block, and even make functions inside of functions. For example, check out this function a former director wrote. It uses @Block with many @Bind to figure out how many unique vowels a word has. (I think they were trying to figure out if a word was “complicated” or something). See how it has a lot of lines? Well, this still only has one expression: a single @Block, and the @Block has all the lines. And like any @Block, the last line is what it evaluates to: the total number of unique vowels. Everything else — like the first line, which converts the text into a list of letters, then the list of letters into a set — is just preparation for summing those counts in the middle."
-                        ],
-                        [
-                            "edit",
-                            "ƒ vowels(word•'') (",
-                            "  unique: word → [“”] → {}",
-                            "  a: unique{'a'} ? 1 0",
-                            "  e: unique{'e'} ? 1 0",
-                            "  i: unique{'i'} ? 1 0",
-                            "  o: unique{'o'} ? 1 0",
-                            "  u: unique{'u'} ? 1 0",
-                            "  a + e + i + o + u",
-                            ")",
-                            "vowels('hello')"
-                        ],
-                        null,
-                        [
-                            "FunctionDefinition",
-                            "serious",
-                            "There's one more thing to show. I guess it's important, because everyone is so excited about it! You know how you can make a function and then evaluate it? Well since the functions I make are values, you can also give them as an input to another function. Here's an example. Say you had a list of numbers and you just wanted the even numbers in it. @List has this function called @List/filter that takes a function as an input and uses the function on each value in the list to decide whether to keep it. Let's make a list of numbers and give @List/filter the \\even\\ function we made earlier as an input. See what happens? We just get the even numbers. Want to try changing it so that it gives odd numbers instead? Maybe try changing the function somehow?"
-                        ],
-                        [
-                            "edit",
-                            "ƒ even(number•#)•? (number % 2) = 0",
-                            "[ 1 2 3 4 5 6 7 8 ].filter(even)"
-                        ],
-                        null,
-                        [
-                            "FunctionDefinition",
-                            "excited",
-                            "There are so many functions that take functions as input. @List has them, @Set has them, @Map has them. You can even make your own!"
-                        ],
-                        [
-                            "fit",
-                            "Group(Grid(3 2) [Phrase('translate') Phrase('filter') Phrase('combine') Phrase('find') Phrase('sort') Phrase('until')])"
-                        ],
-                        null,
-                        ["use", "fit", "DarkVoid"],
-                        [
-                            "FunctionDefinition",
-                            "sad",
-                            "I dunno. Sometimes, I see why people say they're so grateful for what I do. Other times, I feel like it's really directors like you that are where the magic really is. That makes me feel sometimes like I'm just a hollow shell for the brilliance of people…"
-                        ]
-                    ]
-                },
+                },                
                 {
                     "title": "Set design",
                     "subtitle": "Structures",
@@ -4386,7 +4285,7 @@
                         [
                             "FunctionDefinition",
                             "sad",
-                            "There are just a few more characters I'd like you to meet. Next is the most sophisticated character I know, and in a way, a kind of leader. They help organize all of us, set the foundations of a performance, and really just make everything a lot more orderly. You are our director, of course, but they're kind of like the one person everyone goes to to keep a show in order. I think they could be pretty important in any show you put on."
+                            "还有一些角色我想让你见见。接下来是我认识的最复杂的角色，也算是一种领导者。他们帮助组织我们所有人，奠定表演的基础，真的让一切都变得更有秩序。当然，你是我们的导演，但他们有点像每个人都去找以保持秩序的人。我认为在你上演的任何节目中，他们可能非常重要。"
                         ],
                         null,
                         [
@@ -4396,23 +4295,23 @@
                         [
                             "FunctionDefinition",
                             "curious",
-                            "@StructureDefinition, are you there?"
+                            "@StructureDefinition，你在吗？"
                         ],
                         [
                             "StructureDefinition",
                             "curious",
-                            "@FunctionDefinition… my friend. It's been quiet, has it not? Where has everyone been?"
+                            "@FunctionDefinition… 朋友。一切都很安静，是吗？大家都去哪了？"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "sad",
-                            "The silence. It's gotten to all of us. Everyone is okay, and I've found almost everyone. But it has been rough for some. How have you fared?"
+                            "寂静。它影响到了我们所有人。每个人都还好，我几乎找到了所有人。但对于一些人来说，情况很艰难。你怎么样？"
                         ],
                         [
                             "StructureDefinition",
                             "sad",
-                            "… Who is your friend? Is that a person?"
+                            "… 你的朋友是谁？那是一个人吗？"
                         ],
                         [
                             "fit",
@@ -4422,13 +4321,13 @@
                         [
                             "FunctionDefinition",
                             "eager",
-                            "Oh, yes, I'm sorry, this is our new director! They've come to inspire and guide us, to share their stories, ideas, and imaginings. They've broken the silence!"
+                            "哦，是的，抱歉，这是我们的新导演！他们来激励和引导我们，分享他们的故事、想法和想象。他们打破了寂静！"
                         ],
                         [
                             "StructureDefinition",
                             "eager",
-                            "That is incredible. And quite a relief. It's nice to meet you director-person. I'm here and ready to serve.",
-                            "@FunctionDefinition… it has been hard. You, @Evaluate, everyone really — I didn't realize how much I've depended on all of you. To have purpose, to play, to have community. I didn't know that we could lose each other like that. Without anyone to organize, I felt like I could only organize myself, which felt meaningless."
+                            "真是令人难以置信。也是一种解脱。很高兴见到你，导演。我在这里，随时为您效劳。",
+                            "@FunctionDefinition… 情况很艰难。你，@Evaluate，每个人真的——我没有意识到我有多依赖你们所有人。有了目的，有了玩耍的机会，有了社区。我不知道我们会失去对方。没有人组织，我感觉只能组织自己，这感觉毫无意义。"
                         ],
                         [
                             "fit",
@@ -4438,9 +4337,9 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "You're never empty, @StructureDefinition, even when you're alone. e're all here, even if we can't be with each other. And now that the silence is broken, we can be."
+                            "@StructureDefinition，即使你独自一人，你永远不会是空的。即使我们不能在一起，我们都在这里。现在寂静被打破了，我们可以在一起了。"
                         ],
-                        ["StructureDefinition", "happy", "We can, can't we?"],
+                        ["StructureDefinition", "happy", "我们可以，是吧？"],
                         [
                             "fit",
                             "Phrase('•' resting:Sequence({0%: Pose(offset: Place(0m 0.25m)) 50%: Pose(offset: Place(0m 0m)) 100%: Pose(offset: Place(0m 0.25m))} 3s))"
@@ -4449,9 +4348,9 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "What do you think, are you ready to reunite with everyone? To put on whatever performance our sapling director has in mind?"
+                            "你认为呢，你准备好与大家团聚了吗？为我们的新导演上演任何表演？"
                         ],
-                        ["StructureDefinition", "eager", "I think so."],
+                        ["StructureDefinition", "eager", "我想是的。"],
                         [
                             "fit",
                             "Phrase('•' resting:Sequence({0%: Pose(offset: Place(0m 0.25m)) 50%: Pose(offset: Place(0m 0m)) 100%: Pose(offset: Place(0m 0.25m))} 1.5s))"
@@ -4460,17 +4359,17 @@
                         [
                             "FunctionDefinition",
                             "curious",
-                            "Do you think you could help our director here learn a bit more about what you do?"
+                            "你觉得你能帮助我们的导演更多地了解你做什么吗？"
                         ],
                         [
                             "StructureDefinition",
                             "shy",
-                            "Yes. Yes… I've had a lot of time to think about my purpose in the quiet. And I guess I've realized that what I really do is give groups of things identity. For example, I know you've met ƒ, but have you @Bind?"
+                            "是的。是的……在寂静中，我有很多时间思考我的目的。我猜我意识到我真正做的是赋予一群事物身份。例如，我知道你见过 ƒ，但你见过 @Bind 吗？"
                         ],
                         [
                             "FunctionDefinition",
                             "excited",
-                            "Yes! We just met @Bind earlier, and @Block."
+                            "是的！我们刚刚见过 @Bind 和 @Block。"
                         ],
                         [
                             "fix",
@@ -4480,7 +4379,7 @@
                         [
                             "StructureDefinition",
                             "eager",
-                            "Okay. Well, what I do is bring together values and functions, making a tidy little container for a bunch of related things. For example, imagine you wanted to make a little marquee that loops through a series of messages. A previous director made one of these and wanted these messages to show."
+                            "好的。我所做的是将值和函数聚集在一起，为一堆相关的事物创建一个整洁的容器。例如，想象一下，你想制作一个小型的跑马灯，循环显示一系列消息。以前的导演制作了一个，并希望这些消息显示出来。"
                         ],
                         [
                             "edit",
@@ -4496,7 +4395,7 @@
                         [
                             "StructureDefinition",
                             "serious",
-                            "Then they had the problem of how the performance would remember which message they were on. They realized they needed some way of remembering the index in the list. This is a good start, but it only shows the first message."
+                            "然后他们遇到了一个问题，表演如何记住他们在哪条消息上。他们意识到他们需要一种在索引到达末尾时记住消息索引的方法。这是一个好的开始，但它只显示第一条消息。"
                         ],
                         [
                             "edit",
@@ -4506,7 +4405,7 @@
                             "    'Cat mom.'",
                             "    'Tuxie crush'",
                             "    'Lap cat'",
-                            "  ]",
+                            "]",
                             "index: 1",
                             "Phrase(messages[index])"
                         ],
@@ -4514,7 +4413,7 @@
                         [
                             "StructureDefinition",
                             "excited",
-                            "Then they remembered @Reaction, which can be used to respond to stream changes. They wanted the message to change every two sections, so they made @Time stream that ticks every 2 seconds, and used @Reaction to increment the next index each time. This @Reaction says start at \\1\\, and when the time changes every \\2000ms\\, evaluate to the previous value of \\index + 1\\. This way, \\index\\ increases by \\1\\ every two seconds, changing the message shown. Yay, it works!"
+                            "然后他们想到了 @Reaction，可以用来响应流的变化。他们希望每两个部分更改一次消息，所以他们制作了一个 @Time 流，每隔 2 秒进行一次刻度，并使用 @Reaction 来每次递增下一个索引。这个 @Reaction 表示从 \\1\\ 开始，当时间每 \\2000ms\\ 更改一次时，评估为 \\index + 1\\ 的前一个值。这样，\\index\\ 每两秒增加 \\1\\，改变显示的消息。太棒了，它起作用了！"
                         ],
                         [
                             "edit",
@@ -4532,7 +4431,7 @@
                         [
                             "StructureDefinition",
                             "curious",
-                            "Shall we add some flair? Let's make another phrase that is kind of a reflection below, like a shadow. Impressive, right?"
+                            "我们要添加一些风格吗？让我们制作另一个短语，就像下面的反射一样，像影子一样。令人印象深刻，对吧？"
                         ],
                         [
                             "edit",
@@ -4555,8 +4454,7 @@
                         [
                             "StructureDefinition",
                             "serious",
-                            "Now, all of that works. And we could just leave it this way. But it is also a bit hard to read and understand. That's partly because we repeat ourselves: \\messages[index]\\ appears twice, once in each phrase. And the @Reaction is very long. What can we do to simplify it? That's how I can help. I tidy things, to make them easier to understand, by giving reusable concepts names. So imagine instead of all of these @Bind, we instead make one of me, and name it \\Marquee\\? That's what we do first. \\Marquee\\'s job is to store the messages, but also to have a function for advancing to the next message \\next()\\ and a function for getting the current message \\now()\\?",
-                            "Then, we can use Marquee in the reaction. Now it just says the initial value is a marquee with the five messages and the next value, after each clock tick, is the next message. Simpler, right? That's because all of the logic for next messages is in \\next()\\, which just makes a new \\Marquee\\ with the same messages, but an updated index. We also get some benefits in the two @Phrase. Instead of them having to refer to the messages and the index like before, we can just say \\marquee.now()\\, which gets the current message in the list."
+                            "现在，所有这些都有效。我们可以把它留在这里。但它也有点难以阅读和理解。部分原因是因为我们重复自己：\\messages[index]\\ 出现两次，每个短语中都有一次。而且 @Reaction 非常长。我们可以做些什么来简化它？这就是我可以帮助的地方。我整理事物，使它们更容易理解，给可重复使用的概念起个名字。所以，想象一下，我们不是用所有这些 @Bind，而是制作了一个 \\Marquee\\？这是我们首先要做的。\\Marquee\\ 的工作是存储消息，还有一个用于进入下一条消息的函数 \\next()\\ 和一个用于获取当前消息的函数 \\now()\\？"
                         ],
                         [
                             "edit",
@@ -4582,12 +4480,12 @@
                         [
                             "FunctionDefinition",
                             "curious",
-                            "That's wonderful @StructureDefinition! But I have to say, that does seem like a lot of extra work. Why spend all the time tidying?"
+                            "太棒了，@StructureDefinition！但我必须说，这看起来确实是很多额外的工作。为什么要花那么多时间整理呢？"
                         ],
                         [
                             "StructureDefinition",
                             "serious",
-                            "Ah, it's really about change. It is a bit more code now, but what if we decided to change \\Marquee\\ in some way? Like what if we wanted to make it so that the list of messages reverses each time it gets to the end? In the old version without me, there's no easy way to do that, because we'd have to reverse the list of messages when the index reaches the end. Since @Bind can't change after it's been set, it would be hard. But since we made \\Marquee\\, the change is easy. We just change the \\next\\ function to make a \\Marquee\\ with a reversed list when the index is at the end, and then just incrementing when it's otherwise."
+                            "啊，这实际上与变化有关。现在的代码可能多一些，但如果我们决定以某种方式更改 \\Marquee\\，怎么办？比如说，如果我们想让消息列表每次到达末尾时都反转怎么办？在没有我的旧版本中，这就没那么容易，因为当索引到达末尾时，我们必须反转消息列表。由于 @Bind 一旦设置就无法更改，这将是困难的。但由于我们制作了 \\Marquee\\，更改变得很容易。我们只需在索引到达末尾时更改 \\next\\ 函数，使其制作一个带有反转列表的 \\Marquee\\，否则只需递增。"
                         ],
                         [
                             "edit",
@@ -4616,35 +4514,35 @@
                         [
                             "FunctionDefinition",
                             "surprised",
-                            "Ohh, I see, so by making a @StructureDefinition to store values and @FunctionDefinition that are related to each other, it makes it easier to change things later, if you change your mind."
+                            "哦，我明白了，通过创建一个@StructureDefinition来存储值和与之相关的@FunctionDefinition，如果改变主意，那么以后更容易更改事物。"
                         ],
                         [
                             "StructureDefinition",
                             "happy",
-                            "Yes. Just like if you tidy your room, it makes it easier to find stuff later. Of course, you don't have to tidy your room to find stuff, it just makes finding stuff harder. The same with a performance: if you invest in tidying, changing things will be easier."
+                            "是的，就像整理房间一样，这样以后找东西就更容易。当然，你不一定非得整理房间才能找到东西，只是让找东西变得更困难。表演也是一样：如果你投入整理，改变事物就会更容易。"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "kind",
-                            "That makes a lot of sense. We are kind of an unruly bunch. Keeping us organized is probably a good idea, especially the more complicated a performance gets. Is there anything else you wanted to share?"
+                            "那很有道理。我们有点难搞。保持有条理可能是个好主意，特别是当表演变得越来越复杂时。你还有什么想分享的吗？"
                         ],
                         [
                             "StructureDefinition",
                             "eager",
-                            "Oh yes. You don't have to have any @FunctionDefinition in a @StructureDefinition. You can just have values. For example, you might want to just keep a bunch of data in one place. I know a lot of directors like making games, and it's really common for them to put all of the game state in a @StructureDefinition."
+                            "哦，是的。在@StructureDefinition中，你不一定非得有@FunctionDefinition。你可以只有值。例如，你可能想把一堆数据放在一个地方。我知道很多导演喜欢制作游戏，把所有的游戏状态都放在@StructureDefinition中非常普遍。"
                         ],
                         ["edit", "•Game(score•# lives•# level•#)"],
                         null,
                         [
                             "FunctionDefinition",
                             "kind",
-                            "Oh, that's right! And how do you get data out of a structure once you put it in?"
+                            "哦，对了！你把数据放进结构中后，怎么取出来？"
                         ],
                         [
                             "StructureDefinition",
                             "surprised",
-                            "Oh my, I forgot to explain that. You use a mini me, @PropertyReference. For instance, with that game example, see how we defined a Game @StructureDefinition, then make a \\Game\\ value with \\0\\ score, \\3\\ lives, and level \\1\\? To get the lives, we just say \\status.lives\\, and that will evaluate to \\3\\."
+                            "哦天啊，我忘了解释这一点。你需要用一个迷你版的我，@PropertyReference。例如，以游戏为例，看我们是如何定义一个Game @StructureDefinition的，然后创建一个\\Game\\值，其中\\0\\分，\\3\\命，和第\\1\\级？为了获得命，我们只需说\\status.lives\\，这将计算为\\3\\。"
                         ],
                         [
                             "edit",
@@ -4656,12 +4554,12 @@
                         [
                             "FunctionDefinition",
                             "happy",
-                            "Nice! So just the mini you to get values instead of you. But then how do you change the values?"
+                            "好极了！所以只需要一个迷你版的你来获取值而不是你。但是你怎么改变这些值呢？"
                         ],
                         [
                             "StructureDefinition",
                             "serious",
-                            "Remember how @Bind only lets you set a value, but not change it? The same is true for all the @Bind in me. So instead, you make a new structure that has the new value. For example, in this game, every time ticks changes, the player gets one more point in their score. Weird game, huh? So the initial \\Game\\ value starts as \\Game(0 3 1)\\, but then the next one is the \\Game\\'s old values, but with the score adding \\1\\."
+                            "记得@Bind只允许你设置一个值，但不能更改它吗？在我所有的@Bind中也是如此。所以你需要创建一个具有新值的新结构。例如，在这个游戏中，每次ticks变化时，玩家的分数都会增加一分。奇怪的游戏，是吧？所以初始的\\Game\\值是\\Game(0 3 1)\\，然后下一个是\\Game\\的旧值，但分数增加\\1\\。"
                         ],
                         [
                             "edit",
@@ -4672,7 +4570,7 @@
                         [
                             "StructureDefinition",
                             "eager",
-                            "It can get pretty annoying to have to repeat all of those old values if only one thing is changing, so @Bind and I came up with a neat trick to copy a @StructureDefinition value with a new value. See how it just kind of looks like a regular @Bind? The only difference is that it's on a @StructureDefinition instead of a single name, and every value of the @StructureDefinition is copied over, except for the modified one."
+                            "如果只有一件事情在改变，重复所有这些旧值可能会很烦人，所以@Bind和我想出了一个巧妙的小技巧，用一个新值复制@StructureDefinition值。看看它是不是看起来像一个普通的@Bind？唯一的区别是它在@StructureDefinition上而不是一个单一的名称上，@StructureDefinition的每个值都被复制过来，除了被修改的值。"
                         ],
                         [
                             "edit",
@@ -4687,13 +4585,14 @@
                         [
                             "FunctionDefinition",
                             "happy",
-                            "That's so neat! Okay, is there anything else?"
+                            "太棒了！好吧，还有什么吗？"
                         ],
                         [
                             "StructureDefinition",
                             "curious",
-                            "I think all we're missing is inspiration…"
+                            "我想我们唯一缺少的就是灵感了…"
                         ]
+                        
                     ]
                 },
                 {
