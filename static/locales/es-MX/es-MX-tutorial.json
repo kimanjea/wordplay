@@ -1807,39 +1807,44 @@
                             "curious",
                             "Maybe, @Set/difference?"
                         ],
-                        ["Set", "neutral", "Yes, @Set/difference.", ""],
+                        [
+                            "Set",
+                            "neutral",
+                            "Yes, @Set/difference.",
+                            "Cuando estamos evaluando un conjunto y nos pasan otro conjunto, remueve todos los elementos que estan en el cojunto dado, en el conjunto al que estamos evaluando(Hmm, esas son palabras muy confusas, pero esto es lo que quiero decir). Aqui estan un ejemplo. Mire el resultado es el conjuton que solo tienen \\{3}\\? Ese es el unico valor que queda despues de remover los valorers \\{ 1 2 }\\."
+                        ],
                         ["edit", "{ 1 2 3 }.difference({ 1 2 })"],
                         null,
                         [
                             "Set",
                             "eager",
-                            "You can also add and remove things from sets. This takes the set \\{1}\\, adds \\2\\ to it, then removes 1 from it, leaving \\{ 2 }\\."
+                            "Tu tambien puedes remover cosas de un conjueto. Este ejemplo recive el conjunto \\{1}\\, agrega \\2\\, y despues remueve el 1 dejando solo \\{1}"
                         ],
                         ["edit", "({ 1 } + 2) - 1"],
                         [
                             "Set",
                             "neutral",
-                            "There's lots more I can do thanks to @FunctionDefinition here. Come find me anytime you want to learn more!"
+                            "Hay muchas cosas que yo puedo hacer gracias a @DefincionDeFuncion. Ven encuentrame cuando tu quieras aprender mas!"
                         ],
                         null,
                         ["use", "fit", "DarkVoid"],
                         [
                             "Set",
                             "curious",
-                            "Oh, and hey @FunctionDefinition, you said you saw @Evaluate?"
+                            "Oh, y hola @DefincionDeFuncion, dijiste que viste a @Evaluar?"
                         ],
-                        ["FunctionDefinition", "sad", "Yes, I did."],
+                        ["FunctionDefinition", "sad", "Si lo vi!"],
                         null,
-                        ["Set", "curious", "How are they?"],
+                        ["Set", "curious", "Como esta?"],
                         [
                             "FunctionDefinition",
                             "sad",
-                            "They're okay. We're okay. I think… I don't know. Maybe it's been too long since we've danced together. When I'm around them, I feel like they don't see themselves, and so they don't see me."
+                            "Estan bien. Nosotros estamos bien talves... Yo no se. Talves a pasado mucho tiempo desde que bailamos juntos. Cuando estoy alrededor de ellos, siento que ellos no se ven a ellos mismos, y entonces no me ven a mi."
                         ],
                         [
                             "Set",
                             "curious",
-                            "It sounds like challenging time for you to. Maybe with our new director, we will dance again, and you two will find a way through."
+                            "Suena como que la estas pasando mal. Talves con nuetro nuevo director, volveremos a bailar otra vez, y ustedes dos van a encontrar su camino."
                         ]
                     ]
                 },
@@ -1858,68 +1863,64 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "There's just one more collection I'd like to introduce you to. They're a bit like @Set in some ways, and even use the same braces, but they're different in one important way: they're a connector. They're name is @Map."
+                            "Hay una coleccion mas que te quiero introducir. Ellos son un poco parecidos a un @Conjuto, ellos usan las misma llaves, pero son differentes en una manera muy importante: Ellos son como un conector. Su nombre es el @Mapa."
                         ],
                         [
                             "FunctionDefinition",
                             "curious",
-                            "@Map? Are you out there? The silence is breaking!"
+                            "@Mapa? Estas ahi? El silencio rompe!"
                         ],
                         null,
                         [
                             "Map",
                             "curious",
-                            "Breaking? Was it ever really silent? It's so good to see you @FunctionDefinition. Oh my, have you talked to @Evaluate? They were not in good shape last time we talked. You have to talk to them."
+                            "Rompe? De verdad hay tanto silencio? Es muy bueno verte @DefincionDeFuncion. Espera, has hablado con @Evaluar? No estaba en buena forma la ultima vez que hablamos. Tienes que hablarle."
                         ],
-                        [
-                            "FunctionDefinition",
-                            "sad",
-                            "Yes, I talked to them..."
-                        ],
+                        ["FunctionDefinition", "sad", "Si, yo le hable..."],
                         null,
                         [
                             "Map",
                             "curious",
-                            "Oh good. Okay, because there's some repair to do there my friend... How have you been?"
+                            "Ah que bien. Okay, porque hay reparaciones que hacer aqui mi amigo... Como as estado?"
                         ],
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "I've been okay, just a bit lonely, and a lot bored."
+                            "Yo e estado okay, solo un poco solo, y aburrido."
                         ],
                         null,
                         [
                             "Map",
                             "excited",
-                            "Oh, I'm so sorry to hear that. I've been staying connected with everyone during the silence and just figured you and @Evaluate had each other! I really would have been happy to talk any time. I've just been so busy keeping up with the gossip between @List and @Set, and that weird tension between @Conditional and @BooleanLiteral. Do you know what's going on between them?"
+                            "Oh no, lo siento mucho. Yo e estado en contacto con todo el mundo duranto el silencio, si apenas me di cuenta que tu y @Evaluar se tienen al uno al otro. Yo estaria contento de hablar en cualquier momento. Yo me e mantenido ocupado con el chisme que hay entre @Lista y @Conjunot, y eso estraña tension entre @Condicional y @BooleanoLiteral. Tu sabes que es lo que esta pasadando entre ellos?"
                         ],
                         [
                             "FunctionDefinition",
                             "surprised",
-                            "No, I don't at all. There's tension? And what gossip?"
+                            "No para nada. Hay tension? y cual es el chisme?"
                         ],
                         [
                             "Map",
                             "kind",
-                            "Kind of like the tension between you and @Evaluate?"
+                            "Un poco parecido a la tension entre tu y @Evaluar"
                         ],
                         ["FunctionDefinition", "sad", "…"],
                         null,
                         [
                             "Map",
                             "neutral",
-                            "Sorry. Maybe not in front of our guest here. You must be the new person everyone is talking about. I hear you're going to be our new director? What kind of fabulous ideas do you have in store for us? Singing? Dancing? As long as it's bright, playful, and strange, I'm here for it!"
+                            "Lo siento. Talves no al frente de nuestro invitado. Tu debes de ser la persona nueva, todo le mundo esta hablado acerca de ti. Escucho par ahi que tu vas a hacer nuestro nuevo director? Que tipo de ideas fabulosas tienes para nosotors? Cantar? Bailar? Siempre y cuando, sea brillante, chistoso y estraño, Yo estoy para ello."
                         ],
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "No need to pressure them! I'm sure they have lots of ideas. We're just trying to make some space for learning and connecting before we figure out the first show. Can you share what you do?"
+                            "No hay necesidad de ponerle mucha precion! Yo estoy seguro que tienes muchos ideas. Nosotors some tratamos de crear un espacio para aprender y conectar antes de que hagamos nuesto primer espectáculo. Puedes compartir que es lo que quieres hacer?"
                         ],
                         null,
                         [
                             "Map",
                             "eager",
-                            "I connect! I'm kind of like a dictionary: give me a value and I'll give you the definition it corresponds to. @FunctionDefinition told you about values? I map them, one to one, from one value, to another. Give me a key, I'll give you the value it corresponds to. For example, here's a mapping from names to a point tally. Names are the key, points are the value."
+                            "Estoy conectado. Yo soy como un diccionario: dame un valor y te dare la definicion que corresponde. @DeficionDeFuncion te conto sobre los valores? Yo los mapeo, uno a uno, de un valor a el otro. Dame una llave, y yo te dare el valor que corresponde. Por ejemplo, aqui esta un mapa que contiene nombre y cuenta de puntos. Los nombres son las llaves, los puntos son los valores."
                         ],
                         [
                             "edit",
@@ -1929,7 +1930,7 @@
                         [
                             "Map",
                             "serious",
-                            "But like @Set, I don't like duplicates. You can't have more than one of the same key, but you can have as many unique keys mapped to equivalent values as you like. For example, this gives me two \\'ben'\\ keys, but I just use the last one. But it's okay that \\'ben'\\ and \\'joe'\\ have the same number of points, because they're different keys."
+                            "Pero como un @Conjunto, A mi no me gustan los duplicaods. Tu no puedes llaves repetidas, pero puedes tener llaves differentes mapeadas a valores equivalentes. Por ejemplo, esto me dos de \\'ben'\\, pero yo solo tengo en cuenta la ultima. Pero esta bien que \\'ben'\\ y \\'joe'\\ tengan la misma cantidad de puntos porque tienen diferentes llaves."
                         ],
                         [
                             "edit",
@@ -1938,42 +1939,42 @@
                         [
                             "Map",
                             "excited",
-                            "It's my partnership with @Bind that makes me special! It's how I connect values to other values. (Have you met @Bind yet? No? Ohhhh, you're going to adore them. They are FABULOUS.)"
+                            "Mi camaradería con @Unir es que me hace especial! Es como yo conecto valores con otros. (As conocido a @Unir todavia? No? Ohhhh, lo vas a adorar. Es FABULOSO.)"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "curious",
-                            "@Map, what if you want an empty mapping? How is that different from an empty set, \\{}\\?"
+                            "@Mapa, que pasa si estas en un mapeado vacio? Es diferente al un @Conjunto vacio. \\{}\\?"
                         ],
                         [
                             "Map",
                             "neutral",
-                            "Oh, that's just me all by myself! Little @Bind and I just hang out, no keys or values."
+                            "Oh, entonces estaria solo. Solo yo y @Unir pasando el rato, si llaves o valores."
                         ],
                         ["edit", "{:}"],
                         null,
                         [
                             "FunctionDefinition",
                             "curious",
-                            "And what if our director doesn't provide a value or a key? Like this? Like, \\3\\ has no value?"
+                            "Y que pasa si nuestro director no provee un valor o una llave? Algo asi? Asi, \\3\\ no tiene valor?"
                         ],
                         ["conflict", "{1:1 2:2 3 }"],
                         [
                             "Map",
                             "serious",
-                            "Oh… DON'T do that. I only like pairs. Is 3 a key? A value? Totally confusing. Stop the show."
+                            "oh.... NO HAGAS eso. A mi me gustan los valores en pares. Es 3 una llave? Un Valor? Estoy totalmente confundido. Para el espectáculo"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "curious",
-                            "And if our director wants to get a value from a key?"
+                            "Y como le hace el directo si el quiere un valor de una llave?"
                         ],
                         [
                             "Map",
                             "neutral",
-                            "Just like @Set: just put a \\{}\\ after a map and give me the key you want."
+                            "Como un @Conjunto: simplemente pon un \\{}\\ despues de el mapa y pasame la llave que tu quieras."
                         ],
                         [
                             "edit",
@@ -1984,19 +1985,19 @@
                         [
                             "Map",
                             "neutral",
-                            "Otherwise, I'm a lot like @Set: I can do a lot of the same functions. Stop by any time and I'm happy to show you more!"
+                            "De otra manera, yo soy como un conjunto: Yo puedo hacer muchas de las misma funciones. Ve vista a cualquier hora y estar feliz de mostrarte mas!"
                         ],
                         [
                             "FunctionDefinition",
                             "kind",
-                            "Thank you @Map! /You/ are fabulous."
+                            "Gracias @Mapa /Tu/ ere fabuloso."
                         ]
                     ]
                 }
             ]
         },
         {
-            "title": "Cast party",
+            "title": "Fiesta de reparto",
             "performance": [
                 "fix",
                 "count: 32",
@@ -2019,33 +2020,33 @@
             ],
             "scenes": [
                 {
-                    "title": "Detour",
+                    "title": "Desvio",
                     "subtitle": null,
                     "performance": ["use", "fit", "DarkVoid"],
                     "lines": [
                         [
                             "FunctionDefinition",
                             "surprised",
-                            "I can't believe how many characters we've met so far. Does it feel like a lot? It also feels like we've barely made any progress.",
-                            "I haven't even gotten to show you the most exciting parts of putting on shows!"
+                            "No puedo creer cuantos personajes as conocido hasta ahora. Si siento como muchos? Tambien se siento como si no hubieramos hecho mucho progreso.",
+                            "Yo ni te e mostrado las partes emocionantes de hacer un espectáculos!"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "serious",
-                            "Would you mind if we just stopped by to meet two others before we get to the truly exciting parts? These two characters are just so integral to working with values, and particularly text, we just have to talk about them before we get to the more spectacular things."
+                            "Te importaria si paramos a concer otros dos mas antes de que te muestre las partes mas emocionantes? Esto dos personajes, son tan integrales para trabajar con valores y particularmente con texto, simplemente tenemos que hablar con ellos, antes de hablar de cosas mas espectaculares."
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "curious",
                             "What are they?",
-                            "Conversions. They are the alchemy of this world, that help change one type of value to another. Let's go meet them."
+                            "Conversiones. Ellos son la alquemia de este mundo, esa ayudan a cambien un tipo de valor a otro tipo. Vamos a conocerlos."
                         ]
                     ]
                 },
                 {
-                    "title": "We can be anything",
+                    "title": "Nosotros podemos ser lo que sea",
                     "subtitle": "Convert",
                     "concept": "Convert",
                     "performance": ["use", "fix", "FlyIn", "→"],
@@ -2054,18 +2055,18 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "Hey @Convert! You there?"
+                            "Hola @Convertir! Estas ahi?"
                         ],
                         [
                             "Convert",
                             "happy",
-                            "Duuuuude, @FunctionDefinition, it's been epochs! You're looking stylish. It's been super quiet lately, hasn't it? You have a new friend?"
+                            "Compaaaa, @DefincionDeFuncion han sido epocas! Te ves muy elegante. Ha estado super silencion ultimamente, sierto? Tienes un nuevo amigo?"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "Yes, this person here is interested in directing. We're on the grand tour — we've met @Program, @ExpressionPlaceholder, @UnparsableExpression, @Evaluate, and all the values and collections. I figured that meeting you next would be perfect, since you work so closely with values."
+                            "Si, esta persona esta intersada en ser nuestro director. Estamos en tour — Hemos conocido a @Programa, @"
                         ],
                         [
                             "Convert",
