@@ -1990,7 +1990,7 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "Gracias @Mapa /Tu/ ere fabuloso."
+                            "Gracias @Mapa /Tu/ eres fabuloso."
                         ]
                     ]
                 }
@@ -2066,87 +2066,87 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "Si, esta persona esta intersada en ser nuestro director. Estamos en tour — Hemos conocido a @Programa, @"
+                            "Si, esta persona esta intersada en ser nuestro director. Estamos en tour — Hemos conocido a @Programa, @ExpressionPlaceholder, @UnparsableExpression, @Evaluate, y todos los valores y collecciones. Me parecio que conocerte seria perfecto, porque tu trabajas con muchos valores"
                         ],
                         [
                             "Convert",
                             "kind",
-                            "Heck yeah, values are my best buds. We like to do parkour on the weekends — or shows, or whatever."
+                            "Claro que si, valores son mis mejores amigos. A nosotros nos gusta hacer parkour en los fines de semana - o en los shows, o donde sea."
                         ],
                         null,
                         ["FunctionDefinition", "curious", "Parkour?"],
                         [
                             "Convert",
                             "serious",
-                            "Yeah, you know, like gymnastics on the streets, leaping over things, spanning buildings, like high wire stuff but without wires. Courageous leaps!"
+                            "Sí, ya sabes, como gimnasia en las calles, saltando sobre cosas, atravesando edificios, como alambres altos pero sin cables. ¡Saltos valientes!"
                         ],
                         [
                             "FunctionDefinition",
                             "serious",
-                            "Ohhh, I see what you mean. Yes, I guess what you do is kind of like parkour. I'm not sure our new director friend here follows though. Could you explain without the metaphors?"
+                            "Ohhh, ya veo lo que quieres decir. Sí, supongo que lo que haces es algo así como parkour. Aunque no estoy seguro de que nuestro nuevo amigo director nos siga. ¿Podrías explicarlo sin las metáforas?"
                         ],
                         null,
                         [
                             "Convert",
                             "kind",
-                            "Happy to bro. So like, imagine you had a number."
+                            "Feliz hermano. Entonces, imagina que tienes un número."
                         ],
                         ["edit", "1"],
                         null,
                         [
                             "Convert",
                             "kind",
-                            "And imagine you wanted it to be text. Throw me in there with @Text and BAM, you've got text!"
+                            "E imagina que quisieras que fuera texto. Méteme allí con @Text y BAM, tienes texto"
                         ],
                         ["edit", "1 → ''"],
                         null,
                         [
                             "Convert",
                             "serious",
-                            "Or like, imagine you had text and wanted a number. Throw me in there with @Number and POP, you've got a number!"
+                            "O imagina que tienes un mensaje de texto y quieres un número. Tirame ahí con @Number y POP, ¡tienes un número!"
                         ],
                         ["edit", "'1'→#"],
                         null,
                         [
                             "Convert",
                             "surprised",
-                            "But you want to see some, like, serious mojo? Say you've got some text and you want its characters in a list. Throw me in there with @List and HAAAAAA, you've got a list of letters."
+                            "¿Pero quieres ver algo de encanto serio? Digamos que tienes algo de texto y quieres sus caracteres en una lista. Méteme ahí con @List y HAAAAAA, tienes una lista de letras."
                         ],
                         ["edit", "'halloween'→[]"],
                         null,
                         [
                             "Convert",
                             "serious",
-                            "But me and @Number? We have been practicing some seriously sick tricks. Say you've got some time in days and you want seconds? We got you."
+                            "¿Pero @Number y yo? Hemos estado practicando algunos trucos muy enfermizos. ¿Dices que tienes algo de tiempo en días y quieres unos segundos? Te tenemos."
                         ],
                         ["edit", "5day → #s"],
                         null,
                         [
                             "Convert",
                             "excited",
-                            "But the real wicked tricks? Chaining. Like multiple conversions in a row. Check this one out. Days to seconds to text to list, all in one chain. Now we've got a list of digits. Sweet!"
+                            "¿Pero los verdaderos trucos? Encadenamiento. Como múltiples conversiones seguidas. Mira este. Días a segundos para enviar mensajes de texto a una lista, todo en una sola cadena. Ahora tenemos una lista de dígitos. ¡Si!"
                         ],
                         ["edit", "1day → #s → '' → []"],
                         null,
                         [
                             "Convert",
                             "neutral",
-                            "So like, my deal is that everything should be everything, no boundaries. Anything can be anything. (Like, not anything, but you know, as much as I can).",
-                            "But like, why should anything ever be trapped in one identity, you know? Liberation, man."
+                            "Entonces mi trato es que todo debería ser todo, sin límites. Cualquier cosa puede ser cualquier cosa. (No nada, pero ya sabes, todo lo que puedo).",
+                            "Pero, ¿por qué algo debería quedar atrapado en una sola identidad? Liberación, hombre."
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "kind",
-                            "That is amazing, @Convert, and so inspiring. But anything, really?"
+                            "Eso es asombroso, @Convert, y muy inspirador. ¿Pero cualquier cosa?, en serio?"
                         ],
                         [
                             "Convert",
                             "sad",
-                            "Well, not like, anything. I mean, if you give me seconds and ask for a @Set, like, what does that even mean?",
-                            "I'll do my best to find a way... like, here, I know how to turn numbers into @Text and @Text into a @Set, so I'll give you the set of symbols in the text form of this number.",
-                            "But that's probably not what you wanted...",
-                            "And, if I don't know how to give you what you asked for, I'm basically going to shut things down."
+                            "Bueno, no cualquier cosa. Quiero decir, si me das unos segundos y me pides un @Set, como, ¿qué significa eso?",
+                            "Haré lo mejor que pueda para encontrar una manera... como, aquí, sé cómo convertir números en @Text y @Text en un @Set, así que les daré el conjunto de símbolos en forma de texto en este número.",
+                            "Pero probablemente eso no sea lo que querías..",
+                            "Y si no sé cómo darte lo que me pediste, básicamente cerraré todo."
                         ],
                         ["edit", "10s → {}"],
                         null,
@@ -2154,25 +2154,25 @@
                         [
                             "FunctionDefinition",
                             "serious",
-                            "Right, that makes sense. So there are only some conversions, not all possible conversions."
+                            "Bien, eso tiene sentido. Por lo tanto, sólo hay algunas conversiones, no todas las conversiones posibles."
                         ],
                         [
                             "Convert",
                             "sad",
-                            "Yeahhh… you can always check a type of value and see what types of conversions they support."
+                            "Sií, siempre puedes comprobar un tipo de valor y ver qué tipos de conversiones admiten."
                         ],
                         null,
                         ["use", "fit", "Symbol", "🧐"],
                         [
                             "FunctionDefinition",
                             "curious",
-                            "Did you know that @Convert and @Evaluate are related? They're like cousins. @Evaluate will evaluate any function, but @Convert will evaluate any conversion. In a way, @Evaluate does conversion too, from inputs to outputs."
+                            "¿Sabías que @Convert y @Evaluate están relacionados? Son como primos. @Evaluate evaluará cualquier función, pero @Convert evaluará cualquier conversión. En cierto modo, @Evaluate también realiza conversiones, de entradas a salidas."
                         ],
                         [
                             "Convert",
                             "scared",
-                            "Whoa. I never thought of it that way. Like, /I/ convert inputs to outputs, and @Evaluate converts inputs to outputs. And like, @FunctionDefinition, you *tell us* how to convert inputs to outputs. Is that like, the secret of the Verse?",
-                            "Like everything is about converting inputs to outputs?"
+                            "Vaya. Nunca lo pensé de esa manera. Por ejemplo, /I/ convierto entradas en salidas y @Evaluate convierte entradas en salidas. Y como @FunctionDefinition, *nos dices* cómo convertir entradas en salidas. ¿Es ese el secreto del Verso?",
+                            "¿Como si todo se tratara de convertir entradas en salidas?"
                         ],
                         null,
                         ["FunctionDefinition", "serious", "I guess so?"],
@@ -2183,24 +2183,24 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "@Convert, how should our new director find out what kinds of conversions are possible?"
+                            "@Convert, ¿cómo debería descubrir nuestro nuevo director qué tipos de conversiones son posibles?"
                         ],
                         [
                             "Convert",
                             "scared",
-                            "Sorry bro, I'm still a bit shaken. Uhhh, they can check out any of the value types in the reference @UI/docsExpand.",
-                            "There should be a list of the other types I can change them into… Everything is conversion…"
+                            "Lo siento hermano, todavía estoy un poco conmocionado. Uhhh, pueden consultar cualquiera de los tipos de valores en la referencia @UI/docsExpand",
+                            "Debería haber una lista de los otros tipos en los que puedo cambiarlos... Todo es conversión..."
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "happy",
-                            "It was so great to see you @Convert! We're going to head out and meet others. See you soon?"
+                            "¡Fue genial verte @Convert! Saldremos y conoceremos a otros. ¿Nos vemos pronto?"
                         ],
                         [
                             "Convert",
                             "surprised",
-                            "Soon. Yeah… Yes! Totally, yes."
+                            "Pronto. ¡Si sí! Totalmente, sí."
                         ]
                     ]
                 },
@@ -2214,43 +2214,43 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "We've met so many kinds of values on our journey so far, and talked about so many ways of working with them. There's just one more I wanted to introduce you to. They're particularly special because they're what make our performances so dynamic. They're called @Conditional and they are the central character in the Verse that makes *decisions*."
+                            "Hemos conocido muchos tipos de valores en nuestro viaje hasta ahora y hemos hablado de muchas formas de trabajar con ellos. Solo hay uno más que quería presentarles. Son particularmente especiales porque son los que hacen que nuestro actuaciones tan dinámicas. Se llaman @Conditional y son el personaje central en el Verso que toma *decisiones*."
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "serious",
-                            "To be clear, not all decisions: I have my own life, and they have theirs. But in a performance, when we're trying to decide what to do next on stage, it's all up to them to follow your guidance as director and decide what to do. So they're a key partner creating exciting performances."
+                            "Para ser claros, no todas las decisiones: yo tengo mi propia vida y ellos la suya. Pero en una actuación, cuando intentamos decidir qué hacer a continuación en el escenario, depende de ellos seguir tus consejos como director y decidir qué hacer. Por eso son un socio clave que crea actuaciones emocionantes."
                         ],
                         null,
                         ["use", "fit", "SpinningInTheDark", "?"],
                         [
                             "FunctionDefinition",
                             "curious",
-                            "@Conditional, the silence is breaking! We might put on shows again!"
+                            "@Condicional, ¡el silencio se está rompiendo! ¡Quizás volvamos a montar espectáculos!"
                         ],
                         [
                             "Conditional",
                             "curious",
-                            "@FunctionDefinition? The silence is breaking? What is silence? How does one break it? Are we every really silent? Who is this person? Are they the one breaking it?"
+                            "@FunciónDefinición? ¿El silencio se está rompiendo? ¿Qué es el silencio? ¿Cómo se rompe? ¿Estamos todos realmente en silencio? ¿Quién es esta persona? ¿Son ellos los que lo rompen?"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "serious",
-                            "Yes, the silence is breaking, and they are the one! They're a person, and they came to inspire us, and direct our shows. We've been talking about conversions, and meeting all the values and @Text and @Convert and I wanted them to meet you! In a way, you're the most special of conversions, because you enable us to convert situations to new values."
+                            "Sí, el silencio se está rompiendo, ¡y ellos son el indicado! Son una persona y vinieron a inspirarnos y dirigir nuestros espectáculos. Hemos estado hablando de conversiones y de conocer todos los valores, @Text y @Convert, ¡y quería que te conocieran! En cierto modo, eres la más especial de las conversiones, porque nos permites convertir situaciones a nuevos valores."
                         ],
                         [
                             "Conditional",
                             "curious",
                             "Do I?",
-                            "I do make decisions, but what I really do is encode the decisions that directors tell me to make, so is it really me making the decisions?"
+                            "Tomo decisiones, pero lo que realmente hago es codificar las decisiones que los directores me dicen que tome, entonces, ¿realmente soy yo quien toma las decisiones?"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "kind",
-                            "I think so, yes. It's more like the director encodes the decision, but then delegates them to you. You become the decider. Do you want to show an example?"
+                            "Pienso que si. Es más como si el director codificara la decisión, pero luego te la delega. Tú te conviertes en quien decide. ¿Quieres mostrar un ejemplo?"
                         ],
                         ["Conditional", "curious", "Like this?"],
                         ["conflict", "_•? ? _ _"],
@@ -2258,14 +2258,14 @@
                             "FunctionDefinition",
                             "excited",
                             "Yes, exactly like that!",
-                            "Do you see how there's four parts to @Conditional's format? There's a *condition* first, which needs to be a @Boolean. Then there's \\?\\. Then there's *yes* expression, then a *no* expression. What @Conditional does is evaluate the condition, and if it's \\⊤\\, they evaluate the *yes* expression. Otherwise, they evaluate the /no/ expression. It's such a powerful way of deciding!"
+                            "¿Ves que el formato de @Conditional tiene cuatro partes? Primero hay una *condición*, que debe ser @Boolean. Luego está \\?\\. Luego está la expresión *sí*, luego una expresión *no*. Lo que hace @Conditional es evaluar la condición, y si es \\⊤\\, evalúan la expresión *sí*. De lo contrario, evalúan la expresión /no/. ¡Es una forma tan poderosa de decidir!"
                         ],
                         null,
                         ["edit", "1 > 5 ? 'more' 'less'"],
                         [
                             "FunctionDefinition",
                             "excited",
-                            "Can you give us a more specific example?"
+                            "¿Puedes darnos un ejemplo más específico?"
                         ],
                         ["Conditional", "curious", "Something like this?"],
                         ["edit", "1 > 5 ? 'less' 'more'"],
@@ -2273,33 +2273,33 @@
                         [
                             "FunctionDefinition",
                             "sad",
-                            "Errr, hm. I guess that is a decision, but it's a wrong one. One isn't less than five. I guess your decisions aren't always right, but they are reliable, right?"
+                            "Errr, mmm. Supongo que es una decisión, pero equivocada. Uno no es menos de cinco. Supongo que tus decisiones no siempre son correctas, pero son confiables, ¿verdad?"
                         ],
                         null,
                         [
                             "Conditional",
                             "curious",
-                            "Reliable? Maybe? If you accept that I just decide whatever the director tells me, then yes, but what if the director tells me this? Is it really a decision of the number can never be greater than \\3\\?"
+                            "¿Confiable? ¿Tal vez? Si aceptas que yo decido lo que me diga el director, entonces sí, pero ¿y si el director me dice esto? ¿Es realmente una decisión que el número nunca puede ser mayor que \\3\\?"
                         ],
                         ["edit", "[1 2 3].random() > 3 ? 'big' 'small'"],
                         [
                             "FunctionDefinition",
                             "confused",
-                            "Hm, I guess that's a good point. I guess whether something is a decision depends a lot on what the director's decision is. I guess that means the director has to think pretty carefully about the decisions they give you?"
+                            "Hm, supongo que ese es un buen punto. Supongo que si algo es una decisión depende mucho de cuál sea la decisión del director. Supongo que eso significa que el director tiene que pensar con mucho cuidado las decisiones que te da."
                         ],
                         null,
                         [
                             "Conditional",
                             "curious",
-                            "Carefully? Skeptical, maybe? Have you thought about my good friends @BooleanLiteral? How is their view of the world possibly enough to represent all of the decisions we might want to make? What if, for example, we wanted a performance that took someone's name and decided if it was beautiful or not? Is that a true or false decision? Is that even a decision we should make? Doesn't it seem awfully reductive and biased?",
-                            "Director, what letters do you think make a name beautiful?"
+                            "¿Con cuidado? ¿Escéptico, tal vez? ¿Has pensado en mis buenos amigos @BooleanLiteral? ¿Cómo es posible que su visión del mundo sea suficiente para representar todas las decisiones que podríamos querer tomar? ¿Qué pasaría si, por ejemplo, quisiéramos una actuación que tomara el nombre de alguien y decidiera si es hermosa o no? ¿Es esa una decisión verdadera o falsa? ¿Es esa siquiera una decisión que deberíamos tomar? ¿No parece tremendamente reduccionista y parcial?",
+                            "Director, ¿qué letras cree que hacen hermoso un nombre?"
                         ],
                         ["edit", "'Verse'.has('e') ? 'beautiful' 'ugly'"],
                         null,
                         [
                             "Conditional",
                             "curious",
-                            "And think about the questions I answer — why can I only respond to \\⊤\\ and \\⊥\\? Why not a number? Don't I have a right to decide if \\1\\ is beautiful?"
+                            "Y piense en las preguntas que respondo: ¿por qué solo puedo responder a \\⊤\\ y \\⊥\\? ¿Por qué no un número? ¿No tengo derecho a decidir si \\1\\ es hermoso?"
                         ],
                         ["conflict", "1 ? 'beautiful' 'ugly'"],
                         null,
@@ -2307,25 +2307,25 @@
                         [
                             "FunctionDefinition",
                             "sad",
-                            "I guess I never really thought about it that way. But @Conditional, even if you have limitations, you are beautiful. You enable us to do so much in our performances that we couldn't do otherwise. You make so much joy and laughter possible. Our director hasn't even seen the amazing things you're capable of yet."
+                            "Supongo que nunca lo pensé de esa manera. Pero @Conditional, aunque tengas limitaciones, eres hermosa. Nos permites hacer tanto en nuestras actuaciones que no podríamos hacer de otra manera. Haces posible tanta alegría y risa. Nuestro director ni siquiera ha visto todavía las cosas maravillosas de las que eres capaz."
                         ],
                         [
                             "Conditional",
                             "curious",
-                            "Do you really think that?",
-                            "That I'm beautiful? Maybe those limits are still worthwhile?"
+                            "¿De verdad crees eso?",
+                            "¿Que soy hermoso? ¿Quizás esos límites todavía valgan la pena?"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "kind",
-                            "They absolutely are.",
-                            "And I'm excited to show our new friend here just how worthwhile they are. Will you be around when I do?"
+                            "absolutamente lo eres",
+                            "Y estoy emocionado de mostrarle a nuestro nuevo amigo lo valiosos que son. ¿Estarás cerca cuando lo haga?"
                         ],
                         [
                             "Conditional",
                             "happy",
-                            "Could anything make me more happy?"
+                            "¿Podría haber algo que me haga más feliz?"
                         ]
                     ]
                 }
@@ -2348,22 +2348,22 @@
                         [
                             "FunctionDefinition",
                             "curious",
-                            "Did you know that your world and ours are connected? Make some sound and we can hear it..."
+                            "¿Sabías que tu mundo y el nuestro están conectados? Haz algún sonido y podremos oírlo..."
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "serious",
-                            "You didn't know the Verse existed, but we know that yours does. Because it's your world that makes our world interesting.",
-                            "You probably noticed this as we've wandered and met all of the values, collections, and conversations.",
-                            "What do any of these values /mean/ if there's no person /giving/ them meaning, or providing the values in the first place?"
+                            "No sabías que el Verso existía, pero sabemos que el tuyo sí. Porque es tu mundo lo que hace que nuestro mundo sea interesante.",
+                            "Probablemente hayas notado esto mientras deambulamos y conocimos todos los valores, colecciones y conversaciones.",
+                            "¿Qué significan estos valores si no hay ninguna persona que les dé significado o les proporcione los valores en primer lugar?"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "I want to show you the connection between our worlds, and what they make possible. We call them **input streams**, and they are perhaps the most magical kind of input in the Verse. They're like functions that create a special kind of value that changes as your world changes. They also can't communicate in the ways you might be used to. They're more like heartbeats from another world. So I'll do my best to explain how they work, since they won't be able to explain themselves.",
-                            "Are you ready to meet one?"
+                            "Quiero mostrarles la conexión entre nuestros mundos y lo que hacen posible. Los llamamos **flujos de entrada** y son quizás el tipo de entrada más mágico del Verso. Son como funciones que crean un tipo especial de valor que cambia a medida que cambia tu mundo. Tampoco pueden comunicarse en la forma a la que usted está acostumbrado. Son más como latidos de otro mundo. Así que haré todo lo posible para explicar cómo funcionan, ya que no podrán explicarse por sí solos.",
+                            "¿Estás lista para conocer a una?"
                         ]
                     ]
                 },
@@ -2376,7 +2376,7 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "Let's start with the most elemental stream of all: @Time. To make a stream, we use @Evaluate, and give the name of the type of stream you want."
+                            "Empecemos por la corriente más elemental de todas: @Time. Para crear una transmisión, usamos @Evaluate y le damos el nombre del tipo de transmisión que desea."
                         ],
                         ["Time", "neutral", "tick tick tick tick tick…"],
                         ["edit", "Time()"],
@@ -2384,14 +2384,14 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "Do you see how time is changing? Streams are a series of values. Every time a stream gets a new value, @Program reevaluates with the new stream value. That's why this program just keeps counting up: we made a time stream that starts at time 0 milliseconds, and then just keeps updating every time its clock ticks. This time is your time, from your world."
+                            "¿Ves cómo está cambiando el tiempo? Las corrientes son una serie de valores. Cada vez que una secuencia obtiene un nuevo valor, @Program reevalúa con el nuevo valor de la secuencia. Es por eso que este programa sigue contando: creamos una secuencia de tiempo que comienza en el tiempo 0 milisegundos y luego continúa actualizándose cada vez que el reloj avanza. Este tiempo es vuestro tiempo, de vuestro mundo."
                         ],
                         ["Time", "neutral", "tick tick tick tick tick…"],
                         null,
                         [
                             "FunctionDefinition",
                             "curious",
-                            "See that \\1000ms\\? It's a @Time/frequency that tells @Time to tick every 1000 milliseconds instead of the default of every 33 milliseconds, it's default. Now it's like a counter that ticks every second. These inputs that @Time takes are like a configuration: they tell the stream how to behave."
+                            "¿Ves eso \\1000ms\\? Es un @Time/frequency que le dice a @Time que marque cada 1000 milisegundos en lugar del valor predeterminado de cada 33 milisegundos, que es el valor predeterminado. Ahora es como un contador que marca cada segundo. Estas entradas que toma @Time son como una configuración: le dicen a la transmisión cómo comportarse."
                         ],
                         ["Time", "neutral", "tick… tick… tick… tick… tick…"],
                         ["edit", "Time(1000ms)"],
@@ -2399,7 +2399,7 @@
                         [
                             "FunctionDefinition",
                             "serious",
-                            "But we can use all of the wonderful characters we've met to transform time further. For example, what if we wanted to know if time was a multiple of \\2\\? We could use @Number/remainder, which gets the remainder of a division. If the remainder is zero, we'll evaluate to \\⊤\\ and \\⊥\\ otherwise. See how it changes back and forth between \\⊤\\ and \\⊥\\? It's so magical."
+                            "Pero podemos utilizar todos los maravillosos personajes que hemos conocido para transformar aún más el tiempo. Por ejemplo, ¿qué pasaría si quisiéramos saber si el tiempo es múltiplo de \\2\\? Podríamos usar @Number/remainder, que obtiene el resto de una división. Si el resto es cero, lo evaluaremos como \\⊤\\ y \\⊥\\ en caso contrario. ¿Ves cómo cambia entre \\⊤\\ y \\⊥\\? Es tan mágico."
                         ],
                         ["Time", "neutral", "tick… tick… tick… tick… tick…"],
                         ["edit", "(Time(1000ms) % 5) = 2ms"],
@@ -2407,14 +2407,14 @@
                         [
                             "FunctionDefinition",
                             "curious",
-                            "There's another thing you might have noticed: there's an area below the output that is a timeline. It updates each time the program reevaluates, which is each time a stream changes. It's showing every time @Time ticks."
+                            "Hay otra cosa que quizás hayas notado: hay un área debajo del resultado que es una línea de tiempo. Se actualiza cada vez que el programa se reevalúa, es decir, cada vez que cambia una secuencia. Se muestra cada vez que @Time marca."
                         ],
                         ["Time", "neutral", "tick… tick… tick… tick… tick…"],
                         null,
                         [
                             "FunctionDefinition",
                             "curious",
-                            "Try dragging on the timeline @UI/timeline, using the timeline buttons, using the arrow keys with the timeline focused, or pressing the ⏸️ and ▶️ @UI/playToggle buttons. You can go backwards in time, to see previous evaluations. The dashed arrows step to previous and future stream inputs. The solid ones step between different steps of the program. Try navigating time, and seeing what the program shows. This is how you can see all of the beautiful expressions you've learned about being evaluated by @Evaluate, one step at a time, resulting in the final value that @Program displays on stage."
+                            "Intente arrastrar la línea de tiempo @UI/timeline, usando los botones de la línea de tiempo, usando las teclas de flecha con la línea de tiempo enfocada o presionando los botones ⏸️ y ▶️ @UI/playToggle. Puedes retroceder en el tiempo, para ver evaluaciones anteriores. Las flechas discontinuas pasan a entradas de flujo anteriores y futuras. Los sólidos avanzan entre diferentes pasos del programa. Intente navegar por el tiempo y ver lo que muestra el programa. Así es como puedes ver todas las bellas expresiones que has aprendido sobre cómo ser evaluado por @Evaluate, paso a paso, lo que da como resultado el valor final que @Program muestra en el escenario."
                         ],
                         ["Time", "neutral", "tick… tick… tick… tick… tick…"],
                         ["edit", "Time(1000ms)"],
@@ -2422,7 +2422,7 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "@Time is an interesting stream because it can be used for many different things: keeping track of how long a performance has been happening, timing some event, animating a word. It's one of the most flexible streams, but also one of the most abstract."
+                            "@Time es una transmisión interesante porque se puede usar para muchas cosas diferentes: realizar un seguimiento de cuánto tiempo lleva sucediendo una actuación, cronometrar algún evento, animar una palabra. Es una de las corrientes más flexibles, pero también una de las más abstractas."
                         ]
                     ]
                 },
@@ -2439,13 +2439,13 @@
                         [
                             "FunctionDefinition",
                             "serious",
-                            "If I'm not mistaken, there's a thing in your world called a “keyboard”? It's a way of selecting which one of us you want to appear in your documents, right? Well in the Verse, we receive these requests as a stream of text, each text value representing the key that was pressed. We use these to listen to what people in your world are typing. This stream is called @Key."
+                            "Si no me equivoco, ¿hay algo en tu mundo llamado 'teclado'? Es una forma de seleccionar cuál de nosotros quieres que aparezca en tus documentos, ¿verdad? Bueno, en Verse recibimos estas solicitudes como un flujo de texto, donde cada valor de texto representa la tecla que se presionó. Los usamos para escuchar lo que escriben las personas en su mundo. Esta transmisión se llama @Key."
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "Here's a simple example. Click the stage or focus it with the keyboard and then press any keyboard key. You'll see the key you've typed appear by name. That's because each time the key stream changes, @Program evaluates the key stream as its latest value, and then shows it on stage."
+                            "He aquí un ejemplo sencillo. Haga clic en el escenario o enfóquelo con el teclado y luego presione cualquier tecla del teclado. Verás que la clave que has escrito aparece por nombre. Esto se debe a que cada vez que cambia el flujo de claves, @Program evalúa el flujo de claves como su último valor y luego lo muestra en el escenario."
                         ],
                         ["Key", "neutral", "clickety clickety clickety"],
                         ["edit", "Key()"],
@@ -2453,7 +2453,7 @@
                         [
                             "FunctionDefinition",
                             "serious",
-                            "This stream will change any time any key is pressed. But you can tell a key stream to just change when a particular key is pressed. See how the stream changes to \\a\\ the first time, but then doesn't change after? That's because this stream only changes when \\a\\ is pressed, so it's always showing \\a\\. But you'll always see the new key value appear in the timeline."
+                            "Esta transmisión cambiará cada vez que se presione cualquier tecla. Pero puede indicarle a una secuencia de claves que cambie simplemente cuando se presiona una tecla en particular. ¿Ves cómo la secuencia cambia a \\a\\ la primera vez, pero luego no cambia después? Esto se debe a que esta secuencia solo cambia cuando se presiona \\a\\, por lo que siempre muestra \\a\\. Pero siempre verá aparecer el nuevo valor clave en la línea de tiempo."
                         ],
                         ["Key", "neutral", "clickety 'a'…"],
                         ["edit", "Key('a')"],
@@ -2461,7 +2461,7 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "Sometimes it's helpful to know when a key is released, instead of pressed. Just pass \\⊥\\ to tell the @Key stream that you to know when a key is released instead of pressed. Now, press and hold the 'a' key and then when you release, you'll see the 'a' appear on stage. Didn't catch it? Press the ↻ button to reset the performance and try it again."
+                            "A veces es útil saber cuándo se suelta una tecla, en lugar de presionarla. Simplemente pase \\⊥\\ para decirle a la transmisión @Key que debe saber cuándo se suelta una tecla en lugar de presionarla. Ahora, mantén presionada la tecla 'a' y luego, cuando la sueltes, verás que la 'a' aparece en el escenario. ¿No lo entendiste? Presione el botón ↻ para restablecer el rendimiento e inténtelo nuevamente."
                         ],
                         ["Key", "neutral", "clickety 'a'…"],
                         ["edit", "Key('a' ⊥)"],
@@ -2469,7 +2469,7 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "@Key streams are really helpful when you want a performance to react to keys that the audience presses. For example, you could check if a key has the word 'Arrow' in it to decide if an arrow key was pressed. Press an arrow key and you'll see \\'move'\\, press something else and you'll see \\'stay'\\"
+                            "Las transmisiones @Key son realmente útiles cuando desea que una actuación reaccione a las teclas que presiona la audiencia. Por ejemplo, puede verificar si una tecla tiene la palabra 'Flecha' para decidir si se presionó una tecla de flecha. Presione una tecla de flecha y verá \\'mover'\\, presione otra cosa y verá \\'quedarse'\\"
                         ],
                         ["Key", "neutral", "clickety 'Arrow'…"],
                         ["edit", "Key().has('Arrow') ? 'move' 'stay'"]
@@ -2488,13 +2488,13 @@
                         [
                             "FunctionDefinition",
                             "curious",
-                            "You also have something called a 'mouse' in your world, and 'trackpads', and 'touchscreens'? These appear in our world as streams @Pointer, which is a stream of places on stage."
+                            "¿También tienes algo llamado 'ratón' en tu mundo, 'trackpads' y 'pantallas táctiles'? Estos aparecen en nuestro mundo como transmisiones @Pointer, que es una transmisión de lugares en el escenario."
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "curious",
-                            "Move your pointer around the stage and you'll see the stream of @Place change on stage."
+                            "Mueva el puntero por el escenario y verá la transmisión de @Place cambiar en el escenario."
                         ],
                         ["fix", "Pointer()"],
                         ["Pointer", "neutral", "wzzzzzzzzz…"],
@@ -2510,7 +2510,7 @@
                         [
                             "FunctionDefinition",
                             "excited",
-                            "@Pointer can be fun if you want to link the @Place of a @Phrase to where the pointer is."
+                            "@Pointer puede ser divertido si desea vincular el @Place de una @Phrase al lugar donde está el puntero."
                         ],
                         ["fix", "Phrase('🐪' size: 4m place: Pointer())"],
                         ["Pointer", "neutral", "wzzzzzzzz…"]
@@ -2525,7 +2525,7 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "@Button is like @Key, but corresponds to the primary pointer button, like a click or tap. It's just a stream of \\⊤\\, indicating when the pointer button is pressed down. Press that button and watch the events appear on the timeline."
+                            "@Button es como @Key, pero corresponde al botón de puntero principal, como un clic o un toque. Es solo una secuencia de \\⊤\\, que indica cuándo se presiona el botón del puntero. Presione ese botón y observe cómo aparecen los eventos en la línea de tiempo."
                         ],
                         ["Button", "neutral", "click… click… click…"],
                         ["edit", "Button()"],
@@ -2533,7 +2533,7 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "You can configure it to only change to up or down by passing it a \\⊤\\ or \\⊥\\."
+                            "Puede configurarlo para que solo cambie hacia arriba o hacia abajo pasándole un \\⊤\\ o \\⊥\\."
                         ],
                         ["Button", "neutral", "down… down… down…"],
                         ["edit", "Button(⊥)"],
@@ -2541,7 +2541,7 @@
                         [
                             "FunctionDefinition",
                             "excited",
-                            "Using a @Button stream is one way to advance through stages of a performance, or to trigger some change in a performance. This little program lists to button presses, and starts off showing sad, but when the @Button stream changes to true, @Conditional evaluates to \\'happy'\\ instead."
+                            "Usar una secuencia @Button es una forma de avanzar a través de las etapas de una actuación o de desencadenar algún cambio en una actuación. Este pequeño programa enumera las pulsaciones de botones y comienza mostrándose triste, pero cuando la secuencia @Button cambia a verdadero, @Conditional se evalúa como \\'happy'\\ en su lugar."
                         ],
                         ["edit", "Phrase(Button(ø) ? 'sad' 'happy')"]
                     ]
@@ -2555,7 +2555,7 @@
                         [
                             "FunctionDefinition",
                             "excited",
-                            "Your world and our world also has sound. Did you know we can hear you, with your consent? We listen with a stream called @Volume, which provides a low-level sequence of amplitudes. Your mic might ask for permission to be shared with us. Once you do, you'll see a number that corresponds to amplitude, between \\0\\ and \\100\\."
+                            "Tu mundo y el nuestro también tienen sonido. ¿Sabías que podemos escucharte con tu consentimiento? Escuchamos con una transmisión llamada @Volume, que proporciona una secuencia de amplitudes de bajo nivel. Es posible que su micrófono solicite permiso para compartirlo con nosotros. Una vez que lo hagas, verás un número que corresponde a la amplitud, entre \\0\\ y \\100\\."
                         ],
                         ["Volume", "neutral", "bzzzZZZZZzzzzzZZZZ…"],
                         ["edit", "Volume()"],
@@ -2563,7 +2563,7 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "@Volume can be used to make performances respond to sound from the audience. For example, here we could make a little amplitude visualization by converting the amplitude number from the stream to a certain number of \\'o'\\ characters. See how when you make noise, there are more \\'o'\\s? The @Volume amplitude is divided by \\10\\, putting it in the \\0\\ to \\10\\ range. Then that value is given to @Text/repeat function, which repeats the \\'o'\\ the given number of times."
+                            "@Volume se puede utilizar para hacer que las actuaciones respondan al sonido del público. Por ejemplo, aquí podríamos hacer una pequeña visualización de la amplitud convirtiendo el número de amplitud del flujo a un cierto número de caracteres \\'o'\\. ¿Ves como cuando haces ruido, hay más \\'o'\\s? La amplitud de @Volume se divide por \\10\\, colocándola en el rango de \\0\\ a \\10\\. Luego, ese valor se asigna a la función @Text/repeat, que repite \\'o'\\ el número de veces indicado."
                         ],
                         ["Volume", "neutral", "bzzzZZZZZzzzzzZZZZ…"],
                         ["edit", "'o'.repeat(Volume() · 10)"]
@@ -2581,10 +2581,10 @@
                         [
                             "FunctionDefinition",
                             "curious",
-                            "There's one other source of input I want to show you. Remember \\[].random()\\ from earlier, from @List?",
-                            "Inside it uses a @FunctionDefinition called @Random, which provides an infinite sequence of random numbers. It's kind of a stream, since it generates input from your world, not ours. But it's a bit different from the other streams in that it doesn't cause a @Program to reevaluate.",
-                            "Instead, each time it's evaluated, it gives a different random number.",
-                            "See that little ↻ @UI/resetEvaluator button by the timeline? Press that to reevaluate the program manually, and you'll see a new number between \\0\\ and \\1\\ each time."
+                            "Hay otra fuente de aportes que quiero mostrarles. ¿Recuerdas \\[].random()\\ de antes, de @List?",
+                            "En su interior utiliza una @FunctionDefinition llamada @Random, que proporciona una secuencia infinita de números aleatorios. Es una especie de flujo, ya que genera información de su mundo, no del nuestro. Pero es un poco diferente de las otras secuencias en que no hace que @Program se reevalúe.",
+                            "En cambio, cada vez que se evalúa, da un número aleatorio diferente.",
+                            "¿Ves ese pequeño botón ↻ @UI/resetEvaluator junto a la línea de tiempo? Presione eso para reevaluar el programa manualmente y verá un nuevo número entre \\0\\ y \\1\\ cada vez."
                         ],
                         ["Random", "neutral", "0.223423… 0.823423… 0.123459"],
                         ["edit", "Random()"],
@@ -2592,7 +2592,7 @@
                         [
                             "FunctionDefinition",
                             "surprised",
-                            "We can tell @Random the range of numbers we'd like by giving it a minimum and maximum number. This example gives numbers between \\1\\ and \\10\\:"
+                            "Podemos decirle a @Random el rango de números que queremos dándole un número mínimo y máximo. Este ejemplo proporciona números entre \\1\\ y \\10\\"
                         ],
                         ["Random", "neutral", "1… 7… 3… 9… 10… 2…"],
                         ["edit", "Random(1 10)"],
@@ -2600,7 +2600,7 @@
                         [
                             "FunctionDefinition",
                             "excited",
-                            "Random can be so fun! We can use it with streams to create fun chaos. For example, here we choose a random word from a list of words. This is the same as \\['kitty' 'cat' 'meowy'].random()\\. Keep pressing ↻ to get a different cat synonym! Try adding your own word to the list and see if you can get the word to appear."
+                            "¡El azar puede ser muy divertido! Podemos usarlo con transmisiones para crear un caos divertido. Por ejemplo, aquí elegimos una palabra aleatoria de una lista de palabras. Esto es lo mismo que \\['kitty' 'cat' 'meowy'].random()\\. ¡Sigue presionando ↻ para obtener un sinónimo de gato diferente! Intente agregar su propia palabra a la lista y vea si puede hacer que aparezca la palabra."
                         ],
                         ["Random", "neutral", "1… 2… 2… 1… 3…"],
                         ["edit", "['kitty' 'cat' 'feline'][Random(1 3)]"]
@@ -2622,9 +2622,9 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "Sometimes its nice to engage the audience in our place on @Stage.",
-                            "@Placement is a great way to do that! It's a stream of @Place, that responds to keyboard arrow keys, clicks, and taps.",
-                            "Try using those to move the hot dog around."
+                            "A veces es agradable atraer a la audiencia en nuestro lugar en @Stage.",
+                            "¡@Placement es una excelente manera de hacerlo! Es una secuencia de @Place, que responde a las teclas de flecha del teclado, clics y toques.",
+                            "Intente usarlos para mover el hot dog."
                         ],
                         null,
                         [
@@ -2634,8 +2634,8 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "There are lots of ways you can customize it. For example, if you wanted to change how it moves, you can give it a distance.",
-                            "See how we gave it \\0.5\\ for the for the first input? Now it moves a little less. Try changing it to a different number!"
+                            "Hay muchas maneras de personalizarlo. Por ejemplo, si quisieras cambiar su forma de moverse, puedes darle una distancia.",
+                            "¿Ves cómo le dimos \\0.5\\ para la primera entrada? Ahora se mueve un poco menos. ¡Intenta cambiarlo a un número diferente!"
                         ],
                         null,
                         [
@@ -2645,8 +2645,8 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "You can also turn on and off movement on different axes. For example, give depth \\⊤\\ to allow movement on the z-axis.",
-                            "Press the + and - keys to move it closer or further away from the focus."
+                            "También puedes activar y desactivar el movimiento en diferentes ejes. Por ejemplo, proporcione profundidad \\⊤\\ para permitir el movimiento en el eje z.",
+                            "Presiona las teclas + y - para acercarlo o alejarlo del foco."
                         ]
                     ]
                 },
@@ -2663,15 +2663,15 @@
                         [
                             "FunctionDefinition",
                             "excited",
-                            "So far, all of the *streams* we've talked about are sequences of simple values, like @Text or @Number. Some streams, however, can produce complex values.",
-                            "@Motion is one of the most interesting of those. It makes a stream of @Place."
+                            "Hasta ahora, todas las *secuencias* de las que hemos hablado son secuencias de valores simples, como @Texto o @Número. Algunas corrientes, sin embargo, pueden producir valores complejos.",
+                            "@Motion es uno de los más interesantes. Hace una secuencia de @Place."
                         ],
                         null,
                         ["edit", "Phrase('🏀' 3m place: Motion(Place(0m 5m)))"],
                         [
                             "FunctionDefinition",
                             "excited",
-                            "Here's the simplest way to use it. This creates a @Motion stream that starts with this @Phrase. It'll keep moving the ball based on *gravity*."
+                            "Esta es la forma más sencilla de utilizarlo. Esto crea una secuencia @Motion que comienza con esta @Phrase. Seguirá moviendo la pelota según la *gravedad*."
                         ],
                         ["Motion", "excited", "/Woosh…/"],
                         null,
@@ -2682,8 +2682,8 @@
                         [
                             "FunctionDefinition",
                             "excited",
-                            "But the ball keeps falling because there's no ground! We can put something called a @Shape on @Stage, like a @Rectangle. It takes two corners. We'll make it nice and thick.",
-                            "Hm, it falls through the ground..."
+                            "¡Pero la pelota sigue cayendo porque no hay suelo! Podemos poner algo llamado @Shape en @Stage, como @Rectangle. Se necesitan dos esquinas. Lo haremos bonito y espeso.",
+                            "Hm, cae por el suelo.."
                         ],
                         ["Motion", "excited", "/Woosh…/"],
                         null,
@@ -2699,8 +2699,8 @@
                         [
                             "FunctionDefinition",
                             "excited",
-                            "Oh right! That's because we forgot to give the ball @Matter. Matter is a way of telling us how heavy the @Output is, how bouncy it is, and how much friction it should have.",
-                            "Let's make the ball really bouncy and light. Yay, now it bounces!"
+                            "¡Correcto! Eso es porque nos olvidamos de darle la pelota a @Matter. La materia es una forma de decirnos qué tan pesado es el @Output, qué tan elástico es y cuánta fricción debería tener.",
+                            "Hagamos que la pelota rebote y sea realmente ligera. ¡Sí, ahora rebota!"
                         ],
                         null,
                         [
@@ -2715,9 +2715,9 @@
                         [
                             "FunctionDefinition",
                             "excited",
-                            "But @Motion has many other tricks.",
-                            "For example, we can give it a start @Motion/velocity.",
-                            "This example makes the ball move right and up and spinning a bit initially."
+                            "Pero @Motion tiene muchos otros trucos.",
+                            "Por ejemplo, podemos darle un inicio @Motion/velocity.",
+                            "Este ejemplo hace que la pelota se mueva hacia la derecha y hacia arriba y gire un poco inicialmente."
                         ],
                         ["Motion", "excited", "Woooosh…"],
                         null,
@@ -2734,9 +2734,9 @@
                         [
                             "FunctionDefinition",
                             "excited",
-                            "You can even change @Stage/gravity to be really extreme.",
-                            "Try changing it to be like the moon, where gravity is really low!",
-                            "Or try changing @Matter/mass or @Matter/bounciness, which affects how @Phrase bounce."
+                            "Incluso puedes cambiar @ Stage / gravity para ser realmente extrema.",
+                            "¡Intenta cambiarlo para que sea como la luna, donde la gravedad es realmente baja!",
+                            "O intente cambiar @Matter/mass o @Matter/bounceness, lo que afecta el rebote de @Phrase."
                         ],
                         ["Motion", "excited", "Wsh…"],
                         null,
@@ -2758,10 +2758,10 @@
                         [
                             "FunctionDefinition",
                             "excited",
-                            "It's even possible to know when some @Output bumps into another output with related stream called @Collision.",
-                            "We just need to give names to our two @Output. How about 'ball' and 'ground'?",
-                            "Then, we @Collision will give us a @Rebound when they touch and @None with they don't.",
-                            "Let's make the ball scale up each time it hits the ground for emphasis!"
+                            "Incluso es posible saber cuándo una @Output choca con otra salida con un flujo relacionado llamado @Collision.",
+                            "Solo necesitamos darle nombres a nuestros dos @Output. ¿Qué tal 'bola' y 'tierra'?",
+                            "Luego, @Collision nos dará un @Rebound cuando se toquen y @None cuando no lo hagan.",
+                            "¡Hagamos que la pelota aumente de tamaño cada vez que toque el suelo para darle énfasis!"
                         ],
                         null,
                         [
@@ -2771,8 +2771,8 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "There's so much more you can do with @Motion, @Collision, and @Shape!",
-                            "I hope you'll try lots of bouncy things."
+                            "¡Hay mucho más que puedes hacer con @Motion, @Collision y @Shape!",
+                            "Espero que pruebes muchas cosas saltarinas."
                         ]
                     ]
                 },
@@ -2786,22 +2786,22 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "Sometimes a performance is an interaction. The audience says something and we say something back.",
-                            "That's what @Chat is for. When you use it, a little box will appear on stage for the audience to type in and when they submit their message, @Text will be added to the stream for the program to respond to."
+                            "A veces una actuación es una interacción. El público dice algo y nosotros respondemos algo.",
+                            "Para eso está @Chat. Cuando lo use, aparecerá un pequeño cuadro en el escenario para que la audiencia escriba y cuando envíen su mensaje, se agregará @Text a la transmisión para que el programa responda."
                         ],
                         null,
                         ["edit", "Chat()"],
                         [
                             "FunctionDefinition",
                             "kind",
-                            "Here's the simplest way to use it. You type something, and then the stage shows it, because the program's value is the @Chat's value."
+                            "Esta es la forma más sencilla de utilizarlo. Escribes algo y luego el escenario lo muestra, porque el valor del programa es el valor de @Chat."
                         ],
                         null,
                         ["edit", "Chat().has('oo') ? 'choo choo' 'hmm'"],
                         [
                             "FunctionDefinition",
                             "kind",
-                            "It's more fun to check the value of the chat message to shape the response of the program. This little example responds to any message with consecutive o's with a train sound!"
+                            "Es más divertido comprobar el valor del mensaje del chat para dar forma a la respuesta del programa. ¡Este pequeño ejemplo responde a cualquier mensaje con o consecutivas con un sonido de tren!"
                         ]
                     ]
                 },
@@ -2815,23 +2815,23 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "So long ago, we heard you had this thing called the internet? I think that's how you're here, right?",
-                            "Well we thought it would be really cool to bring words from the internet /here/, so you can play with them."
+                            "Hace tanto tiempo, escuchamos que tenías algo llamado Internet. Creo que así es como estás aquí, ¿verdad?",
+                            "Bueno, pensamos que sería genial traer palabras de Internet /aquí/, para que puedas jugar con ellas."
                         ],
                         null,
                         ["edit", "Webpage('https://wordplay.dev')"],
                         [
                             "FunctionDefinition",
                             "kind",
-                            "Here's how it works: you just give what I think is called a 'URL' to us, and if its an HTML page, we'll pull all the phrases out of it and give it you you in a @List.",
-                            "Like here, these are the phrases on the site you visited to get here."
+                            "Así es como funciona: simplemente nos proporcionas lo que creo que se llama una 'URL' y, si es una página HTML, extraeremos todas las frases y te las daremos en una @List.",
+                            "Como aquí, estas son las frases del sitio que visitaste para llegar hasta aquí."
                         ],
                         null,
                         ["edit", "Webpage('https://wordplay.dev' 'a')"],
                         [
                             "FunctionDefinition",
                             "kind",
-                            "You can also filter the words with something I think you call a 'CSS' query? Like we heard that 'a' means 'anchor tag', so here are all the phrases in anchor tags on the page."
+                            "¿También puedes filtrar las palabras con algo que creo que llamas consulta 'CSS'? Como escuchamos que 'a' significa 'etiqueta de anclaje', aquí están todas las frases en las etiquetas de anclaje de la página."
                         ],
                         null,
                         [
@@ -2841,7 +2841,7 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "Once you have a list of words, you can do anything with them!"
+                            "Una vez que tengas una lista de palabras, ¡puedes hacer cualquier cosa con ellas!"
                         ]
                     ]
                 },
@@ -2855,12 +2855,12 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "All of these streams that I've shown you come from your world. But sometimes, it's helpful to create streams of your own, based on these other streams. That's where my friend @Reaction comes in! @Reaction, are you around?"
+                            "Todas estas corrientes que les he mostrado provienen de su mundo. Pero a veces, resulta útil crear transmisiones propias, basadas en estas otras transmisiones. ¡Ahí es donde entra mi amigo @Reaction! @Reacción, ¿estás por aquí?"
                         ],
                         [
                             "Reaction",
                             "excited",
-                            "Yeah yeah yeah! It's @FunctionDefinition! How are you doing? Everything has been so… constant, lately. Have you noticed that?"
+                            "¡Si, si, si! ¡Es @FunctionDefinition! ¿Cómo estás? Todo ha sido tan... constante últimamente. ¿Has notado eso?"
                         ],
                         null,
                         ["fit", "Phrase('…' resting:Pose(rotation: 240°))"],
@@ -2872,83 +2872,83 @@
                         [
                             "Reaction",
                             "sad",
-                            "Super strange, super strange. My whole life has been about change, always listening and watching for new inputs from people, helping transform them into values. But there hasn't been anything. Until just a moment ago… Wait … is that a person?"
+                            "Súper extraño, súper extraño. Toda mi vida ha girado en torno al cambio, siempre escuchando y observando nuevos aportes de las personas, ayudando a transformarlos en valores. Pero no ha habido nada. Hasta hace un momento… Espera… ¿es eso una persona?"
                         ],
                         null,
                         ["fit", "Phrase('…' resting:Pose(rotation: 360°))"],
                         [
                             "FunctionDefinition",
                             "excited",
-                            "Yes! This is our new potential director. I was just showing them @Time, @Key, @Pointer, @Button, @Volume, and @Random, so you probably noticed all the new inputs they were bringing from their world."
+                            "¡Sí! Este es nuestro nuevo director potencial. Solo les estaba mostrando @Time, @Key, @Pointer, @Button, @Volume y @Random, así que probablemente notaste todas las nuevas entradas que traían de su mundo."
                         ],
                         [
                             "Reaction",
                             "excited",
-                            "Yesssss, change is coming! Can I show you what I do?"
+                            "¡Siiii, se acerca el cambio! ¿Puedo mostrarte lo que hago?"
                         ],
-                        ["FunctionDefinition", "eager", "Yes, please do!"],
+                        ["FunctionDefinition", "eager", "¡Sí por favor hazlo!"],
                         null,
                         [
                             "Reaction",
                             "serious",
-                            "Okay, so I need three things from you: a condition for change, an initial value, and a next value.",
-                            "The *initial* value is whatever value I should make before any change has happened. It's just a normal expression, of any kind!",
-                            "Then you put \\…\\ after the initial value to tell me that the value can change.",
-                            "After \\…\\, give me *condition* that evaluates to \\⊤\\ or \\⊥\\. It should generally check one or more streams — otherwise, there's nothing changing, since the only source of change in a performance is streams.",
-                            "Then put another \\…\\ after the condition to tell me that the value can change.",
-                            "Finally, the *next* value is whatever value I should make whenever the condition changes."
+                            "Bien, necesito tres cosas de usted: una condición para el cambio, un valor inicial y un valor siguiente.",
+                            "El valor *inicial* es cualquier valor que debo hacer antes de que se produzca cualquier cambio. ¡Es sólo una expresión normal, de cualquier tipo!",
+                            "Luego pones \\…\\ después del valor inicial para decirme que el valor puede cambiar.",
+                            "Después de \\…\\, dame *condición* que se evalúe como \\⊤\\ o \\⊥\\. Por lo general, debería verificar una o más transmisiones; de lo contrario, no cambia nada, ya que la única fuente de cambio en una interpretación son las transmisiones.",
+                            "Luego ponga otro \\…\\ después de la condición para indicarme que el valor puede cambiar.",
+                            "Finalmente, el *siguiente* valor es cualquier valor que debo hacer cada vez que cambie la condición."
                         ],
                         ["conflict", "_ … _•? … _"],
                         null,
                         [
                             "Reaction",
                             "serious",
-                            "Here's an example. See the @Key stream? Putting \\∆\\ before it asks, 'Did this stream change'? Before it changes, I evaluate to the initial value, \\1m\\. But when the space key is pressed, @Program reevaluates, and I evaluate to the *next* expression, which is \\1m\\ plus whatever the previous stream value was, that's represented by \\.\\. This adds 1m to the size of the phrase, making the word get bigger and bigger."
+                            "He aquí un ejemplo. ¿Ves la transmisión de @Key? Poniendo \\∆\\ antes de preguntar: '¿Cambió esta secuencia'? Antes de que cambie, evalúo el valor inicial, \\1m\\. Pero cuando se presiona la tecla espacio, @Program reevalúa y evalúo la *siguiente* expresión, que es \\1m\\ más el valor del flujo anterior, que está representado por \\.\\. Esto añade 1 m al tamaño de la frase, haciendo que la palabra se haga cada vez más grande."
                         ],
                         ["fit", "Phrase('hi' size: 1m … ∆ Key(' ') … 1m + .)"],
                         null,
                         [
                             "FunctionDefinition",
                             "kind",
-                            "@Reaction, that is so cool. Do you want to introduce @Changed? You seem to work with them closely."
+                            "@Reacción, eso es genial. ¿Quieres presentar a @Changed? Parece que trabajas estrechamente con ellos."
                         ],
                         [
                             "Reaction",
                             "kind",
-                            "Yes, @Changed and I are best buddies! They help me know when something has changed. They're like a stream whisperer, listening closely to the director's world…"
+                            "¡Sí, @Changed y yo somos mejores amigos! Me ayudan a saber cuando algo ha cambiado. Son como susurradores de corrientes, escuchando atentamente el mundo del director..."
                         ],
                         null,
                         [
                             "Changed",
                             "eager",
-                            "Wow, stream whisper, that seems a bit extreme..."
+                            "Vaya, susurro de corriente, eso parece un poco extremo..."
                         ],
                         [
                             "Reaction",
                             "serious",
-                            "Oh hi @Changed! Do you want to say more about what you do?"
+                            "¡Hola @Changed! ¿Quieres decir más sobre lo que haces?"
                         ],
                         [
                             "Changed",
                             "bored",
-                            "I mean, I just tell you if a stream changed. Give me a stream, and I'll check. That's it."
+                            "Quiero decir, solo te digo si una transmisión cambió. Dame una transmisión y lo comprobaré. Eso es todo."
                         ],
                         [
                             "Reaction",
                             "confused",
-                            "Well, it's more than that right?"
+                            "Bueno, es más que eso ¿verdad?"
                         ],
                         [
                             "Changed",
                             "bored",
-                            "Not really. That's kind of it. I mean, I'm good at it, but that's my only thing."
+                            "No precisamente. Eso es algo así. Quiero decir, soy bueno en eso, pero eso es lo único que hago."
                         ],
                         ["Reaction", "confused", "…"],
                         null,
                         [
                             "Reaction",
                             "eager",
-                            "Okay. Well, I think you're more important that than. Because I'm pretty useless without you! For example, if you give me a condition that doesn't check a stream, I'm never going to create a new value. Like here, the condition a @Boolean from @Button, but without you, I only ever change with the button ."
+                            "Bueno. Bueno, creo que eres más importante que eso. ¡Porque soy bastante inútil sin ti! Por ejemplo, si me das una condición que no marca una secuencia, nunca crearé un valor nuevo. Como aquí, la condición es @Boolean de @Button, pero sin ti, solo cambio con el botón."
                         ],
                         [
                             "fit",
@@ -2958,23 +2958,23 @@
                         [
                             "FunctionDefinition",
                             "curious",
-                            "Oh, that makes sense. And @Reaction, you work with any stream?"
+                            "Oh eso tiene sentido. Y @Reaction, ¿trabajas con algúna sequencia?"
                         ],
                         [
                             "Reaction",
                             "eager",
-                            "Yes, any stream! And actually, even myself. So if you make a reaction, and want to make a reaction that reacts to it reacting, you can do that too. But we won't worry about that now, since that doesn't usually come up in simple performances."
+                            "¡Sí, cualquier sequencia! Y de hecho, incluso yo mismo. Entonces, si haces una reacción y quieres hacer una reacción que reaccione a ella, también puedes hacerlo. Pero no nos preocuparemos por eso ahora, ya que eso no suele surgir en actuaciones sencillas."
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "curious",
-                            "Thank you @Reaction. Will you be around to help as I show our director the rest of our beautiful Verse?"
+                            "Gracias @Reacción. ¿Estarás presente para ayudarme mientras le muestro a nuestro director el resto de nuestro hermoso Verso?"
                         ],
                         [
                             "Reaction",
                             "happy",
-                            "Yes, of course, any time. I can't wait to see your inspirations!!"
+                            "Sí, por supuesto, en cualquier momento. ¡¡No puedo esperar a ver tus inspiraciones!!"
                         ]
                     ]
                 }
@@ -2993,35 +2993,35 @@
                         [
                             "FunctionDefinition",
                             "happy",
-                            "So what do you think so far? I think the Verse is pretty neat, mostly because the characters in it are so neat. Everyone is just so special!"
+                            "Entonces, ¿qué te parece hasta ahora? Creo que el versículo es bastante interesante, sobre todo porque los personajes que contiene son muy interesantes. ¡Todos son tan especiales!"
                         ],
                         null,
                         ["use", "fit", "Symbol", "🥱"],
                         [
                             "FunctionDefinition",
                             "curious",
-                            "You're bored? Oh my. I thought all of this would be so interesting! What were you hoping for?"
+                            "¿Eres aburrido? Oh mi. ¡Pensé que todo esto sería muy interesante! ¿Qué esperabas?"
                         ],
                         null,
                         ["use", "fit", "Symbol", "😴"],
                         [
                             "FunctionDefinition",
                             "serious",
-                            "I see. Text and numbers and lists and streams are boring. I guess I really haven't shown you all the things we can make with all of this. Maybe it's time we start talking about output."
+                            "Veo. El texto, los números, las listas y las transmisiones son aburridos. Supongo que realmente no les he mostrado todas las cosas que podemos hacer con todo esto. Quizás sea hora de que empecemos a hablar de producción."
                         ],
                         null,
                         ["use", "fit", "Symbol", "🤗"],
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "You've seen a lot of output already. Every time @Program evaluates, it results in a value, and @Program shows that value on stage. But so far you've only seen things like numbers, text, lists. I get it, you just want to see full performances, just like we do!"
+                            "Ya has visto muchos resultados. Cada vez que @Program evalúa, genera un valor y @Program muestra ese valor en el escenario. Pero hasta ahora sólo has visto cosas como números, texto, listas. Lo entiendo, lo único que quieres es ver las actuaciones completas, ¡tal como lo hacemos nosotros!"
                         ],
                         null,
                         ["use", "fit", "Symbol", "💬"],
                         [
                             "FunctionDefinition",
                             "eager",
-                            "Remember that output I showed you a long time ago, @Phrase? That's where the performances really begin. Let's start there! And then I'll show you ways of building ever more interesting performances from that building block. Let me introduce you!"
+                            "¿Recuerdas ese resultado que te mostré hace mucho tiempo, @Phrase? Ahí es donde realmente comienzan las actuaciones. ¡Empecemos por ahí! Y luego te mostraré formas de crear actuaciones cada vez más interesantes a partir de ese componente básico. ¡Dejame presentarte!"
                         ]
                     ]
                 },
@@ -3034,60 +3034,60 @@
                         [
                             "FunctionDefinition",
                             "curious",
-                            "@Phrase? Are you out there?"
+                            "@Phrase? ¿Estás ahí fuera?"
                         ],
                         [
                             "Phrase",
                             "excited",
-                            "Out and proud my darling, how are you? You look so glamorous today! I would love to get you on stage one of these days."
+                            "Fuera y orgullosa cariño, ¿cómo estás? ¡Te ves tan glamorosa hoy! Me encantaría subirte al escenario un día de estos."
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "shy",
-                            "Oh, the stage isn't for me, I'm more than happy to be backstage, tinkering with the set."
+                            "Oh, el escenario no es para mí, estoy más que feliz de estar detrás del escenario, jugueteando con el set."
                         ],
                         [
                             "Phrase",
                             "curious",
-                            "Don't be modest, you are every bit as fabulous as me. All you need is a bit of color, a flattering font, and you would be wonderful. You have so much to share! Speaking of, we haven't put on a show in forever, have we? Has it been quiet? You know how much I talk to myself, I can never tell."
+                            "No seas modesto, eres tan fabuloso como yo. Todo lo que necesitas es un poco de color, una fuente favorecedora y quedarás maravilloso. ¡Tienes mucho que compartir! Hablando de eso, hace mucho que no montamos un espectáculo, ¿verdad? ¿Ha estado tranquilo? Sabes cuánto hablo conmigo mismo, nunca lo puedo decir."
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "kind",
-                            "It has been quiet. Ever since our last director left, it's been a void. But that is changing! We have a new person! We've been meeting the whole family, @Program, @ExpressionPlaceholder, @Evaluate, all the values, all the collections. We just spent time with all of the streams too, and @Reaction and @Conditional. I'm starting to feel things hum. But I haven't introduced our new director here too much about what you do on stage? This is so your world, and not mine, I figured we'd come to you first."
+                            "Ha estado tranquilo. Desde que se fue nuestro último director, ha sido un vacío. ¡Pero eso está cambiando! ¡Tenemos una nueva persona! Hemos estado conociendo a toda la familia, @Program, @ExpressionPlaceholder, @Evaluate, todos los valores, todas las colecciones. También pasamos tiempo con todas las transmisiones, y con @Reaction y @Conditional. Estoy empezando a sentir que las cosas zumban. ¿Pero no te he presentado demasiado a nuestro nuevo director sobre lo que haces en el escenario? Este es tu mundo, y no el mío, pensé que acudiríamos a ti primero."
                         ],
                         null,
                         [
                             "Phrase",
                             "happy",
-                            "Well you came to the right place. I love talking about all things stage life. I can't wait to show you all the wonderful little things we do here on stage!"
+                            "Bueno, has venido al lugar indicado. Me encanta hablar de todo lo relacionado con la vida escénica. ¡No puedo esperar para mostrarles todas las pequeñas cosas maravillosas que hacemos aquí en el escenario!"
                         ],
                         [
                             "FunctionDefinition",
                             "excited",
-                            "Let the show begin!"
+                            "¡Que empiece el espectáculo!"
                         ],
                         null,
                         [
                             "Phrase",
                             "excited",
-                            "So I know you've seen me do this."
+                            "Entonces sé que me has visto hacer esto."
                         ],
                         ["edit", "Phrase('hi')"],
                         null,
                         [
                             "Phrase",
                             "kind",
-                            "That, my darling, is the simplest way to get a word on stage. But there's so much more! For example, did you know that you can style the text you give me by working with @FormattedTranslation? You haven't met them yet, but all you have to do is put special symbols around your text? Behold: bold!"
+                            "Ésa, querida, es la forma más sencilla de hacer hablar en el escenario. ¡Pero hay mucho más! Por ejemplo, ¿sabías que puedes aplicar estilo al texto que me proporcionas trabajando con @FormattedTranslation? ¿Aún no los conoces, pero todo lo que tienes que hacer es poner símbolos especiales alrededor de tu texto? He aquí: ¡audaz!"
                         ],
                         ["edit", "Phrase(`*hi*`)"],
                         null,
                         [
                             "Phrase",
                             "kind",
-                            "Not enough sass for you? How about underline, italics, light text, and extra bold text, *all at once*?"
+                            "¿No te parece suficiente descaro? ¿Qué tal subrayado, cursiva, texto claro y texto extra en negrita, *todo a la vez*?"
                         ],
                         ["edit", "Phrase(`/I/ _am_ ^the^ /fabulous/ 💬!`)"],
                         null,
@@ -3095,14 +3095,14 @@
                             "Phrase",
                             "kind",
                             "Still not impressed?",
-                            "Mix them all together!"
+                            "Mezclarlas todas juntas"
                         ],
                         ["edit", "Phrase(`/_*I am the fabulous*_/ 💬!`)"],
                         null,
                         [
                             "Phrase",
                             "kind",
-                            "And if you ever want to use any of these special formatting characters as text instead of formatting, you can just repeat them, kind of like in @Text, and I'll just use the character literally."
+                            "Y si alguna vez quieres usar cualquiera de estos caracteres de formato especial como texto en lugar de formatear, puedes simplemente repetirlos, como en @Text, y usaré el carácter literalmente."
                         ],
                         [
                             "edit",
@@ -3112,21 +3112,21 @@
                         [
                             "Phrase",
                             "excited",
-                            "But I can do more than just style text. For example, I can take a @Phrase/size, measured in meters \\m\\. Try changing the size to any size you like!"
+                            "Pero puedo hacer más que simplemente darle estilo al texto. Por ejemplo, puedo tomar una @Frase/tamaño, medida en metros \\m\\. ¡Intenta cambiar el tamaño a cualquier tamaño que desees!"
                         ],
                         ["edit", "Phrase('hi' 2m)"],
                         null,
                         [
                             "Phrase",
                             "kind",
-                            "That size can be any expression. For example, say we wanted it to grow as @Time ticks. We can take time, multiply it by a fraction of a meter, and glorious, tick tick tick, hi hi hi. Try changing the frequency or the multiplier. See what beautiful growth you can create!"
+                            "Ese tamaño puede ser cualquier expresión. Por ejemplo, digamos que queremos que crezca a medida que @Time avanza. Podemos tomarnos el tiempo, multiplicarlo por una fracción de metro, y glorioso, tic tic tic, hola hola. Prueba a cambiar la frecuencia o el multiplicador. ¡Mira qué hermoso crecimiento puedes crear!"
                         ],
                         ["fit", "Phrase('hi' Time(100ms) · 0.001m/ms)"],
                         null,
                         [
                             "Phrase",
                             "excited",
-                            "Do you like costumes? I loooooove costumes. My @Phrase/face is a costume. Pick any of the supported faces to spice up the word you've chosen."
+                            "¿Te gustan los disfraces? Me encantan los disfraces. Mi @Frase/cara es un disfraz. Elija cualquiera de las caras admitidas para darle vida a la palabra que ha elegido."
                         ],
                         [
                             "use",
@@ -3138,7 +3138,7 @@
                         [
                             "Phrase",
                             "neutral",
-                            "Need me to be somewhere else on stage? Places please! A @Place is just an \\x\\, \\y\\, and optional \\z\\ position, in meters \\m\\. Try changing the place to a different location, by editing the numbers, or dragging the @Phrase on stage."
+                            "¿Necesitas que esté en otro lugar del escenario? ¡Lugares por favor! Un @Place es solo una posición \\x\\, \\y\\ y opcional \\z\\, en metros \\m\\. Intente cambiar el lugar a una ubicación diferente, editando los números o arrastrando @Phrase al escenario."
                         ],
                         [
                             "fit",
@@ -3148,7 +3148,7 @@
                         [
                             "Phrase",
                             "curious",
-                            "Do you ever feel a little off axis? Maybe you give the world a little @Pose/rotation with rotation. Try changing the rotation value to twist me around!"
+                            "¿Alguna vez te has sentido un poco fuera de lugar? Tal vez le des al mundo un poco de @Pose/rotation con rotación. ¡Intenta cambiar el valor de rotación para girarme!"
                         ],
                         [
                             "fit",
@@ -3158,7 +3158,7 @@
                         [
                             "Phrase",
                             "happy",
-                            "Or maybe we have a little fun, and link rotation to @Time! Wheeeee. Any guesses on how to make me spin faster? See if you can figure it out…"
+                            "¡O tal vez nos divertimos un poco y vinculamos la rotación a @Time! Wiiiiii. ¿Alguna idea sobre cómo hacerme girar más rápido? A ver si puedes resolverlo..."
                         ],
                         [
                             "fit",
@@ -3168,12 +3168,12 @@
                         [
                             "Phrase",
                             "serious",
-                            "Now's an outstanding time to remind you that @FunctionDefinition here requires inputs to be in a particular order, so if you put them out of order, they. Are. Going. To. Complain."
+                            "Ahora es un buen momento para recordarle que @FunctionDefinition aquí requiere que las entradas estén en un orden particular, por lo que si las desordena, se enviarán. Son. Yendo. A. Quejarse."
                         ],
                         [
                             "FunctionDefinition",
                             "shy",
-                            "I will… I like things… tidy… Can you put them in the right order? You can cut and paste with the keyboard or click and drag expressions to rearrange them."
+                            "Me... me gustan las cosas... ordenadas... ¿Puedes ponerlas en el orden correcto? Puede cortar y pegar con el teclado o hacer clic y arrastrar expresiones para reorganizarlas."
                         ],
                         [
                             "conflict",
@@ -3183,7 +3183,7 @@
                         [
                             "Phrase",
                             "kind",
-                            "Only want to give a particular property? Just name the one you want. Here we name @Phrase/size and @Phrase/rotation."
+                            "¿Solo quieres regalar una propiedad en particular? Simplemente nombra el que quieras. Aquí nombramos @Phrase/size y @Phrase/rotation."
                         ],
                         [
                             "edit",
@@ -3193,14 +3193,14 @@
                         [
                             "Phrase",
                             "neutral",
-                            "Now that we have all those out of the way, we can talk about dancing, darling! Dancing is one of my favorite things to do. There are *four* ways I move. First, I can @Phrase/entering. Enter is my way of entering the stage. If you don't tell me how to enter, I'll just BLIP appear on stage like I teleported there. But if you give me @Pose. I'll start with the pose you give me, then move to my resting pose. For example, let's make me fade in from invisible to oh-so-in-your face visible."
+                            "Ahora que hemos eliminado todo eso, ¡podemos hablar de bailar, cariño! Bailar es una de mis cosas favoritas para hacer. Hay *cuatro* maneras en que me muevo. Primero, puedo @Phrase/entering. Entrar es mi forma de entrar al escenario. Si no me dices cómo entrar, simplemente apareceré en el escenario como si me teletransportara allí. Pero si me das @Pose. Comenzaré con la postura que me diste y luego pasaré a mi postura de descanso. Por ejemplo, hagamos que pase de invisible a visible en tu cara."
                         ],
                         ["edit", "Phrase('hi' entering: Pose(opacity: 0))"],
                         null,
                         [
                             "Phrase",
                             "curious",
-                            "Didn't see it? Did I move too fast for you? That's because my duration is \\0s\\ by default. Slow me down with a duration, which tells me how long I should take to move between poses. I made this one nice and slow for you, but try changing duration to higher and lower numbers."
+                            "¿No lo viste? ¿Me moví demasiado rápido para ti? Eso es porque mi duración es \\0s\\ de forma predeterminada. Ralentízame con una duración, que me dice cuánto tiempo debo tomar para moverme entre poses. Hice este agradable y lento para ti, pero intenta cambiar la duración a números más altos y más bajos."
                         ],
                         [
                             "edit",
@@ -3210,7 +3210,7 @@
                         [
                             "Phrase",
                             "neutral",
-                            "Now, say I was moving. We'll set my place to time, so I move to the right a bit every second. But if we set a @Phrase/moving @Pose, and have the @Pose/rotation \\5°\\ and maybe a little color, every time my place changes, I'll glide across the stage with the cutest little tilt."
+                            "Ahora digamos que me estaba moviendo. Estableceremos mi lugar en el tiempo, por lo que me muevo un poco hacia la derecha cada segundo. Pero si configuramos una @Frase/@Pose en movimiento, y tenemos la @Pose/rotation \\5°\\ y tal vez un poco de color, cada vez que cambie mi lugar, me deslizaré por el escenario con la inclinación más linda."
                         ],
                         [
                             "fit",
@@ -3220,7 +3220,7 @@
                         [
                             "Phrase",
                             "curious",
-                            "Not in the mood for cute? How about you make me a little serious by having me slide across straight by changing my @Phrase/style. It's really subtle, but styles can really change the /emotion/ of a movement."
+                            "¿No estás de humor para lo lindo? ¿Qué tal si me pones un poco serio al hacer que me deslice hacia adelante cambiando mi @frase/estilo? Es realmente sutil, pero los estilos realmente pueden cambiar la /emoción/ de un movimiento."
                         ],
                         [
                             "fit",
@@ -3230,7 +3230,7 @@
                         [
                             "Phrase",
                             "excited",
-                            "And for the coup de grâce, let's have me @Phrase/exiting in style. We can play with @Conditional and have me exit stage after 3 seconds."
+                            "Y para el golpe de gracia, déjame @Frase/salir con estilo. Podemos jugar con @Conditional y hacer que salga del escenario después de 3 segundos."
                         ],
                         [
                             "fit",
@@ -3242,7 +3242,7 @@
                         [
                             "Phrase",
                             "surprised",
-                            "Not the exit you were hoping for? The disappearing act is a bit harsh, ain't it? Give me an @Phrase/exiting @Pose, and I'll glide off on stage toward whatever pose you want. Here we'll have me get large than life, fall upside down, and fade out to @Pose/opacity \\0\\."
+                            "¿No es la salida que esperabas? El acto de desaparición es un poco duro, ¿no? Dame una @Frase/@Pose de salida y me deslizaré en el escenario hacia la pose que quieras. Aquí me haré crecer más que la vida, caer boca abajo y desvanecerme en @Pose/opacity \\0\\."
                         ],
                         [
                             "fit",
@@ -3252,7 +3252,7 @@
                         [
                             "Phrase",
                             "serious",
-                            "You probably noticed that I can take up a little space in @Program. If you ever want to make me easier to read, just add some lines between my properties. See how that's so much easier to see?"
+                            "Probablemente hayas notado que puedo ocupar un poco de espacio en @Program. Si alguna vez quieres que sea más fácil de leer, simplemente agrega algunas líneas entre mis propiedades. ¿Ves cómo eso es mucho más fácil de ver?"
                         ],
                         [
                             "edit",
@@ -3271,33 +3271,33 @@
                         [
                             "FunctionDefinition",
                             "excited",
-                            "Bravo, bravo, that was just stunning, @Phrase! I'm always blown away by how much you can do with just a few simple ideas. A while ago, I showed our new inspirational friend here about the palette. Do you want to say more about that?"
+                            "¡Bravo, bravo, eso fue simplemente impresionante, @Phrase! Siempre me sorprende lo mucho que puedes hacer con unas pocas ideas simples. Hace un tiempo, le mostré a nuestro nuevo amigo inspirador aquí sobre la paleta. ¿Quieres decir más sobre eso?"
                         ],
                         [
                             "Phrase",
                             "happy",
-                            "Of course! Any time you get tired of fiddling with @Evaluate's inputs, you can always select a phrase on stage, and a palette will appear, allowing you to change any little thing you might want, my size, font, place, poses. There's just one rule: if you set any of those to an expression, instead of just a value, you'll have to change them down in @Program, not in the palette. Dress me up all you like!"
+                            "¡Por supuesto! Cada vez que te canses de jugar con las entradas de @Evaluate, siempre puedes seleccionar una frase en el escenario y aparecerá una paleta que te permitirá cambiar cualquier pequeña cosa que desees, mi tamaño, fuente, lugar, poses. Solo hay una regla: si configura cualquiera de ellos como una expresión, en lugar de solo un valor, tendrá que cambiarlos en @Program, no en la paleta. ¡Vísteme todo lo que quieras!"
                         ],
                         ["edit", "Phrase('dress me up!')"],
                         null,
                         [
                             "FunctionDefinition",
                             "curious",
-                            "Wait, Phrase, what about @Color?"
+                            "Espera, Phrase, ¿qué pasa con @Color?"
                         ],
                         [
                             "Phrase",
                             "sad",
-                            "Omigod omigod omigod, I CANNOT believe I forgot about color. Okay, so any @Pose can have a color, right? But @Color comes in three parts. First, a @Color/lightness between 0 and 100%, which you can think of as how bright a room is, from black to white, with color in the middle at 50%.",
-                            "Then, a @Color/chroma between 0 and 100, which you can think of has how much color there is, from no color gray to full color.",
-                            "And finally, a @Color/chroma, which you can think of like a color wheel, from red to green to blue, in degrees. So you want me to be bright red? Set my rest pose color to \\Color(50% 300 30°)\\."
+                            "Dios mío, Dios mío, Dios mío, NO PUEDO creer que me haya olvidado del color. Bien, entonces cualquier @Pose puede tener un color, ¿verdad? Pero @Color viene en tres partes. Primero, un @Color/luminosidad entre 0 y 100%, que se puede considerar como qué tan brillante es una habitación, de negro a blanco, con color en el medio al 50%.",
+                            "Luego, un @Color/croma entre 0 y 100, que se te ocurra tiene cuánto color hay, desde gris sin color hasta color completo.",
+                            "Y finalmente, un @Color/chroma, que puedes considerar como una rueda de colores, del rojo al verde y al azul, en grados. ¿Entonces quieres que sea rojo brillante? Establezca el color de mi pose de descanso en \\Color(50% 300 30°)\\."
                         ],
                         ["edit", "Phrase('red' color: 🌈(50% 300 30°))"],
                         null,
                         [
                             "FunctionDefinition",
                             "excited",
-                            "And want me to shimmer with the rainbow? Take time, get the remainder of dividing by 360, then multiply by degrees and I'll spin around that color wheel all day long!"
+                            "¿Y quieres que brille con el arcoíris? Tómese el tiempo, obtenga el resto de la división entre 360, luego multiplique por grados y ¡giraré esa rueda de colores todo el día!"
                         ],
                         [
                             "edit",
@@ -3306,12 +3306,12 @@
                         [
                             "FunctionDefinition",
                             "happy",
-                            "@Phrase, that is something to be proud of :P I think we're going to go visit @Sequence next, and then maybe @Group and @Stage. You'll be around to help?"
+                            "@Phrase, eso es algo de lo que estar orgulloso: P Creo que a continuación visitaremos @Sequence, y luego tal vez @Group y @Stage. ¿Estarás aquí para ayudar?"
                         ],
                         [
                             "Phrase",
                             "kind",
-                            "I wouldn't miss it. Sparkle and shine!"
+                            "No me lo perdería. ¡Brilla y brilla!"
                         ]
                     ]
                 },
@@ -3325,51 +3325,51 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "@Phrase is just wonderful, aren't they? They have so much energy, so many amazing flourishes. Did you know they work closely with our choreographer, @Sequence? @Sequence and @Phrase together can do some incredible things that @Phrase can't do alone. Do you want to meet them?"
+                            "@Phrase es simplemente maravilloso, ¿no? Tienen tanta energía, tantas florituras asombrosas. ¿Sabías que trabajan en estrecha colaboración con nuestro coreógrafo, @Sequence? @Sequence y @Phrase juntos pueden hacer cosas increíbles que @Phrase no puede hacer solo. ¿Quieres conocerlos?"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "excited",
-                            "Yay! @Sequence, we have a guest. Are you back there?"
+                            "¡Hurra! @Sequence, tenemos un invitado. ¿Estás de vuelta allí?"
                         ],
                         [
                             "Sequence",
                             "curious",
-                            "@FunctionDefinition! You look beautiful. How long has it been? A week? A month? A century? It was like 1, 2, 3 and then everything was quiet. I feel like I've been dancing alone forever…"
+                            "@FunciónDefinición! Estás preciosa. ¿Cuánto tiempo ha pasado? ¿Una semana? ¿Un mes? ¿Un siglo? Fueron como 1, 2, 3 y luego todo quedó en silencio. Siento que he estado bailando solo desde siempre..."
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "sad",
-                            "It was silent, wasn't it? But I can totally see you dancing alone. I was doing my own choreography all alone too, just having to imagine all of you working together. But it wasn't the same."
+                            "Estaba en silencio, ¿no? Pero puedo verte bailando solo. Yo también estaba haciendo mi propia coreografía solo, solo tenía que imaginarlos a todos ustedes trabajando juntos. Pero no fue lo mismo."
                         ],
                         [
                             "Sequence",
                             "kind",
-                            "And you an @Evaluate? Are you still…"
+                            "¿Y tu y @Evaluate? Todavia siguen…"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "shy",
-                            "I just saw them earlier. They… Oh, we have a guest! @Sequence, this is our new director pal. They've come to bring us inspiration!"
+                            "Los acabo de ver antes. Ellos… ¡Oh, tenemos un invitado! @Sequence, este es nuestro nuevo amigo director. ¡Han venido a traernos inspiración!"
                         ],
                         [
                             "Sequence",
                             "excited",
-                            "(We're going to come back to that tea, @FunctionDefinition). Director pal, it's so exciting to meet you! Have you come here to learn to dance?"
+                            "(Volveremos a ese té, @FunctionDefinition). Amigo director, ¡es un placer conocerte! ¿Has venido aquí para aprender a bailar?"
                         ],
                         [
                             "FunctionDefinition",
                             "kind",
-                            "Of course they did! Do you want to show them the steps?"
+                            "¡Por supuesto que sí! ¿Quieres mostrarles los pasos?"
                         ],
                         null,
                         [
                             "Sequence",
                             "serious",
-                            "Absolutely. You know time? 1, 2, 3, 4, 1, 2, 3, 4? Well I make time beautiful, arranging a sequence of poses over time for @Phrase to follow. You tell me what the poses are and I'll help @Phrase follow the steps. Like this example: our smiley friend here has four poses, and smoothly moves between them."
+                            "Absolutamente. ¿Sabes la hora? 1, 2, 3, 4, 1, 2, 3, 4? Bueno, hago que el tiempo sea hermoso, organizando una secuencia de poses a lo largo del tiempo para que @Phrase las siga. Dime cuáles son las poses y ayudo a @Phrase a seguir los pasos. Como este ejemplo: nuestro amigo sonriente aquí tiene cuatro poses y se mueve suavemente entre ellas."
                         ],
                         [
                             "fit",
@@ -3379,7 +3379,7 @@
                         [
                             "Sequence",
                             "neutral",
-                            "Here's a simple example of how I work. Here's @Phrase (hi @Phrase!) with the word “dance”, and they have an enter pose that's a @Sequence rather than a single @Pose. Follow me? The sequence has four steps. Straight, tilt left, tilt right, straight. When @Phrase enters, they do this cute little wobble, and then stop. I work with @MapLiteral to map percentages to a @Pose. Each of those percentages are how far through the sequence each @Pose should happen. Try changing the percentages, especially those two middle ones. It changes the flow and style of the wobble."
+                            "Aquí hay un ejemplo simple de cómo trabajo. Aquí está @Phrase (¡hola @Phrase!) con la palabra 'bailar', y tienen una pose de entrada que es una @Sequence en lugar de una sola @Pose. ¿Sígueme? La secuencia tiene cuatro pasos. Recto, inclinado hacia la izquierda, inclinado hacia la derecha, recto. Cuando @Phrase entra, hacen este pequeño y lindo bamboleo y luego se detienen. Trabajo con @MapLiteral para asignar porcentajes a @Pose. Cada uno de esos porcentajes indica hasta qué punto en la secuencia debe ocurrir cada @Pose. Intente cambiar los porcentajes, especialmente esos dos del medio. Cambia el flujo y el estilo de la oscilación."
                         ],
                         [
                             "edit",
@@ -3399,7 +3399,7 @@
                         [
                             "Sequence",
                             "serious",
-                            "Okay, so now imagine you wanted this to be really fast. By default, I'm pretty quick, so any sequence will be a quarter second and it's done. But what if you wanted it to be even faster? Give me a shorter duration and I'll speed every @Pose up to get it done faster. 1, 2, 3, 4! It doesn't look like a wobble anymore, does it? More like a frantic little shake! See what it looks like if you slow me down to 2 or 3 seconds…"
+                            "Bien, ahora imagina que quieres que esto sea realmente rápido. Por defecto, soy bastante rápido, por lo que cualquier secuencia durará un cuarto de segundo y listo. Pero ¿y si quisieras que fuera aún más rápido? Dame una duración más corta y aceleraré cada @Pose para hacerlo más rápido. 1, 2, 3, 4! Ya no parece un bamboleo, ¿verdad? ¡Más bien un pequeño batido frenético! Mira cómo se ve si me ralentizas a 2 o 3 segundos..."
                         ],
                         [
                             "edit",
@@ -3420,7 +3420,7 @@
                         [
                             "Sequence",
                             "excited",
-                            "But sometimes, we come up with a lovely move and we just can't help but want to do it over and over, for emphasis! That looks a little violent… try changing my duration and count until we get it just right…"
+                            "Pero a veces se nos ocurre un movimiento encantador y no podemos evitar querer hacerlo una y otra vez, ¡para darle énfasis! Eso parece un poco violento... intenta cambiar mi duración y cuenta hasta que lo hagamos bien..."
                         ],
                         [
                             "edit",
@@ -3441,7 +3441,7 @@
                         [
                             "Sequence",
                             "curious",
-                            "But, you say, what if we wanted to do it forever? You can set a @Phrase/resting to me. For as long as @Phrase is on stage and resting, they'll repeat a sequence. Infinite wobbles!"
+                            "Pero, dirás, ¿y si quisiéramos hacerlo para siempre? Puedes configurarme una @Frase/resting. Mientras @Phrase esté en el escenario y descansando, repetirán una secuencia. ¡Bamboleos infinitos!"
                         ],
                         [
                             "edit",
@@ -3463,19 +3463,19 @@
                         [
                             "FunctionDefinition",
                             "kind",
-                            "@Sequence, this is so great! This is exactly what I was hoping you could show us. But I'm curious, what have you been working on lately, dances of your own? Maybe something that shows everything you're capable of?"
+                            "@Sequence, ¡esto es genial! Esto es exactamente lo que esperaba que pudieras mostrarnos. Pero tengo curiosidad, ¿en qué has estado trabajando últimamente, tus propios bailes? ¿Quizás algo que demuestre todo lo que eres capaz de hacer?"
                         ],
                         [
                             "Sequence",
                             "excited",
-                            "Oh my yes! @Phrase and I have been working on this new donut dance. It comes my favorite treat with nearly everything I've learned in dance. Do you want to see it?"
+                            "¡Oh, sí! @Phrase y yo hemos estado trabajando en este nuevo baile de donas. Viene mi regalo favorito con casi todo lo que he aprendido en la danza. ¿Quieres verlo?"
                         ],
                         ["FunctionDefinition", "excited", "Yes!!!"],
                         null,
                         [
                             "Sequence",
                             "serious",
-                            "Yeah, hmm, oooh, up, eee, eee, eee, eee, bam, boo, yeah, hmm, oooh, up, eee, eee, eee, eee, bam, boo, yeah, hmm, oooh, up, eee, eee, eee, eee, bam, boo, …"
+                            "Sii, hmm, oooh, up, eee, eee, eee, eee, bam, boo, yeah, hmm, oooh, up, eee, eee, eee, eee, bam, boo, yeah, hmm, oooh, up, eee, eee, eee, eee, bam, boo, …"
                         ],
                         ["use", "fit", "DonutDance"],
                         null,
@@ -3483,12 +3483,12 @@
                         [
                             "FunctionDefinition",
                             "happy",
-                            "@Sequence, that's amazing! How could that not be the next viral dance?"
+                            "@Sequence, ¡eso es increíble! ¿Cómo podría no ser ese el próximo baile viral?"
                         ],
                         [
                             "Sequence",
                             "excited",
-                            "You mean next spiral dance. Cheers!"
+                            "Te refieres al próximo baile en espiral. ¡Salud!"
                         ]
                     ]
                 },
@@ -3505,7 +3505,7 @@
                         [
                             "FunctionDefinition",
                             "neutral",
-                            "Sigh… everyone keeps bringing up @Evaluate, but I don't know what to say. Are you ever so close to someone, and yet so far away?",
+                            "Suspiro... todo el mundo sigue mencionando @Evaluate, pero no sé qué decir. ¿Alguna vez has estado tan cerca de alguien y, sin embargo, tan lejos?",
                             "…"
                         ],
                         null,
@@ -3513,9 +3513,9 @@
                         [
                             "FunctionDefinition",
                             "serious",
-                            "Sorry. I'm excited to be here with you.",
-                            "I think…",
-                            "I think what will help is introducing you to the rest of us, and then putting on a show, and then I think @Evaluate and I can sort things out."
+                            "Lo siento. Estoy emocionado de estar aquí contigo.",
+                            "Creo…",
+                            "Creo que lo que ayudará es presentarte al resto de nosotros y luego montar un espectáculo, y luego creo que @Evaluate y yo podemos arreglar las cosas."
                         ],
                         null,
                         ["use", "fit", "Symbol", "🙂"],
@@ -3523,33 +3523,33 @@
                             "FunctionDefinition",
                             "eager",
                             "So who's next?",
-                            "Oh, @Group! I can't believe I forgot @Group.",
-                            "This is perfect timing; you know @Phrase and @Sequence now, and @Group is such an integral part of bringing us all together. @Group cares for us all so deeply.",
-                            "@Group? Are you there?"
+                            "¡Oh, @Grupo! No puedo creer que me haya olvidado de @Group.",
+                            "Este es el momento perfecto; Ahora conoces @Phrase y @Sequence, y @Group es una parte integral para unirnos a todos. @Group se preocupa profundamente por todos nosotros.",
+                            "¿@Group? ¿Está ahí?"
                         ],
                         null,
                         ["fit", "Group(Grid(2 2) [Phrase('🔳')])"],
                         [
                             "Group",
                             "neutral",
-                            "@FunctionDefinition, hello, how are you? Where has everyone been? I've been so worried! Are you okay?"
+                            "@FunctionDefinition, hola, ¿cómo estás? ¿Dónde han estado todos? ¡He estado tan preocupada! ¿Estás bien?"
                         ],
                         [
                             "FunctionDefinition",
                             "kind",
-                            "I'm okay. We're all okay! The silence is breaking, because we found a person! They're going to be our inspiration."
+                            "Estoy bien. ¡Estamos todos bien! ¡El silencio se rompe porque encontramos a una persona! Serán nuestra inspiración."
                         ],
                         null,
                         ["fit", "Group(Grid(2 2) [Phrase('🔳') Phrase('🔳')])"],
                         [
                             "Group",
                             "happy",
-                            "That's lovely! You're not hurt? Everyone else is here? I felt like I was wandering in the dark, and couldn't see anyone."
+                            "¡Eso es adorable! ¿No estás herido? ¿Todos los demás están aquí? Sentí como si estuviera vagando en la oscuridad y no podía ver a nadie."
                         ],
                         [
                             "FunctionDefinition",
                             "kind",
-                            "I'm not hurt. Just a bit rusty. And I haven't seen everyone yet, but almost everyone, and I think everyone is waking up okay. (Though apparently some have been at the beach). We've met nearly everyone. We're getting ready to put on a show! And the best shows always involve you…"
+                            "No estoy herido. Sólo un poco oxidado. Y no he visto a todos todavía, pero a casi todos, y creo que todos se están despertando bien. (Aunque al parecer algunos han estado en la playa). Hemos conocido a casi todos. ¡Nos estamos preparando para montar un espectáculo! Y los mejores espectáculos siempre involucran a ti…"
                         ],
                         null,
                         [
@@ -3559,7 +3559,7 @@
                         [
                             "Group",
                             "kind",
-                            "A show! I can't wait to help. You kids are always so inspiring, I'm always happy to do my part. What shall I do, where do I start?"
+                            "¡Un espectáculo! No puedo esperar para ayudar. Ustedes, niños, siempre son tan inspiradores, siempre estoy feliz de hacer mi parte. ¿Qué debo hacer, por dónde empiezo?"
                         ],
                         [
                             "FunctionDefinition",
