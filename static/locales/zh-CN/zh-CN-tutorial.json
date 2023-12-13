@@ -4596,81 +4596,81 @@
                     ]
                 },
                 {
-                    "title": "Director's notes",
-                    "subtitle": "Explain",
+                    "title": "导演笔记",
+                    "subtitle": "解释",
                     "concept": "Doc",
-                    "performance": ["use", "fit", "Symbol", "``"],
+                    "performance": ["use", "适应", "符号", "``"],
                     "lines": [
                         [
                             "FunctionDefinition",
                             "eager",
-                            "Wow, we've come a long way, haven't we? We have one more character to go. They're an interesting one, because in essence, they're all about explaining things, which feels like what I've been doing with you for a while now. Their name is @Doc. What's up @Doc?"
+                            "哇，我们走了很长的路，不是吗？我们还有一个角色要介绍。他们很有趣，因为本质上，他们主要是解释事物，感觉我已经和你做了一段时间的事情。他们的名字是@Doc。嘿 @Doc，有什么新鲜事吗？"
                         ],
-                        ["use", "fit", "Symbol", "``"],
+                        ["use", "适应", "符号", "``"],
                         [
                             "Doc",
                             "surprised",
-                            "@FunctionDefinition, is that you? I never thought I'd see you again. How are you? How's @Evaluate?"
+                            "@FunctionDefinition，是你吗？我从没想过会再见到你。你好吗？@Evaluate 怎么样？"
                         ],
                         null,
                         [
                             "FunctionDefinition",
                             "kind",
-                            "I'm okay. @Evaluate is … @Evaluate. I saw them, but… I think I still need space. I've been introducing everyone to our new director."
+                            "我还好。@Evaluate 是 … @Evaluate。我见到了他们，但…我觉得我还需要一些空间。我一直在向大家介绍我们的新导演。"
                         ],
                         [
                             "Doc",
                             "kind",
-                            "It's so nice to meet you! I hope @FunctionDefinition has been a good teacher?"
+                            "很高兴见到你！我希望@FunctionDefinition是个好老师？"
                         ],
-                        ["use", "fit", "Symbol", "``/"],
+                        ["use", "适应", "符号", "``/"],
                         null,
                         [
                             "FunctionDefinition",
                             "eager",
-                            "I've tried… you know, you're our last stop? You're so essential, but also, there's so much to explain before we even get to explaining our performances. So I wanted you to get the last word. Do you want to share what you do?"
+                            "我试过了… 你知道吗，你是我们的最后一站？你非常重要，但同时，在我们解释表演之前有很多要解释的事情。所以我希望你能说最后一句话。你想分享一下你的工作吗？"
                         ],
-                        ["use", "fit", "Symbol", "``/en"],
+                        ["use", "适应", "符号", "``/en"],
                         null,
                         [
                             "Doc",
                             "happy",
-                            "Happily. If you've met everyone but me, then you probably know by now that we do a lot of different things. Even I have trouble keeping track of what everyone does! What I do is help explain what everyone is doing in a performance."
+                            "愉快。如果你见过每个人，除了我，那么你可能已经知道我们做了很多不同的事情。即使我自己都很难追踪每个人在做什么！我的工作是帮助解释表演中每个人在做什么。"
                         ],
                         null,
                         [
                             "Doc",
                             "happy",
-                            "I'm a way you can remind yourself what everyone is doing, but also a way to explain to others, if you're directing with a friend, or want to share your performance with someone. So you don't /have/ to work with me, but I find that every performance is a bit easier to do and change if you've spent some time explaining how it works."
+                            "我是一种你可以提醒自己每个人在做什么的方式，同时也是一种向他人解释的方式，如果你正在和朋友一起导演，或者想与他人分享你的表演。所以你不必非得和我一起工作，但我发现如果你花一些时间解释它是如何工作的，每个表演都会变得更容易做和改变。"
                         ],
-                        ["use", "fit", "Symbol", "``About me...``/en"],
+                        ["use", "适应", "符号", "``关于我...``/en"],
                         null,
                         [
                             "FunctionDefinition",
                             "curious",
-                            "So how can our director work with you?"
+                            "那我们的导演怎么和你一起工作？"
                         ],
                         [
                             "Doc",
                             "serious",
-                            "Well you can put me almost anywhere inside @Program. For example, say you make a @Bind, and you want to say what the value is for. For example, here we have a simple value we've named, but what I'm doing is providing a broader explanation of its role."
+                            "嗯，你几乎可以把我放在@Program的任何地方。例如，假设你做了一个@Bind，并且你想说明值是什么。例如，这里我们有一个我们命名的简单值，但我正在提供它角色的更广泛解释。"
                         ],
                         [
                             "conflict",
-                            "``The price at the beginning of the game, ",
-                            "used to initialize the game.``",
+                            "``游戏开始时的价格，",
+                            "用于初始化游戏。``",
                             "startingPrice: 5dollar"
                         ],
                         null,
                         [
                             "Doc",
                             "serious",
-                            "Or, suppose you had @FunctionDefinition here defining a way of calculating tax on a price. You might want to explain what it computes. Just like with @Bind, I come before the @FunctionDefinition."
+                            "或者，假设你在这里有一个@FunctionDefinition定义了一个在价格上计算税收的方式。你可能想解释它计算了什么。就像在@Bind中一样，我在@FunctionDefinition之前出现。"
                         ],
                         [
                             "edit",
-                            "``Gets the tax for a given price, ",
-                            "which is 1% if less than 100, and 5% otherwise``",
+                            "``给定价格的税收，",
+                            "如果低于100，则为1%，否则为5%``",
                             "ƒ tax(price•#dollar) ",
                             "    price · (price < 100dollar ? 0.01 0.05)"
                         ],
@@ -4678,36 +4678,36 @@
                         [
                             "Doc",
                             "serious",
-                            "And you can do the same before a @StructureDefinition to explain what it represents. Here the explanation also alludes to what functions it might have later."
+                            "你在@StructureDefinition前面也可以这样做，解释它代表什么。这里的解释还提到了它以后可能具有的功能。"
                         ],
                         [
                             "edit",
-                            "``Represents a product and its price. ",
-                            "Eventually will support functions to get other details about the product.``",
+                            "``代表产品及其价格。",
+                            "最终将支持获取有关产品的其他详细信息的功能。``",
                             "•Product(name•'' price•#dollar)"
                         ],
                         null,
                         [
                             "Doc",
                             "serious",
-                            "You can also put me in front of any expression, which is especially helpful if you have a particularly complicated one."
+                            "你还可以把我放在任何表达式的前面，如果你有一个特别复杂的表达式，这尤其有帮助。"
                         ],
                         [
                             "edit",
                             "ƒ quadratic(a•# b•# c•# x•#)",
-                            "``The quadratic equation``",
+                            "``二次方程``",
                             "(a · (x ^ 2)) + (b · x) + c"
                         ],
                         null,
                         [
                             "Doc",
                             "excited",
-                            "And like @Bind, you can tell me what language an explanation is in, and give me multiple translations of the same explanation. (You'll only see the Spanish if it's selected. If you don't see it, try adding Spanish to your selected languages.)"
+                            "和@Bind一样，你可以告诉我解释是什么语言，并为相同的解释提供多个翻译。 （如果选择了西班牙语，您只会看到西班牙语。如果您没有看到，请尝试将西班牙语添加到您选择的语言中。）"
                         ],
                         [
                             "edit",
                             "ƒ quadratic(a•# b•# c•# x•#)",
-                            "``The quadratic equation``/en",
+                            "``二次方程``/en",
                             "``La ecuación cuadrática``/es",
                             "(a · (x ^ 2)) + (b · x) + c"
                         ],
@@ -4715,100 +4715,98 @@
                         [
                             "Doc",
                             "curious",
-                            "You know the best place to put me? Right at the very beginning of @Program. That way everyone knows what your performance is about. You might even write it before you figure out what you want all of us to do."
+                            "你知道最好的地方放我吗？就在@Program的最开始。这样每个人都知道你的表演是关于什么的。你甚至可以在弄清楚你想让我们做什么之前就写下它。"
                         ],
                         [
                             "conflict",
-                            "``Have you ever wanted to know what it's like ",
-                            "to fly a ✈️ with your mouth?",
-                            "Maybe this stores the plane's height?``",
+                            "``你曾经想知道用嘴巴飞✈️是什么感觉吗？",
+                            "也许这存储了飞机的高度？``",
                             "•Plane()",
-                            "``We need some kind of reaction to listen to the microphone…``",
+                            "``我们需要一些反应来听麦克风…``",
                             "sound: 1m",
-                            "``We know there's a plane, but what else?``",
+                            "``我们知道有个飞机，但还有什么？``",
                             "Phrase(“✈️” sound)"
                         ],
                         null,
-                        ["use", "fit", "Symbol", "✈️🫦"],
+                        ["use", "适应", "符号", "✈️"],
                         [
                             "FunctionDefinition",
                             "excited",
-                            "Wow, I want to fly a plane with my mouth!"
+                            "哇，我想用嘴巴驾驶飞机！"
                         ],
                         [
                             "Doc",
                             "confused",
-                            "@FunctionDefinition, we don't have mouths…"
+                            "@FunctionDefinition，我们没有嘴巴…"
                         ],
                         [
                             "FunctionDefinition",
                             "excited",
-                            "Hm... good point.",
-                            "Speaking of speaking, it seems like you can only contain plain text. Is that right?"
+                            "嗯... 说得好。",
+                            "说到说话，好像你只能包含纯文本。是这样吗？"
                         ],
                         null,
                         [
                             "Doc",
                             "excited",
-                            "Oh no, not at all. Do you remember how @Phrase has all of those fancy ways of styling text? I can do the same."
+                            "哦不，一点都不是。你还记得@Phrase有很多文本样式的方法吗？我也可以做同样的事情。"
                         ],
                         [
                             "edit",
-                            "``Docs can be ",
-                            "/italic/, ",
-                            "_underlined_, ",
-                            "*bold*, or ",
-                            "^extra bold^.``",
-                            "'fancy!'"
+                            "``文档可以是",
+                            "/斜体/，",
+                            "_下划线_，",
+                            "*粗体*，或",
+                            "^特别粗体^。``",
+                            "'花哨！'"
                         ],
                         null,
                         [
                             "Doc",
                             "excited",
-                            "And of course, just as with @Text and @Phrase, if you need to use any of these characters literally, just repeat them twice."
+                            "当然，就像@Text和@Phrase一样，如果需要字面上使用这些字符，只需重复两次。"
                         ],
                         [
                             "edit",
-                            "``",
-                            "Docs can be ",
-                            "  /italic/ (//), ",
-                            "  _underlined_ (__), ",
-                            "  *bold* (**), or ",
-                            "  ^extra bold^ (^^).``",
-                            "'fancy'"
+                            "``文档可以是",
+                            "  /斜体/ (//)，",
+                            "  _下划线_ (__)，",
+                            "  *粗体* (**)，或",
+                            "  ^特别粗体^ (^^)。``",
+                            "'花哨'"
                         ],
                         null,
                         [
                             "Doc",
                             "excited",
-                            "You can put example code inside ^\\^\\."
+                            "你可以在^\\^\\里放示例代码。"
                         ],
                         [
                             "edit",
-                            "``I'm an example inside a doc: \\1 + 1\\.``",
+                            "``我是文档中的示例： \\1 + 1\\.``",
                             "1 + 1"
                         ],
                         null,
                         [
                             "Doc",
                             "excited",
-                            "You can also add links to other content on the internet."
+                            "你还可以在文档中添加指向互联网上其他内容的链接。"
                         ],
                         [
                             "edit",
-                            "``Learn more at <Wordplay@https://wordplay.dev>.`` 'a link!'"
+                            "``在<Wordplay@https://wordplay.dev>了解更多。`` '一个链接！'"
                         ],
                         null,
                         [
                             "fit",
-                            "Stage([Phrase('Quiet backstage!' color: Color(100% 0 0°))] background: Color(0% 0 0°))"
+                            "舞台([Phrase('安静的后台！' color: Color(100% 0 0°))] 背景: Color(0% 0 0°))"
                         ],
                         [
                             "FunctionDefinition",
                             "excited",
-                            "Wow. I had no idea you could do so much! Thank you @Doc, I think we might be ready for a show!"
+                            "哇。我不知道你可以做这么多！谢谢@Doc，我觉得我们可能已经准备好上演了！"
                         ],
-                        ["Doc", "excited", "Let's do it!"]
+                        ["Doc", "excited", "让我们开始吧！"]
                     ]
                 }
             ]
